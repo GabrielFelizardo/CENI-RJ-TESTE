@@ -1,8 +1,3 @@
-/* ========================================
-   FOOTER ENHANCED - JAVASCRIPT
-   Comportamentos interativos e accordion mobile
-   ======================================== */
-
 (function() {
     'use strict';
 
