@@ -15,6 +15,7 @@
     <link rel="stylesheet" href="ceni-animations.css">
     <link rel="stylesheet" href="ceni-scroll-enhancements.css">
     <link rel="stylesheet" href="ceni-theme-enhanced.css">
+    <link rel="stylesheet" href="ceni-footer-enhanced.css">
     
     <style>
         :root {
@@ -853,40 +854,79 @@
         <i class="fas fa-arrow-up"></i>
     </button>
 
-    <footer class="page-footer">
+    <footer class="page-footer-enhanced" data-animate>
         <div class="swiss-grid">
-            <div class="footer-grid" style="grid-column: 1 / -1;">
-                <div class="footer-section">
-                    <h4>Sobre</h4>
-                    <p>
-                        Promovemos a articulação entre governo, instituições de fomento, 
-                        sociedade civil e setor privado para fortalecer o ecossistema de 
-                        impacto socioambiental no Rio de Janeiro.
+            <div class="footer-grid-enhanced" style="grid-column: 1 / -1;">
+                
+                <div class="footer-brand">
+                    <div class="footer-logo-text">CENI</div>
+                    <p class="footer-tagline">
+                        Comitê Estadual de Investimentos e Negócios de Impacto do Rio de Janeiro
                     </p>
                 </div>
                 
-                <div class="footer-section">
+                <div class="footer-section-enhanced gt-accent-1">
                     <h4>Navegação</h4>
-                    <a href="ceni-index.html">Início</a>
-                    <a href="ceni-sobre.html">Sobre o Comitê</a>
-                    <a href="ceni-gts.html">Grupos de Trabalho</a>
-                    <a href="ceni-canais.html">Canais</a>
-                    <a href="ceni-repositorio.html">Repositório</a>
+                    <div class="footer-section-content">
+                        <a href="ceni-index.html">
+                            <i class="fas fa-home"></i>
+                            <span>Início</span>
+                        </a>
+                        <a href="ceni-sobre.html">
+                            <i class="fas fa-info-circle"></i>
+                            <span>Sobre o Comitê</span>
+                        </a>
+                        <a href="ceni-gts.html">
+                            <i class="fas fa-users"></i>
+                            <span>Grupos de Trabalho</span>
+                        </a>
+                        <a href="ceni-canais.html">
+                            <i class="fas fa-comments"></i>
+                            <span>Canais</span>
+                        </a>
+                        <a href="ceni-repositorio.html">
+                            <i class="fas fa-folder-open"></i>
+                            <span>Repositório</span>
+                        </a>
+                    </div>
                 </div>
                 
-                <div class="footer-section">
+                <div class="footer-section-enhanced gt-accent-2">
                     <h4>Contato</h4>
-                    <a href="mailto:nucleo.acompanhamento@desenvolvimento.rj.gov.br">
-                        <i class="fas fa-envelope"></i> nucleo.acompanhamento@desenvolvimento.rj.gov.br
-                    </a>
-                    <a href="mailto:gabinete@desenvolvimento.rj.gov.br">
-                        <i class="fas fa-envelope"></i> gabinete@desenvolvimento.rj.gov.br
-                    </a>
-                    <p style="margin-top: 1rem;"><i class="fas fa-map-marker-alt"></i> SEDEICS - Rio de Janeiro, RJ</p>
+                    <div class="footer-section-content">
+                        <a href="mailto:nucleo.acompanhamento@desenvolvimento.rj.gov.br" class="footer-contact-link">
+                            <i class="fas fa-envelope"></i>
+                            <span>nucleo.acompanhamento@desenvolvimento.rj.gov.br</span>
+                        </a>
+                        <a href="mailto:gabinete@desenvolvimento.rj.gov.br" class="footer-contact-link">
+                            <i class="fas fa-envelope"></i>
+                            <span>gabinete@desenvolvimento.rj.gov.br</span>
+                        </a>
+                        <a href="tel:+552133987000">
+                            <i class="fas fa-phone"></i>
+                            <span>(21) 3398-7000</span>
+                        </a>
+                        <div style="margin-top: 1rem; color: rgba(255,255,255,0.75); font-size: 0.875rem;">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span style="margin-left: 0.75rem;">SEDEICS - Rio de Janeiro, RJ</span>
+                        </div>
+                    </div>
                 </div>
+                
+                <div class="footer-section-enhanced gt-accent-3">
+                    <h4>Sobre</h4>
+                    <div class="footer-section-content">
+                        <p>
+                            Promovemos a articulação entre governo, instituições de fomento, 
+                            sociedade civil e setor privado para fortalecer o ecossistema de 
+                            impacto socioambiental no Rio de Janeiro.
+                        </p>
+                    </div>
+                </div>
+                
             </div>
             
-            <div class="footer-bottom" style="grid-column: 1 / -1;">
+            <div class="footer-bottom-enhanced" style="grid-column: 1 / -1;">
                 <p>© <span id="current-year"></span> CENI-RJ - Comitê Estadual de Investimentos e Negócios de Impacto</p>
                 <p>SEDEICS - Secretaria de Desenvolvimento Econômico, Indústria, Comércio e Serviços</p>
                 <p>Desenvolvido por Gabriel Felizardo da Silva</p>
@@ -895,6 +935,7 @@
     </footer>
 
     <script src="ceni-animations.js"></script>
+    <script src="ceni-footer-enhanced.js"></script>
 
     <script>
         document.getElementById('current-year').textContent = new Date().getFullYear();
