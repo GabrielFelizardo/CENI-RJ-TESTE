@@ -1,0 +1,438 @@
+/* ========================================
+   FOOTER APRIMORADO - CENI-RJ
+   Sistema visual refinado para fechamento de página
+   ======================================== */
+
+:root {
+    --footer-bg: #0a0a0a;
+    --footer-bg-gradient-start: #0f0f0f;
+    --footer-text: #ffffff;
+    --footer-text-secondary: rgba(255, 255, 255, 0.75);
+    --footer-text-tertiary: rgba(255, 255, 255, 0.5);
+    --footer-border: rgba(255, 255, 255, 0.1);
+    --footer-hover: var(--primary, #1e3a8a);
+    --footer-link-hover: #3b82f6;
+}
+
+/* ========================================
+   ESTRUTURA PRINCIPAL
+   ======================================== */
+
+.page-footer-enhanced {
+    background: linear-gradient(180deg, var(--footer-bg-gradient-start) 0%, var(--footer-bg) 100%);
+    color: var(--footer-text);
+    padding: 5rem 0 2rem 0;
+    margin-top: 8rem;
+    border-top: 4px solid var(--primary, #1e3a8a);
+    position: relative;
+    overflow: hidden;
+}
+
+/* Pattern de fundo sutil */
+.page-footer-enhanced::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: 
+        linear-gradient(90deg, rgba(255, 255, 255, 0.01) 1px, transparent 1px),
+        linear-gradient(0deg, rgba(255, 255, 255, 0.01) 1px, transparent 1px);
+    background-size: 40px 40px;
+    opacity: 0.5;
+    pointer-events: none;
+}
+
+/* ========================================
+   GRID E LAYOUT
+   ======================================== */
+
+.footer-grid-enhanced {
+    display: grid;
+    grid-template-columns: 2fr 2fr 3fr 1fr;
+    gap: 4rem;
+    margin-bottom: 3rem;
+    position: relative;
+    z-index: 1;
+}
+
+/* Coluna de marca */
+.footer-brand {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.footer-logo-text {
+    font-size: 3rem;
+    font-weight: 900;
+    line-height: 0.9;
+    color: var(--footer-text);
+    letter-spacing: -0.05em;
+    margin: 0;
+}
+
+.footer-tagline {
+    font-size: 0.875rem;
+    line-height: 1.5;
+    color: var(--footer-text-secondary);
+    max-width: 200px;
+}
+
+/* ========================================
+   SEÇÕES DE CONTEÚDO
+   ======================================== */
+
+.footer-section-enhanced {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.footer-section-enhanced h4 {
+    font-size: 0.875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    font-weight: 700;
+    margin: 0;
+    color: var(--footer-text);
+    position: relative;
+    padding-bottom: 0.75rem;
+}
+
+/* Underline decorativo nos headers */
+.footer-section-enhanced h4::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 40px;
+    height: 2px;
+    background: var(--primary, #1e3a8a);
+    transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.footer-section-enhanced:hover h4::after {
+    width: 60px;
+}
+
+/* Seções com cores de GT nos underlines */
+.footer-section-enhanced.gt-accent-1 h4::after { background: var(--gt1-color, #1e3a8a); }
+.footer-section-enhanced.gt-accent-2 h4::after { background: var(--gt2-color, #1e5631); }
+.footer-section-enhanced.gt-accent-3 h4::after { background: var(--gt3-color, #e89bb8); }
+
+/* ========================================
+   LINKS E INTERAÇÕES
+   ======================================== */
+
+.footer-section-enhanced a {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    color: var(--footer-text-secondary);
+    text-decoration: none;
+    font-size: 0.9375rem;
+    line-height: 1.6;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    padding: 0.375rem 0;
+}
+
+/* Ícones nos links */
+.footer-section-enhanced a i {
+    font-size: 1rem;
+    color: var(--primary, #1e3a8a);
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    width: 20px;
+    text-align: center;
+}
+
+/* Estado hover dos links */
+.footer-section-enhanced a:hover {
+    color: var(--footer-text);
+    transform: translateX(4px);
+}
+
+.footer-section-enhanced a:hover i {
+    color: var(--footer-link-hover);
+    transform: scale(1.1);
+}
+
+/* Underline animado */
+.footer-section-enhanced a::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 1px;
+    background: var(--footer-link-hover);
+    transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.footer-section-enhanced a:hover::before {
+    width: 100%;
+}
+
+/* Links de email com comportamento especial */
+.footer-contact-link {
+    cursor: pointer;
+    word-break: break-word;
+}
+
+/* Texto descritivo na seção sobre */
+.footer-section-enhanced p {
+    font-size: 0.9375rem;
+    line-height: 1.7;
+    color: var(--footer-text-secondary);
+    margin: 0;
+}
+
+/* ========================================
+   FOOTER BOTTOM
+   ======================================== */
+
+.footer-bottom-enhanced {
+    border-top: 1px solid var(--footer-border);
+    padding-top: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    position: relative;
+    z-index: 1;
+}
+
+.footer-bottom-enhanced p {
+    font-size: 0.8125rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--footer-text-tertiary);
+    margin: 0;
+    line-height: 1.6;
+}
+
+/* Linha decorativa acima do footer bottom */
+.footer-bottom-enhanced::before {
+    content: '';
+    position: absolute;
+    top: -1px;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    background: linear-gradient(
+        90deg,
+        transparent 0%,
+        var(--gt1-color, #1e3a8a) 20%,
+        var(--gt2-color, #1e5631) 40%,
+        var(--gt3-color, #e89bb8) 60%,
+        var(--gt4-color, #e8632e) 80%,
+        transparent 100%
+    );
+    opacity: 0.3;
+}
+
+/* ========================================
+   RESPONSIVIDADE
+   ======================================== */
+
+@media (max-width: 1200px) {
+    .footer-grid-enhanced {
+        grid-template-columns: 1fr 1fr 1.5fr;
+        gap: 3rem;
+    }
+    
+    .footer-brand {
+        grid-column: 1 / -1;
+        flex-direction: row;
+        align-items: center;
+        gap: 2rem;
+    }
+    
+    .footer-tagline {
+        max-width: 400px;
+    }
+}
+
+@media (max-width: 968px) {
+    .page-footer-enhanced {
+        padding: 4rem 0 2rem 0;
+        margin-top: 6rem;
+    }
+    
+    .footer-grid-enhanced {
+        grid-template-columns: 1fr;
+        gap: 3rem;
+    }
+    
+    .footer-brand {
+        flex-direction: column;
+        align-items: flex-start;
+        padding-bottom: 2rem;
+        border-bottom: 1px solid var(--footer-border);
+    }
+    
+    /* Accordion em mobile */
+    .footer-section-enhanced {
+        border-bottom: 1px solid var(--footer-border);
+        padding-bottom: 1.5rem;
+    }
+    
+    .footer-section-enhanced h4 {
+        cursor: pointer;
+        user-select: none;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1rem 0;
+    }
+    
+    .footer-section-enhanced h4::after {
+        display: none;
+    }
+    
+    /* Ícone de expansão */
+    .footer-section-enhanced h4::before {
+        content: '\f078';
+        font-family: 'Font Awesome 6 Free';
+        font-weight: 900;
+        font-size: 0.75rem;
+        color: var(--footer-text-secondary);
+        transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    
+    .footer-section-enhanced.expanded h4::before {
+        transform: rotate(180deg);
+    }
+    
+    /* Conteúdo colapsável */
+    .footer-section-content {
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    
+    .footer-section-enhanced.expanded .footer-section-content {
+        max-height: 500px;
+    }
+    
+    /* Primeira seção expandida por padrão em mobile */
+    .footer-section-enhanced:first-of-type {
+        border-top: 1px solid var(--footer-border);
+    }
+    
+    .footer-section-enhanced a:hover {
+        transform: translateX(2px);
+    }
+    
+    .footer-bottom-enhanced {
+        padding-top: 1.5rem;
+        gap: 0.5rem;
+    }
+    
+    .footer-bottom-enhanced p {
+        font-size: 0.75rem;
+    }
+}
+
+@media (max-width: 640px) {
+    .footer-logo-text {
+        font-size: 2.5rem;
+    }
+    
+    .footer-tagline {
+        font-size: 0.8125rem;
+    }
+    
+    .footer-section-enhanced a {
+        font-size: 0.875rem;
+    }
+}
+
+/* ========================================
+   ESTADOS DE FOCO PARA ACESSIBILIDADE
+   ======================================== */
+
+.footer-section-enhanced a:focus-visible {
+    outline: 2px solid var(--footer-link-hover);
+    outline-offset: 4px;
+    border-radius: 2px;
+}
+
+.footer-section-enhanced h4:focus-visible {
+    outline: 2px solid var(--footer-link-hover);
+    outline-offset: 4px;
+}
+
+/* ========================================
+   ANIMAÇÕES DE ENTRADA (OPCIONAL)
+   ======================================== */
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.page-footer-enhanced[data-animate] {
+    animation: fadeInUp 0.8s cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+
+/* ========================================
+   PREFERS REDUCED MOTION
+   ======================================== */
+
+@media (prefers-reduced-motion: reduce) {
+    .footer-section-enhanced a,
+    .footer-section-enhanced a i,
+    .footer-section-enhanced a::before,
+    .footer-section-enhanced h4::after,
+    .footer-section-enhanced h4::before,
+    .footer-section-content {
+        transition: none !important;
+    }
+    
+    .page-footer-enhanced[data-animate] {
+        animation: none !important;
+    }
+}
+
+/* ========================================
+   PRINT STYLES
+   ======================================== */
+
+@media print {
+    .page-footer-enhanced {
+        background: white !important;
+        color: black !important;
+        border-top: 2px solid black !important;
+        padding: 2rem 0 !important;
+        margin-top: 2rem !important;
+    }
+    
+    .page-footer-enhanced::before {
+        display: none !important;
+    }
+    
+    .footer-grid-enhanced {
+        grid-template-columns: repeat(3, 1fr) !important;
+        gap: 2rem !important;
+    }
+    
+    .footer-section-enhanced a {
+        color: black !important;
+    }
+    
+    .footer-bottom-enhanced p {
+        color: black !important;
+        opacity: 0.7 !important;
+    }
+}
