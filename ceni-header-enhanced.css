@@ -1,3 +1,8 @@
+/* ========================================
+   HEADER APRIMORADO - NÍVEL FOOTER
+   Sistema visual refinado com microinterações
+   ======================================== */
+
 :root {
     --header-height: 90px;
     --header-height-scrolled: 70px;
@@ -168,11 +173,12 @@
     content: '';
     position: absolute;
     bottom: 0;
-    left: 50%;
+    left: 1.75rem;
+    right: 1.75rem;
     width: 0;
     height: 3px;
     background: white;
-    transform: translateX(-50%);
+    margin: 0 auto;
     transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
