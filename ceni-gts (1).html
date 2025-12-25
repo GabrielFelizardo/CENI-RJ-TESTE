@@ -1,0 +1,941 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grupos de Trabalho - CENI-RJ</title>
+    
+    <meta name="description" content="5 Grupos de Trabalho articulam 17 organizações para executar as estratégias do CENI-RJ">
+    
+    <link rel="preconnect" href="https://cdn.jsdelivr.net">
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="ceni-animations.css">
+    <link rel="stylesheet" href="ceni-scroll-enhancements.css">
+    <link rel="stylesheet" href="ceni-theme-enhanced.css">
+    
+    <style>
+        :root {
+            --primary: #1e3a8a;
+            --accent: #000000;
+            --background: #ffffff;
+            --text-primary: #000000;
+            --text-secondary: #666666;
+            --grid-line: #e0e0e0;
+            --gt1-color: #1e3a8a;
+            --gt2-color: #1e5631;
+            --gt3-color: #e89bb8;
+            --gt4-color: #e8632e;
+            --gt5-color: #f4b942;
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            background-color: var(--background);
+            color: var(--text-primary);
+            line-height: 1.5;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+        }
+
+        .skip-link {
+            position: absolute;
+            top: -40px;
+            left: 0;
+            background: var(--accent);
+            color: white;
+            padding: 8px;
+            z-index: 100;
+            text-decoration: none;
+        }
+        .skip-link:focus { top: 0; }
+
+        .progress-indicator {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: var(--primary);
+            z-index: 9999;
+            transition: width 0.2s;
+        }
+
+        .breadcrumb-container {
+            background: var(--background);
+            border-bottom: 1px solid var(--grid-line);
+            padding: 1rem 0;
+        }
+        .breadcrumb {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 3rem;
+            display: flex;
+            gap: 0.5rem;
+            font-size: 0.875rem;
+            list-style: none;
+        }
+        .breadcrumb a {
+            color: var(--text-secondary);
+            text-decoration: none;
+        }
+        .breadcrumb a:hover { color: var(--primary); }
+        .breadcrumb .active {
+            color: var(--text-primary);
+            font-weight: 700;
+        }
+        
+        .swiss-grid {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 3rem;
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 2rem;
+            position: relative;
+        }
+        
+        .col-full { grid-column: 1 / -1; position: relative; z-index: 1; }
+        .col-8 { grid-column: span 8; position: relative; z-index: 1; }
+        
+        .gov-header {
+            background: var(--primary);
+            padding: 2rem 0;
+            border-bottom: 4px solid var(--accent);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+        
+        .gov-header.scrolled {
+            padding: 1rem 0;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        
+        .header-grid {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 3rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .gov-logo-img { height: 50px; }
+        
+        .main-nav {
+            display: flex;
+            gap: 0;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+        }
+        
+        .main-nav a {
+            color: white;
+            text-decoration: none;
+            padding: 0.75rem 1.5rem;
+            border-right: 1px solid rgba(255,255,255,0.2);
+            transition: background 0.2s;
+        }
+        
+        .main-nav a:first-child { border-left: 1px solid rgba(255,255,255,0.2); }
+        .main-nav a:hover, .main-nav a.active { background: rgba(255,255,255,0.1); }
+
+        .mobile-menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 0.5rem;
+        }
+
+        @media (max-width: 968px) {
+            .main-nav {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                height: 100vh;
+                width: 80%;
+                max-width: 300px;
+                background: var(--primary);
+                flex-direction: column;
+                padding: 5rem 0 2rem 0;
+                transition: right 0.3s ease;
+                z-index: 10001;
+                box-shadow: -8px 0 32px rgba(0,0,0,0.6);
+                isolation: isolate;
+            }
+            .main-nav.active { right: 0; }
+            .main-nav a {
+                border: none !important;
+                border-bottom: 1px solid rgba(255,255,255,0.1) !important;
+                padding: 1.5rem 2rem;
+            }
+            .mobile-menu-toggle { 
+                display: block;
+                position: relative;
+                z-index: 10002;
+            }
+            .mobile-overlay {
+                display: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: transparent;
+                z-index: 10000;
+                transition: opacity 0.3s ease;
+            }
+            .mobile-overlay.active { display: block; }
+        }
+        
+        .section-number {
+            font-size: 10rem;
+            font-weight: 900;
+            line-height: 1;
+            color: var(--primary);
+            opacity: 0.08;
+            position: absolute;
+            top: -3rem;
+            left: -2rem;
+            z-index: 0;
+        }
+        
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            line-height: 1.2;
+            text-transform: uppercase;
+            letter-spacing: -0.02em;
+            margin-bottom: 3rem;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .label {
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+            display: block;
+        }
+        
+        .hero-section {
+            padding: 6rem 0 4rem 0;
+        }
+        
+        .hero-title {
+            font-size: 4rem;
+            font-weight: 700;
+            line-height: 1.1;
+            margin-bottom: 2rem;
+            text-transform: uppercase;
+            letter-spacing: -0.02em;
+        }
+        
+        .hero-line {
+            width: 100px;
+            height: 4px;
+            background: var(--primary);
+            margin: 2rem 0;
+        }
+        
+        .info-box {
+            border: 4px solid var(--accent);
+            padding: 2rem 3rem;
+            margin: 4rem 0;
+        }
+        
+        .orientacoes-box {
+            border-left: 4px solid var(--primary);
+            padding-left: 2rem;
+            margin: 4rem 0;
+        }
+        
+        .orientacoes-box ul {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .orientacoes-box li {
+            padding: 1rem 0;
+            border-bottom: 1px solid var(--grid-line);
+            font-size: 1.125rem;
+        }
+        
+        .orientacoes-box li:last-child { border-bottom: none; }
+        
+        .gt-section {
+            margin-bottom: 8rem;
+            position: relative;
+            scroll-margin-top: 100px;
+        }
+        
+        .gt-header {
+            border: 4px solid var(--accent);
+            padding: 3rem;
+            margin-bottom: 3rem;
+            background: white;
+        }
+        
+        .gt-header.gt1 { border-color: var(--gt1-color); }
+        .gt-header.gt2 { border-color: var(--gt2-color); }
+        .gt-header.gt3 { border-color: var(--gt3-color); }
+        .gt-header.gt4 { border-color: var(--gt4-color); }
+        .gt-header.gt5 { border-color: var(--gt5-color); }
+        
+        .gt-number-large {
+            font-size: 8rem;
+            font-weight: 900;
+            line-height: 1;
+            margin-bottom: 1rem;
+        }
+        
+        .gt1 .gt-number-large { color: var(--gt1-color); }
+        .gt2 .gt-number-large { color: var(--gt2-color); }
+        .gt3 .gt-number-large { color: var(--gt3-color); }
+        .gt4 .gt-number-large { color: var(--gt4-color); }
+        .gt5 .gt-number-large { color: var(--gt5-color); }
+        
+        .gt-header h2 {
+            font-size: 2rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-bottom: 1rem;
+            line-height: 1.2;
+        }
+        
+        .gt-header p {
+            font-size: 1.125rem;
+            line-height: 1.6;
+        }
+        
+        .org-item {
+            border: 2px solid var(--accent);
+            padding: 2rem 1.5rem;
+            text-align: center;
+            transition: all 0.2s;
+        }
+        
+        .org-item:hover {
+            background: var(--accent);
+            color: white;
+            transform: translateY(-4px);
+        }
+
+        .org-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: var(--primary);
+            transition: color 0.2s;
+        }
+
+        .org-item:hover .org-icon {
+            color: white;
+        }
+        
+        .org-item h4 {
+            font-size: 1rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-bottom: 0.5rem;
+        }
+        
+        .org-item p {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            opacity: 0.7;
+            margin: 0;
+        }
+
+        .org-members {
+            font-size: 0.75rem;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--grid-line);
+            line-height: 1.6;
+        }
+
+        .org-item:hover .org-members {
+            border-top-color: rgba(255,255,255,0.3);
+        }
+
+        .org-members strong {
+            display: block;
+            margin-bottom: 0.25rem;
+            letter-spacing: 0.05em;
+        }
+
+        .org-members span {
+            display: block;
+            opacity: 0.8;
+            font-size: 0.7rem;
+        }
+
+        .back-to-top {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 50px;
+            height: 50px;
+            background: var(--accent);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            font-size: 1.5rem;
+            cursor: pointer;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s;
+            z-index: 999;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+        .back-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+        .back-to-top:hover {
+            background: var(--primary);
+            transform: translateY(-4px);
+        }
+        
+        .page-footer {
+            background: var(--accent);
+            color: white;
+            padding: 4rem 0 2rem 0;
+            margin-top: 8rem;
+            border-top: 4px solid var(--primary);
+        }
+        
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+        
+        .footer-section h4 {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            opacity: 0.6;
+        }
+        
+        .footer-section a {
+            display: block;
+            color: white;
+            text-decoration: none;
+            margin-bottom: 0.75rem;
+            font-size: 0.875rem;
+        }
+        
+        .footer-section a:hover { text-decoration: underline; }
+        
+        .footer-bottom {
+            border-top: 1px solid rgba(255,255,255,0.1);
+            padding-top: 2rem;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            opacity: 0.6;
+        }
+        
+        @media (max-width: 968px) {
+            .swiss-grid { 
+                padding: 0 2rem; 
+                grid-template-columns: 1fr;
+            }
+            .breadcrumb { padding: 0 2rem; }
+            .col-8 { grid-column: 1 / -1; }
+            .hero-title { font-size: 2.5rem; }
+            .section-title { font-size: 2rem; }
+            .section-number { font-size: 6rem; }
+            .gt-number-large { font-size: 5rem; }
+            .footer-grid { grid-template-columns: 1fr; }
+            .header-grid { padding: 0 2rem; }
+        }
+    </style>
+</head>
+<body>
+    <a href="#main-content" class="skip-link">Pular para o conteúdo principal</a>
+    <div class="progress-indicator" id="progressBar"></div>
+    <div class="mobile-overlay" id="mobileOverlay"></div>
+
+    <header class="gov-header">
+        <div class="header-grid">
+            <img src="https://raw.githubusercontent.com/GabrielFelizardo/almoxarifado-sistema/main/logo.png" alt="SEDEICS" class="gov-logo-img" loading="lazy">
+            
+            <button class="mobile-menu-toggle" id="menuToggle" aria-label="Abrir menu de navegação" aria-expanded="false">
+                <i class="fas fa-bars"></i>
+            </button>
+
+            <nav class="main-nav" id="mainNav" role="navigation" aria-label="Navegação principal">
+                <a href="ceni-index.html">Início</a>
+                <a href="ceni-sobre.html">Sobre</a>
+                <a href="ceni-gts.html" class="active" aria-current="page">GTs</a>
+                <a href="ceni-canais.html">Canais</a>
+                <a href="ceni-repositorio.html">Repositório</a>
+            </nav>
+        </div>
+    </header>
+
+    <nav class="breadcrumb-container" aria-label="Breadcrumb">
+        <ol class="breadcrumb">
+            <li><a href="ceni-index.html">CENI-RJ</a></li>
+            <li class="active" aria-current="page">→ Grupos de Trabalho</li>
+        </ol>
+    </nav>
+
+    <main id="main-content">
+        <section class="hero-section">
+            <div class="swiss-grid">
+                <div class="col-full">
+                    <span class="label">Estrutura Operacional</span>
+                    <h1 class="hero-title">
+                        Grupos de<br>Trabalho
+                    </h1>
+                    <div class="hero-line"></div>
+                </div>
+                
+                <div class="col-8">
+                    <p style="font-size: 1.25rem; line-height: 1.6;">
+                        Os Grupos de Trabalho são as instâncias operacionais do CENI-RJ, responsáveis por 
+                        desenvolver e executar as estratégias de fomento aos negócios de impacto no Estado.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <section style="margin-bottom: 6rem;">
+            <div class="swiss-grid">
+                <div class="col-full">
+                    <div class="info-box">
+                        <p style="font-size: 1.125rem; line-height: 1.6; margin: 0;">
+                            <strong>5 Grupos de Trabalho</strong> • 
+                            <strong>17 Organizações</strong> • 
+                            <strong>Governança Multissetorial</strong>
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="col-full">
+                    <div class="orientacoes-box">
+                        <span class="label">Diretrizes</span>
+                        <h3 style="font-size: 1.5rem; font-weight: 700; text-transform: uppercase; margin-bottom: 2rem;">
+                            Orientações Gerais
+                        </h3>
+                        <ul>
+                            <li>→ Cada GT contará com 2 colíderes (Governo + Sociedade Civil)</li>
+                            <li>→ As instituições devem participar de pelo menos 1 GT e podem integrar outros</li>
+                            <li>→ Cada organização indica 1 titular e 1 suplente por GT</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- GT 1 -->
+        <section class="gt-section gt1" id="gt1">
+            <div class="swiss-grid">
+                <div class="col-full" style="position: relative;">
+                    <span class="section-number" aria-hidden="true">01</span>
+                    <div class="gt-header gt1">
+                        <div class="gt-number-large">01</div>
+                        <h2>Capital e Financiamento<br>de Impacto</h2>
+                        <p>Mobilizar mecanismos financeiros e promover acesso a capital para negócios de impacto, articulando investidores, fundos e instituições financeiras.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- GT 2 -->
+        <section class="gt-section gt2" id="gt2">
+            <div class="swiss-grid">
+                <div class="col-full" style="position: relative;">
+                    <span class="section-number" aria-hidden="true">02</span>
+                    <div class="gt-header gt2">
+                        <div class="gt-number-large">02</div>
+                        <h2>Fomento a<br>Negócios de Impacto</h2>
+                        <p>Promover ações de formação, capacitação, aceleração e desenvolvimento técnico para negócios de impacto em diferentes estágios de maturidade.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- GT 3 -->
+        <section class="gt-section gt3" id="gt3">
+            <div class="swiss-grid">
+                <div class="col-full" style="position: relative;">
+                    <span class="section-number" aria-hidden="true">03</span>
+                    <div class="gt-header gt3">
+                        <div class="gt-number-large">03</div>
+                        <h2>Fortalecimento de<br>Organizações Intermediárias</h2>
+                        <p>Fortalecer aceleradoras, institutos, hubs, coletivos e demais organizações que apoiam o ecossistema de impacto.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- GT 4 -->
+        <section class="gt-section gt4" id="gt4">
+            <div class="swiss-grid">
+                <div class="col-full" style="position: relative;">
+                    <span class="section-number" aria-hidden="true">04</span>
+                    <div class="gt-header gt4">
+                        <div class="gt-number-large">04</div>
+                        <h2>Ambiente Institucional<br>e Normativo</h2>
+                        <p>Consolidar um ambiente institucional favorável à agenda de impacto, trabalhando marcos regulatórios e políticas públicas.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- GT 5 -->
+        <section class="gt-section gt5" id="gt5">
+            <div class="swiss-grid">
+                <div class="col-full" style="position: relative;">
+                    <span class="section-number" aria-hidden="true">05</span>
+                    <div class="gt-header gt5">
+                        <div class="gt-number-large">05</div>
+                        <h2>Articulação<br>Interfederativa</h2>
+                        <p>Fortalecer a articulação com municípios, consórcios, governos federal e entes federativos para ampliar o alcance das ações de impacto.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- MEMBROS DO COMITÊ -->
+        <section style="margin-top: 8rem; margin-bottom: 6rem;">
+            <div class="swiss-grid">
+                <div class="col-full" style="position: relative;">
+                    <span class="section-number" aria-hidden="true">17</span>
+                    <span class="label">Composição</span>
+                    <h2 class="section-title">
+                        Membros do<br>Comitê
+                    </h2>
+                </div>
+                
+                <div class="col-8">
+                    <p style="font-size: 1.125rem; line-height: 1.6; color: var(--text-secondary); margin-bottom: 3rem;">
+                        17 organizações compõem o CENI-RJ, representando governo, sociedade civil, 
+                        universidades e setor privado.
+                    </p>
+                </div>
+                
+                <div style="grid-column: 1 / -1; display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem;">
+                    <!-- GOVERNO -->
+                    <div class="org-item">
+                        <i class="fas fa-landmark org-icon"></i>
+                        <h4>Casa Civil - SECC</h4>
+                        <p>Governo do Estado</p>
+                        <div class="org-members">
+                            <strong>Titular:</strong>
+                            <span>Rubens Antonio Albuquerque Junior</span>
+                            <strong>Suplente:</strong>
+                            <span>Rafael Landa Montenegro Nuno</span>
+                        </div>
+                    </div>
+                    
+                    <div class="org-item">
+                        <i class="fas fa-users org-icon"></i>
+                        <h4>SEGOV</h4>
+                        <p>Secretaria de Governo</p>
+                        <div class="org-members">
+                            <strong>Titular:</strong>
+                            <span>Karoline da Silva Mendez</span>
+                            <strong>Suplente:</strong>
+                            <span>Rafael Landa Montenegro Nuno</span>
+                        </div>
+                    </div>
+                    
+                    <div class="org-item">
+                        <i class="fas fa-leaf org-icon"></i>
+                        <h4>SEAS</h4>
+                        <p>Ambiente e Sustentabilidade</p>
+                        <div class="org-members">
+                            <strong>Titular:</strong>
+                            <span>Ana Larronda Asti</span>
+                            <strong>Suplente:</strong>
+                            <span>Irlaine Alvarenga Cidade</span>
+                        </div>
+                    </div>
+                    
+                    <div class="org-item">
+                        <i class="fas fa-briefcase org-icon"></i>
+                        <h4>SETRAB</h4>
+                        <p>Trabalho e Renda</p>
+                        <div class="org-members">
+                            <strong>Titular:</strong>
+                            <span>Alexandre Mauro Prado</span>
+                            <strong>Suplente:</strong>
+                            <span>Bruno Rocha Rodriguez</span>
+                        </div>
+                    </div>
+                    
+                    <div class="org-item">
+                        <i class="fas fa-bolt org-icon"></i>
+                        <h4>SEENEMAR</h4>
+                        <p>Energia e Economia do Mar</p>
+                        <div class="org-members">
+                            <strong>Titular:</strong>
+                            <span>Mariana Pisani Mata</span>
+                            <strong>Suplente:</strong>
+                            <span>Erick José Guimarães de Andrade Junior</span>
+                        </div>
+                    </div>
+                    
+                    <div class="org-item">
+                        <i class="fas fa-palette org-icon"></i>
+                        <h4>SECEC</h4>
+                        <p>Cultura e Economia Criativa</p>
+                        <div class="org-members">
+                            <strong>Titular:</strong>
+                            <span>Nilza Valéria Zacarias do Nascimento Oliveira</span>
+                            <strong>Suplente:</strong>
+                            <span>Sergio Almeida Firmino</span>
+                        </div>
+                    </div>
+                    
+                    <div class="org-item">
+                        <i class="fas fa-venus org-icon"></i>
+                        <h4>Secretaria da Mulher</h4>
+                        <p>Governo do Estado</p>
+                        <div class="org-members">
+                            <strong>Titular:</strong>
+                            <span>Heloisa Helena de Alencar Aguiar</span>
+                            <strong>Suplente:</strong>
+                            <span>Marcele Porto da Silva</span>
+                        </div>
+                    </div>
+                    
+                    <div class="org-item">
+                        <i class="fas fa-globe org-icon"></i>
+                        <h4>Comissão ODS RJ</h4>
+                        <p>Objetivos de Desenvolvimento</p>
+                        <div class="org-members">
+                            <strong>Titular:</strong>
+                            <span>Ana Larronda Asti</span>
+                            <strong>Suplente:</strong>
+                            <span>Irlaine Alvarenga Cidade</span>
+                        </div>
+                    </div>
+                    
+                    <!-- SOCIEDADE CIVIL -->
+                    <div class="org-item">
+                        <i class="fas fa-chart-line org-icon"></i>
+                        <h4>SEBRAE-RJ</h4>
+                        <p>Apoio a Pequenos Negócios</p>
+                        <div class="org-members">
+                            <strong>Titular:</strong>
+                            <span>Carla Geraldo de Moraes Teixeira Panisset</span>
+                            <strong>Suplente:</strong>
+                            <span>Juliana Cristina Carlos de Oliveira</span>
+                        </div>
+                    </div>
+                    
+                    <div class="org-item">
+                        <i class="fas fa-graduation-cap org-icon"></i>
+                        <h4>PUC-Rio</h4>
+                        <p>Universidade</p>
+                        <div class="org-members">
+                            <strong>Titular:</strong>
+                            <span>Marcelo Gattass</span>
+                            <strong>Suplente:</strong>
+                            <span>Gustavo Robichez</span>
+                        </div>
+                    </div>
+                    
+                    <div class="org-item">
+                        <i class="fas fa-lightbulb org-icon"></i>
+                        <h4>Impact Hub Rio</h4>
+                        <p>Hub de Inovação Social</p>
+                        <div class="org-members">
+                            <strong>Titular:</strong>
+                            <span>Liliana Pinelli Caldas da Cunha</span>
+                            <strong>Suplente:</strong>
+                            <span>Luciana Rodriguez</span>
+                        </div>
+                    </div>
+                    
+                    <div class="org-item">
+                        <i class="fas fa-flask org-icon"></i>
+                        <h4>FAPERJ</h4>
+                        <p>Fundação de Amparo à Pesquisa</p>
+                        <div class="org-members">
+                            <strong>Titular:</strong>
+                            <span>Caroline Alves da Costa</span>
+                            <strong>Suplente:</strong>
+                            <span>Juliana Maciel de Aguiar</span>
+                        </div>
+                    </div>
+                    
+                    <div class="org-item">
+                        <i class="fas fa-store org-icon"></i>
+                        <h4>Fecomércio RJ</h4>
+                        <p>Federação do Comércio</p>
+                        <div class="org-members">
+                            <strong>Titular:</strong>
+                            <span>João Carlos Gomes</span>
+                            <strong>Suplente:</strong>
+                            <span>Guilherme Mercês</span>
+                        </div>
+                    </div>
+                    
+                    <div class="org-item">
+                        <i class="fas fa-industry org-icon"></i>
+                        <h4>Firjan</h4>
+                        <p>Sistema FIRJAN</p>
+                        <div class="org-members">
+                            <strong>Titular:</strong>
+                            <span>Jorge Vicente Peron Mendes</span>
+                            <strong>Suplente:</strong>
+                            <span>Eliane Carvalhar Damasceno</span>
+                        </div>
+                    </div>
+                    
+                    <div class="org-item">
+                        <i class="fas fa-university org-icon"></i>
+                        <h4>UFRJ</h4>
+                        <p>Universidade Federal</p>
+                        <div class="org-members">
+                            <strong>Titular:</strong>
+                            <span>Helios Malebranche Olbrisch Freres Filho</span>
+                            <strong>Suplente:</strong>
+                            <span>Rita de Cássia Monteiro Afonso</span>
+                        </div>
+                    </div>
+                    
+                    <div class="org-item">
+                        <i class="fas fa-building org-icon"></i>
+                        <h4>ABERJ</h4>
+                        <p>Associação de Bancos</p>
+                        <div class="org-members">
+                            <strong>Titular:</strong>
+                            <span>Istvan Karoly Kasznar</span>
+                            <strong>Suplente:</strong>
+                            <span>Angélica Moreira da Silva</span>
+                        </div>
+                    </div>
+                    
+                    <div class="org-item">
+                        <i class="fas fa-water org-icon"></i>
+                        <h4>Rio de Impacto</h4>
+                        <p>Organização de Impacto</p>
+                        <div class="org-members">
+                            <strong>Titular:</strong>
+                            <span>Dayse Maria Valença Ferreira</span>
+                            <strong>Suplente:</strong>
+                            <span>Luciana Costa Souza Tristão</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <button class="back-to-top" id="backToTop" aria-label="Voltar ao topo">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <footer class="page-footer">
+        <div class="swiss-grid">
+            <div class="footer-grid" style="grid-column: 1 / -1;">
+                <div class="footer-section">
+                    <h4>Sobre</h4>
+                    <p>
+                        Promovemos a articulação entre governo, instituições de fomento, 
+                        sociedade civil e setor privado para fortalecer o ecossistema de 
+                        impacto socioambiental no Rio de Janeiro.
+                    </p>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Navegação</h4>
+                    <a href="ceni-index.html">Início</a>
+                    <a href="ceni-sobre.html">Sobre o Comitê</a>
+                    <a href="ceni-gts.html">Grupos de Trabalho</a>
+                    <a href="ceni-canais.html">Canais</a>
+                    <a href="ceni-repositorio.html">Repositório</a>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Contato</h4>
+                    <a href="mailto:nucleo.acompanhamento@desenvolvimento.rj.gov.br">
+                        <i class="fas fa-envelope"></i> nucleo.acompanhamento@desenvolvimento.rj.gov.br
+                    </a>
+                    <a href="mailto:gabinete@desenvolvimento.rj.gov.br">
+                        <i class="fas fa-envelope"></i> gabinete@desenvolvimento.rj.gov.br
+                    </a>
+                    <p style="margin-top: 1rem;"><i class="fas fa-map-marker-alt"></i> SEDEICS - Rio de Janeiro, RJ</p>
+                </div>
+            </div>
+            
+            <div class="footer-bottom" style="grid-column: 1 / -1;">
+                <p>© <span id="current-year"></span> CENI-RJ - Comitê Estadual de Investimentos e Negócios de Impacto</p>
+                <p>SEDEICS - Secretaria de Desenvolvimento Econômico, Indústria, Comércio e Serviços</p>
+                <p>Desenvolvido por Gabriel Felizardo da Silva</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="ceni-animations.js"></script>
+
+    <script>
+        document.getElementById('current-year').textContent = new Date().getFullYear();
+        
+        const header = document.querySelector('.gov-header');
+        window.addEventListener('scroll', () => {
+            header.classList.toggle('scrolled', window.scrollY > 100);
+        });
+
+        window.addEventListener('scroll', () => {
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            document.getElementById('progressBar').style.width = ((winScroll / height) * 100) + '%';
+        });
+
+        const menuToggle = document.getElementById('menuToggle');
+        const mainNav = document.getElementById('mainNav');
+        const mobileOverlay = document.getElementById('mobileOverlay');
+
+        menuToggle.addEventListener('click', () => {
+            const isOpen = mainNav.classList.toggle('active');
+            mobileOverlay.classList.toggle('active');
+            menuToggle.setAttribute('aria-expanded', isOpen);
+            menuToggle.innerHTML = isOpen ? '<i class="fas fa-times"></i>' : '<i class="fas fa-bars"></i>';
+        });
+
+        mobileOverlay.addEventListener('click', () => {
+            mainNav.classList.remove('active');
+            mobileOverlay.classList.remove('active');
+            menuToggle.setAttribute('aria-expanded', 'false');
+            menuToggle.innerHTML = '<i class="fas fa-bars"></i>';
+        });
+
+        const backToTop = document.getElementById('backToTop');
+        window.addEventListener('scroll', () => {
+            backToTop.classList.toggle('visible', window.scrollY > 300);
+        });
+
+        backToTop.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,346 @@
+/* ========================================
+   OTIMIZAÇÕES DE PERFORMANCE
+   ======================================== */
+
+/* Melhorar performance durante scroll */
+body.is-scrolling {
+    pointer-events: none;
+}
+
+body.is-scrolling * {
+    pointer-events: auto;
+}
+
+/* ========================================
+   SCROLL SUAVE GLOBAL APRIMORADO
+   ======================================== */
+html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 100px; /* Offset para header fixo */
+}
+
+/* Desabilitar em casos específicos */
+html.disable-smooth-scroll {
+    scroll-behavior: auto;
+}
+
+/* ========================================
+   INDICADOR DE PROGRESSO APRIMORADO
+   ======================================== */
+.progress-indicator {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--primary, #1e3a8a), var(--accent, #000000));
+    z-index: 9999;
+    transition: width 0.1s ease-out;
+    box-shadow: 0 0 10px rgba(30, 58, 138, 0.3);
+}
+
+/* ========================================
+   TRANSIÇÕES DE SEÇÃO
+   ======================================== */
+
+/* Seções ganham transição suave */
+section,
+.gt-section {
+    transition: opacity 0.3s ease;
+}
+
+/* Durante scroll rápido, reduzir opacidade levemente */
+body.is-scrolling section,
+body.is-scrolling .gt-section {
+    opacity: 0.98;
+}
+
+/* ========================================
+   ANIMAÇÕES DE ENTRADA REFINADAS
+   ======================================== */
+
+/* Estado inicial para elementos animados */
+[data-animate] {
+    opacity: 0;
+    transition-property: opacity, transform;
+    transition-duration: 0.8s;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    /* will-change removido - aplicado dinamicamente via JS quando necessário */
+}
+
+/* Variações de entrada */
+[data-animate="fade-up"] {
+    transform: translateY(40px);
+}
+
+[data-animate="fade-down"] {
+    transform: translateY(-40px);
+}
+
+[data-animate="fade-left"] {
+    transform: translateX(40px);
+}
+
+[data-animate="fade-right"] {
+    transform: translateX(-40px);
+}
+
+[data-animate="scale-in"] {
+    transform: scale(0.9);
+}
+
+[data-animate="fade-in"] {
+    transform: none;
+}
+
+/* Estado animado */
+[data-animate].animated {
+    opacity: 1 !important;
+    transform: none !important;
+}
+
+/* ========================================
+   LINKS DE NAVEGAÇÃO ATIVOS
+   ======================================== */
+
+/* Destacar link da seção atual */
+.main-nav a.active {
+    background: rgba(255, 255, 255, 0.2);
+    position: relative;
+}
+
+.main-nav a.active::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: white;
+}
+
+/* ========================================
+   BOTÃO BACK TO TOP APRIMORADO
+   ======================================== */
+.back-to-top {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    width: 50px;
+    height: 50px;
+    background: var(--accent, #000000);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    font-size: 1.5rem;
+    cursor: pointer;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 999;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.back-to-top.visible {
+    opacity: 1;
+    visibility: visible;
+    /* Animação de pulso removida para melhor performance */
+}
+
+.back-to-top:hover {
+    background: var(--primary, #1e3a8a);
+    transform: translateY(-4px) scale(1.05);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
+}
+
+.back-to-top:active {
+    transform: translateY(-2px) scale(0.98);
+}
+
+/* ========================================
+   NÚMEROS DE SEÇÃO (SEM PARALLAX)
+   ======================================== */
+.section-number {
+    font-size: 10rem;
+    font-weight: 900;
+    line-height: 1;
+    color: var(--primary, #1e3a8a);
+    opacity: 0.08;
+    position: absolute;
+    top: -2rem;
+    left: -1rem;
+    z-index: 0;
+}
+
+.hero-number {
+    font-size: 15rem;
+    font-weight: 900;
+    line-height: 0.9;
+    color: var(--primary, #1e3a8a);
+    letter-spacing: -0.05em;
+    margin: 0;
+}
+
+/* ========================================
+   EFEITOS SUTIS EM CARDS E BOXES
+   ======================================== */
+
+/* Cards com hover lift suave */
+.hover-lift {
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), 
+                box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.hover-lift:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+}
+
+/* ========================================
+   SMOOTH SCROLL PARA FULL WIDTH SECTIONS
+   ======================================== */
+.full-width-section {
+    scroll-margin-top: 100px;
+}
+
+/* ========================================
+   OTIMIZAÇÕES MOBILE
+   ======================================== */
+@media (max-width: 968px) {
+    /* Reduzir intensidade de animações em mobile */
+    [data-animate] {
+        transition-duration: 0.5s !important;
+    }
+    
+    /* Botão back to top menor em mobile */
+    .back-to-top {
+        width: 45px;
+        height: 45px;
+        bottom: 1.5rem;
+        right: 1.5rem;
+        font-size: 1.25rem;
+    }
+    
+    /* Scroll padding menor em mobile */
+    html {
+        scroll-padding-top: 80px;
+    }
+    
+    .full-width-section {
+        scroll-margin-top: 80px;
+    }
+}
+
+/* ========================================
+   ACESSIBILIDADE - PREFERS REDUCED MOTION
+   ======================================== */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+    
+    /* Mostrar elementos imediatamente */
+    [data-animate],
+    [data-animate].animated {
+        opacity: 1 !important;
+        transform: none !important;
+    }
+    
+    /* Desabilitar animação do back to top */
+    .back-to-top {
+        animation: none !important;
+    }
+    
+    .back-to-top:hover {
+        transform: none !important;
+    }
+}
+
+/* ========================================
+   ESTADOS DE FOCO PARA NAVEGAÇÃO POR TECLADO
+   ======================================== */
+.back-to-top:focus-visible {
+    outline: 3px solid var(--primary, #1e3a8a);
+    outline-offset: 4px;
+}
+
+a:focus-visible {
+    outline: 3px solid var(--primary, #1e3a8a);
+    outline-offset: 2px;
+}
+
+button:focus-visible {
+    outline: 3px solid var(--primary, #1e3a8a);
+    outline-offset: 2px;
+}
+
+/* ========================================
+   PRINT STYLES
+   ======================================== */
+@media print {
+    .progress-indicator,
+    .back-to-top {
+        display: none !important;
+    }
+    
+    [data-animate] {
+        opacity: 1 !important;
+        transform: none !important;
+    }
+    
+    body.is-scrolling {
+        pointer-events: auto;
+    }
+}
+
+/* ========================================
+   COMPATIBILIDADE COM NAVEGADORES ANTIGOS
+   ======================================== */
+
+/* Fallback para navegadores sem suporte a CSS custom properties */
+@supports not (color: var(--primary)) {
+    .progress-indicator {
+        background: linear-gradient(90deg, #1e3a8a, #000000);
+    }
+    
+    .section-number,
+    .hero-number {
+        color: #1e3a8a;
+    }
+    
+    .back-to-top {
+        background: #000000;
+    }
+    
+    .back-to-top:hover {
+        background: #1e3a8a;
+    }
+    
+    .back-to-top:focus-visible,
+    a:focus-visible,
+    button:focus-visible {
+        outline-color: #1e3a8a;
+    }
+}
+
+/* ========================================
+   MELHORIAS DE PERFORMANCE ADICIONAIS
+   ======================================== */
+
+/* Aceleração de hardware aplicada apenas onde necessário */
+.back-to-top {
+    transform: translateZ(0);
+    backface-visibility: hidden;
+}
+
+/* Otimizar repaint durante scroll */
+.progress-indicator {
+    contain: layout style;
+}

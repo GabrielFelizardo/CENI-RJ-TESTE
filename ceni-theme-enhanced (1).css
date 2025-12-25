@@ -1,0 +1,344 @@
+/* ========================================
+   SISTEMA DE CORES EXPANDIDO - CENI-RJ
+   Mantém identidade visual com mais profundidade
+   ======================================== */
+
+:root {
+    /* Cores Principais - Mantidas */
+    --primary: #1e3a8a;
+    --primary-light: #2563eb;
+    --primary-dark: #1e3a8a;
+    --primary-hover: #1e40af;
+    
+    --accent: #000000;
+    --accent-soft: #1a1a1a;
+    
+    --background: #ffffff;
+    --background-subtle: #fafafa;
+    --background-muted: #f5f5f5;
+    
+    /* Text - Melhorado para WCAG AAA */
+    --text-primary: #000000;
+    --text-secondary: #4a4a4a; /* Era #666 - melhor contraste */
+    --text-tertiary: #737373;
+    --text-on-primary: #ffffff;
+    --text-on-accent: #ffffff;
+    
+    /* Grid e Linhas */
+    --grid-line: #e0e0e0;
+    --grid-line-strong: #d4d4d4;
+    --border-subtle: #f0f0f0;
+    
+    /* GTs - Cores Expandidas com Variações */
+    --gt1-color: #1e3a8a;
+    --gt1-light: #3b82f6;
+    --gt1-bg: #eff6ff;
+    --gt1-hover: #1e40af;
+    
+    --gt2-color: #1e5631;
+    --gt2-light: #22c55e;
+    --gt2-bg: #f0fdf4;
+    --gt2-hover: #166534;
+    
+    --gt3-color: #e89bb8;
+    --gt3-light: #fda4af;
+    --gt3-bg: #fff1f2;
+    --gt3-hover: #db2777;
+    
+    --gt4-color: #e8632e;
+    --gt4-light: #fb923c;
+    --gt4-bg: #fff7ed;
+    --gt4-hover: #ea580c;
+    
+    --gt5-color: #f4b942;
+    --gt5-light: #fbbf24;
+    --gt5-bg: #fefce8;
+    --gt5-hover: #eab308;
+    
+    /* Estados de Interação */
+    --hover-overlay: rgba(0, 0, 0, 0.04);
+    --active-overlay: rgba(0, 0, 0, 0.08);
+    --disabled-bg: #e5e5e5;
+    --disabled-text: #a3a3a3;
+    
+    /* Sombras - Sistema Progressivo */
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.07);
+    --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+    --shadow-xl: 0 20px 25px rgba(0, 0, 0, 0.15);
+    
+    /* Transições - Sistema Unificado */
+    --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-base: 250ms cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-slow: 350ms cubic-bezier(0.4, 0, 0.2, 1);
+    
+    /* Bordas */
+    --radius-sm: 2px;
+    --radius-md: 4px;
+    --border-width: 2px;
+    --border-width-thick: 4px;
+    
+    /* Espaçamento Base */
+    --space-xs: 0.5rem;
+    --space-sm: 1rem;
+    --space-md: 1.5rem;
+    --space-lg: 2rem;
+    --space-xl: 3rem;
+    --space-2xl: 4rem;
+    
+    /* Z-index Sistema */
+    --z-dropdown: 1000;
+    --z-sticky: 1020;
+    --z-fixed: 1030;
+    --z-modal-backdrop: 1040;
+    --z-modal: 1050;
+    --z-popover: 1060;
+    --z-tooltip: 1070;
+}
+
+/* ========================================
+   MELHORIAS DE CONTRASTE
+   ======================================== */
+
+/* Garantir WCAG AAA em todos os textos secundários */
+.label,
+.stat-label,
+.caracteristica-list,
+.footer-section h4 {
+    color: var(--text-secondary);
+}
+
+.hero-description,
+p.text-secondary {
+    color: var(--text-secondary);
+}
+
+/* ========================================
+   MICROINTERAÇÕES REFINADAS
+   ======================================== */
+
+/* Botões com feedback mais sofisticado */
+.btn-swiss,
+.btn-doc {
+    position: relative;
+    overflow: hidden;
+    transition: all var(--transition-base);
+}
+
+.btn-swiss::before,
+.btn-doc::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.2);
+    transform: translate(-50%, -50%);
+    transition: width var(--transition-slow), height var(--transition-slow);
+}
+
+.btn-swiss:hover::before,
+.btn-doc:hover::before {
+    width: 300px;
+    height: 300px;
+}
+
+.btn-swiss:active,
+.btn-doc:active {
+    transform: translateX(4px) scale(0.98);
+}
+
+/* Cards com hover mais elaborado */
+.nav-card,
+.gt-simple-card,
+.recurso-card,
+.canal-card,
+.org-item {
+    transition: 
+        transform var(--transition-base),
+        box-shadow var(--transition-base),
+        background-color var(--transition-base),
+        border-color var(--transition-base);
+}
+
+.nav-card:hover,
+.gt-simple-card:hover,
+.recurso-card:hover {
+    box-shadow: var(--shadow-lg);
+}
+
+/* Estados de foco melhorados */
+*:focus-visible {
+    outline: 3px solid var(--primary);
+    outline-offset: 4px;
+    transition: outline-offset var(--transition-fast);
+}
+
+*:focus-visible:active {
+    outline-offset: 2px;
+}
+
+/* ========================================
+   LOADING STATES
+   ======================================== */
+
+.loading {
+    position: relative;
+    pointer-events: none;
+    opacity: 0.6;
+}
+
+.loading::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 20px;
+    height: 20px;
+    margin: -10px 0 0 -10px;
+    border: 2px solid var(--primary);
+    border-top-color: transparent;
+    border-radius: 50%;
+    animation: spin 0.6s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* ========================================
+   ESTADOS DISABLED MELHORADOS
+   ======================================== */
+
+.btn-doc.disabled,
+button:disabled,
+input:disabled,
+select:disabled {
+    background: var(--disabled-bg) !important;
+    color: var(--disabled-text) !important;
+    border-color: var(--disabled-bg) !important;
+    cursor: not-allowed !important;
+    opacity: 1 !important;
+    box-shadow: none !important;
+}
+
+.btn-doc.disabled:hover {
+    transform: none !important;
+}
+
+/* ========================================
+   TOUCH TARGETS MELHORADOS (Mobile)
+   ======================================== */
+
+@media (max-width: 968px) {
+    /* Garantir 44x44px mínimo */
+    .btn-swiss,
+    .btn-doc,
+    .nav-card,
+    .faq-question,
+    .mobile-menu-toggle,
+    .back-to-top {
+        min-height: 44px;
+        min-width: 44px;
+    }
+    
+    /* Aumentar padding em elementos clicáveis */
+    .main-nav a {
+        padding: 1.5rem 2rem !important;
+    }
+    
+    .nav-card {
+        padding: 2.5rem 2rem;
+    }
+    
+    /* Espaçamento interno cards mobile */
+    .canal-card,
+    .org-item,
+    .documento-item {
+        padding: 2rem !important;
+    }
+}
+
+/* ========================================
+   SISTEMA DE GRID COLORS
+   ======================================== */
+
+/* GTs com backgrounds sutis */
+.gt-bg-1 { background: var(--gt1-bg); }
+.gt-bg-2 { background: var(--gt2-bg); }
+.gt-bg-3 { background: var(--gt3-bg); }
+.gt-bg-4 { background: var(--gt4-bg); }
+.gt-bg-5 { background: var(--gt5-bg); }
+
+/* Badges coloridos */
+.badge-gt1 {
+    background: var(--gt1-color);
+    color: white;
+    padding: 0.25rem 0.75rem;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    display: inline-block;
+}
+
+.badge-gt2 { background: var(--gt2-color); color: white; }
+.badge-gt3 { background: var(--gt3-color); color: white; }
+.badge-gt4 { background: var(--gt4-color); color: white; }
+.badge-gt5 { background: var(--gt5-color); color: white; }
+
+/* ========================================
+   UTILIDADES
+   ======================================== */
+
+/* Textos */
+.text-primary { color: var(--text-primary); }
+.text-secondary { color: var(--text-secondary); }
+.text-tertiary { color: var(--text-tertiary); }
+
+/* Backgrounds */
+.bg-subtle { background: var(--background-subtle); }
+.bg-muted { background: var(--background-muted); }
+
+/* Bordas */
+.border { border: var(--border-width) solid var(--accent); }
+.border-subtle { border: 1px solid var(--grid-line); }
+.border-primary { border-color: var(--primary); }
+
+/* Sombras */
+.shadow-sm { box-shadow: var(--shadow-sm); }
+.shadow-md { box-shadow: var(--shadow-md); }
+.shadow-lg { box-shadow: var(--shadow-lg); }
+.shadow-xl { box-shadow: var(--shadow-xl); }
+
+/* ========================================
+   MELHORIAS ESPECÍFICAS
+   ======================================== */
+
+/* Exemplo Box com cor de GT */
+.exemplo-box.gt1 { background: var(--gt1-color); }
+.exemplo-box.gt2 { background: var(--gt2-color); }
+.exemplo-box.gt3 { background: var(--gt3-color); }
+.exemplo-box.gt4 { background: var(--gt4-color); }
+.exemplo-box.gt5 { background: var(--gt5-color); }
+
+/* Info boxes com bordas coloridas */
+.info-box.gt1 { border-left-color: var(--gt1-color); border-left-width: 6px; }
+.info-box.gt2 { border-left-color: var(--gt2-color); border-left-width: 6px; }
+.info-box.gt3 { border-left-color: var(--gt3-color); border-left-width: 6px; }
+.info-box.gt4 { border-left-color: var(--gt4-color); border-left-width: 6px; }
+.info-box.gt5 { border-left-color: var(--gt5-color); border-left-width: 6px; }
+
+/* Progress indicator gradiente com cores GT */
+.progress-indicator.multicolor {
+    background: linear-gradient(
+        90deg,
+        var(--gt1-color) 0%,
+        var(--gt2-color) 25%,
+        var(--gt3-color) 50%,
+        var(--gt4-color) 75%,
+        var(--gt5-color) 100%
+    );
+}

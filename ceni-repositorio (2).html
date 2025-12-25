@@ -1,0 +1,805 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Repositório - CENI-RJ</title>
+    
+    <meta name="description" content="Acesse documentos, atas e materiais oficiais do CENI-RJ">
+    <meta name="keywords" content="CENI-RJ, documentos, repositório, atas, materiais, Rio de Janeiro">
+    <meta property="og:title" content="Repositório de Documentos - CENI-RJ">
+    <meta property="og:description" content="Documentos oficiais, atas e materiais do CENI-RJ">
+    <meta property="og:type" content="website">
+    
+    <link rel="preconnect" href="https://cdn.jsdelivr.net">
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="ceni-animations.css">
+    <link rel="stylesheet" href="ceni-scroll-enhancements.css">
+    <link rel="stylesheet" href="ceni-theme-enhanced.css">
+    
+    <style>
+        :root {
+            --primary: #1e3a8a;
+            --accent: #000000;
+            --background: #ffffff;
+            --text-primary: #000000;
+            --text-secondary: #666666;
+            --grid-line: #e0e0e0;
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            background-color: var(--background);
+            color: var(--text-primary);
+            line-height: 1.5;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+        }
+
+        .skip-link {
+            position: absolute;
+            top: -40px;
+            left: 0;
+            background: var(--accent);
+            color: white;
+            padding: 8px;
+            z-index: 100;
+            text-decoration: none;
+        }
+        .skip-link:focus { top: 0; }
+
+        .progress-indicator {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: var(--primary);
+            z-index: 9999;
+            transition: width 0.2s;
+        }
+
+        .breadcrumb-container {
+            background: var(--background);
+            border-bottom: 1px solid var(--grid-line);
+            padding: 1rem 0;
+        }
+        .breadcrumb {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 clamp(1.5rem, 4vw, 3rem);
+            display: flex;
+            gap: 0.5rem;
+            font-size: clamp(0.8rem, 1.5vw, 0.875rem);
+            list-style: none;
+        }
+        .breadcrumb a {
+            color: var(--text-secondary);
+            text-decoration: none;
+        }
+        .breadcrumb a:hover { color: var(--primary); }
+        .breadcrumb .active {
+            color: var(--text-primary);
+            font-weight: 700;
+        }
+        
+        .swiss-grid {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 clamp(1.5rem, 4vw, 3rem);
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: clamp(1rem, 3vw, 2rem);
+            position: relative;
+        }
+        
+        .col-full { grid-column: 1 / -1; position: relative; z-index: 1; }
+        .col-8 { grid-column: span 8; position: relative; z-index: 1; }
+        
+        .gov-header {
+            background: var(--primary);
+            padding: 2rem 0;
+            border-bottom: 4px solid var(--accent);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+        
+        .gov-header.scrolled {
+            padding: 1rem 0;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        
+        .header-grid {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 clamp(1.5rem, 4vw, 3rem);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .gov-logo-img { height: 50px; }
+        
+        .main-nav {
+            display: flex;
+            gap: 0;
+            text-transform: uppercase;
+            font-size: clamp(0.65rem, 1.5vw, 0.75rem);
+            font-weight: 700;
+            letter-spacing: 0.1em;
+        }
+        
+        .main-nav a {
+            color: white;
+            text-decoration: none;
+            padding: 0.75rem 1.5rem;
+            border-right: 1px solid rgba(255,255,255,0.2);
+            transition: background 0.2s;
+        }
+        
+        .main-nav a:first-child { border-left: 1px solid rgba(255,255,255,0.2); }
+        .main-nav a:hover, .main-nav a.active { background: rgba(255,255,255,0.1); }
+
+        .mobile-menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 0.5rem;
+        }
+
+        @media (max-width: 968px) {
+            .main-nav {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                height: 100vh;
+                width: 80%;
+                max-width: 300px;
+                background: var(--primary);
+                flex-direction: column;
+                padding: 5rem 0 2rem 0;
+                transition: right 0.3s ease;
+                z-index: 10001;
+                box-shadow: -8px 0 32px rgba(0,0,0,0.6);
+                isolation: isolate;
+            }
+            .main-nav.active { right: 0; }
+            .main-nav a {
+                border: none !important;
+                border-bottom: 1px solid rgba(255,255,255,0.1) !important;
+                padding: 1.5rem 2rem;
+            }
+            .mobile-menu-toggle { 
+                display: block;
+                position: relative;
+                z-index: 10002;
+            }
+            .mobile-overlay {
+                display: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: transparent;
+                z-index: 10000;
+                transition: opacity 0.3s ease;
+            }
+            .mobile-overlay.active { display: block; }
+        }
+        
+        .section-number {
+            font-size: clamp(6rem, 15vw, 10rem);
+            font-weight: 900;
+            line-height: 1;
+            color: var(--primary);
+            opacity: 0.08;
+            position: absolute;
+            top: -2rem;
+            left: -1rem;
+            z-index: 0;
+        }
+        
+        .label {
+            font-size: clamp(0.65rem, 1.5vw, 0.75rem);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+            display: block;
+        }
+        
+        .hero-section {
+            padding: clamp(4rem, 10vw, 6rem) 0 clamp(3rem, 8vw, 4rem) 0;
+        }
+        
+        .hero-title {
+            font-size: clamp(2.5rem, 6vw, 4rem);
+            font-weight: 700;
+            line-height: 1.1;
+            margin-bottom: 2rem;
+            text-transform: uppercase;
+            letter-spacing: -0.02em;
+        }
+        
+        .hero-line {
+            width: 100px;
+            height: 4px;
+            background: var(--primary);
+            margin: 2rem 0;
+        }
+        
+        .info-box {
+            border: 4px solid var(--accent);
+            padding: clamp(1.5rem, 4vw, 2rem) clamp(2rem, 5vw, 3rem);
+            margin: clamp(3rem, 6vw, 4rem) 0;
+        }
+        
+        .categoria-section {
+            margin-bottom: clamp(4rem, 8vw, 6rem);
+            position: relative;
+        }
+        
+        .categoria-header {
+            border-bottom: 4px solid var(--accent);
+            padding-bottom: 2rem;
+            margin-bottom: 3rem;
+        }
+        
+        .categoria-header h2 {
+            font-size: clamp(2rem, 5vw, 2.5rem);
+            font-weight: 700;
+            text-transform: uppercase;
+            line-height: 1.2;
+        }
+        
+        .documento-list {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .documento-item {
+            border: 2px solid var(--accent);
+            padding: clamp(1.5rem, 3vw, 2rem);
+            margin-bottom: 2rem;
+            display: grid;
+            grid-template-columns: auto 1fr auto;
+            gap: clamp(1.5rem, 3vw, 2rem);
+            align-items: center;
+            transition: all 0.2s;
+        }
+        
+        .documento-item:hover {
+            background: var(--accent);
+            color: white;
+        }
+        
+        .doc-number {
+            font-size: clamp(1.5rem, 3vw, 2rem);
+            font-weight: 900;
+            color: var(--primary);
+            min-width: 60px;
+        }
+        
+        .documento-item:hover .doc-number {
+            color: white;
+        }
+        
+        .doc-info h4 {
+            font-size: clamp(1rem, 2.5vw, 1.25rem);
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-bottom: 0.5rem;
+        }
+        
+        .doc-info p {
+            font-size: clamp(0.75rem, 1.5vw, 0.875rem);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin: 0;
+            opacity: 0.7;
+        }
+        
+        .btn-doc {
+            padding: 0.75rem 2rem;
+            background: var(--primary);
+            color: white;
+            text-decoration: none;
+            text-transform: uppercase;
+            font-size: clamp(0.75rem, 1.5vw, 0.875rem);
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            border: none;
+            transition: all 0.2s;
+            white-space: nowrap;
+            cursor: pointer;
+        }
+        
+        .btn-doc:hover {
+            background: var(--accent);
+            color: white;
+        }
+        
+        .documento-item:hover .btn-doc {
+            background: white;
+            color: var(--accent);
+        }
+
+        .btn-doc.disabled {
+            background: var(--text-secondary);
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+
+        .btn-doc.disabled:hover {
+            background: var(--text-secondary);
+        }
+        
+        .em-breve-box {
+            border: 4px solid var(--accent);
+            padding: clamp(3rem, 6vw, 4rem) clamp(2rem, 5vw, 3rem);
+            text-align: center;
+            margin: 3rem 0;
+        }
+        
+        .em-breve-box h3 {
+            font-size: clamp(1.5rem, 4vw, 2rem);
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-bottom: 1rem;
+        }
+        
+        .em-breve-box p {
+            font-size: clamp(1rem, 2vw, 1.125rem);
+            line-height: 1.6;
+            margin: 0;
+        }
+
+        .back-to-top {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 50px;
+            height: 50px;
+            background: var(--accent);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            font-size: 1.5rem;
+            cursor: pointer;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s;
+            z-index: 999;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+        .back-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+        .back-to-top:hover {
+            background: var(--primary);
+            transform: translateY(-4px);
+        }
+        
+        .page-footer {
+            background: var(--accent);
+            color: white;
+            padding: clamp(3rem, 6vw, 4rem) 0 2rem 0;
+            margin-top: clamp(6rem, 10vw, 8rem);
+            border-top: 4px solid var(--primary);
+        }
+        
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr));
+            gap: clamp(2rem, 4vw, 3rem);
+            margin-bottom: 3rem;
+        }
+        
+        .footer-section h4 {
+            font-size: clamp(0.65rem, 1.5vw, 0.75rem);
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            opacity: 0.6;
+        }
+        
+        .footer-section a {
+            display: block;
+            color: white;
+            text-decoration: none;
+            margin-bottom: 0.75rem;
+            font-size: clamp(0.8rem, 1.5vw, 0.875rem);
+        }
+        
+        .footer-section a:hover { text-decoration: underline; }
+        
+        .footer-bottom {
+            border-top: 1px solid rgba(255,255,255,0.1);
+            padding-top: 2rem;
+            font-size: clamp(0.65rem, 1.5vw, 0.75rem);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            opacity: 0.6;
+        }
+        
+        @media (max-width: 968px) {
+            .swiss-grid { 
+                padding: 0 clamp(1rem, 4vw, 2rem);
+                grid-template-columns: 1fr;
+            }
+            .breadcrumb { padding: 0 clamp(1rem, 4vw, 2rem); }
+            .col-8 { grid-column: 1 / -1; }
+            .header-grid { padding: 0 clamp(1rem, 4vw, 2rem); }
+            .documento-item { 
+                grid-template-columns: 1fr; 
+                text-align: center; 
+            }
+        }
+        
+        html {
+            scroll-behavior: smooth;
+        }
+
+        :focus-visible {
+            outline: 3px solid var(--primary);
+            outline-offset: 4px;
+        }
+        
+        .full-width-section {
+            width: 100vw;
+            position: relative;
+            left: 50%;
+            right: 50%;
+            margin-left: -50vw;
+            margin-right: -50vw;
+            padding: clamp(4rem, 8vw, 6rem) 0;
+        }
+
+        .full-width-bg {
+            background: var(--accent);
+            color: white;
+        }
+        
+        .full-width-section .swiss-grid {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 clamp(1.5rem, 4vw, 3rem);
+        }
+    </style>
+</head>
+<body>
+    <a href="#main-content" class="skip-link">Pular para o conteúdo principal</a>
+    <div class="progress-indicator" id="progressBar"></div>
+    <div class="mobile-overlay" id="mobileOverlay"></div>
+
+    <header class="gov-header">
+        <div class="header-grid">
+            <img src="https://raw.githubusercontent.com/GabrielFelizardo/almoxarifado-sistema/main/logo.png" alt="SEDEICS" class="gov-logo-img" loading="lazy">
+            
+            <button class="mobile-menu-toggle" id="menuToggle" aria-label="Abrir menu de navegação" aria-expanded="false">
+                <i class="fas fa-bars"></i>
+            </button>
+
+            <nav class="main-nav" id="mainNav" role="navigation" aria-label="Navegação principal">
+                <a href="ceni-index.html">Início</a>
+                <a href="ceni-sobre.html">Sobre</a>
+                <a href="ceni-gts.html">GTs</a>
+                <a href="ceni-canais.html">Canais</a>
+                <a href="ceni-repositorio.html" class="active" aria-current="page">Repositório</a>
+            </nav>
+        </div>
+    </header>
+
+    <nav class="breadcrumb-container" aria-label="Breadcrumb">
+        <ol class="breadcrumb">
+            <li><a href="ceni-index.html">CENI-RJ</a></li>
+            <li class="active" aria-current="page">→ Repositório de Documentos</li>
+        </ol>
+    </nav>
+
+    <main id="main-content">
+        <section class="hero-section">
+            <div class="swiss-grid">
+                <div class="col-full">
+                    <span class="label">Documentação</span>
+                    <h1 class="hero-title">
+                        Repositório de<br>Documentos
+                    </h1>
+                    <div class="hero-line"></div>
+                </div>
+                
+                <div class="col-8">
+                    <p style="font-size: clamp(1rem, 2.5vw, 1.25rem); line-height: 1.6;">
+                        Acesse documentos, atas e materiais oficiais do CENI-RJ.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <section style="margin-bottom: 6rem;">
+            <div class="swiss-grid">
+                <div class="col-full">
+                    <div class="info-box" data-animate="scale-in">
+                        <p style="font-size: clamp(1rem, 2vw, 1.125rem); margin: 0;">
+                            <strong>Em breve:</strong> Este repositório será integrado ao Google Drive para acesso direto aos documentos oficiais do comitê.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Documentos Institucionais -->
+        <section class="categoria-section">
+            <div class="swiss-grid">
+                <div class="col-full" style="position: relative;">
+                    <span class="section-number" aria-hidden="true">01</span>
+                    <div class="categoria-header">
+                        <span class="label">Categoria 01</span>
+                        <h2>Documentos<br>Institucionais</h2>
+                    </div>
+                </div>
+                
+                <ul class="documento-list" style="grid-column: 1 / -1;">
+                    <li class="documento-item" data-animate="fade-up" data-delay="0">
+                        <div class="doc-number">01</div>
+                        <div class="doc-info">
+                            <h4>Decreto de Instituição do CENI-RJ</h4>
+                            <p><i class="fas fa-calendar-alt"></i> Publicação oficial - 2024</p>
+                        </div>
+                        <button class="btn-doc disabled" disabled aria-label="Documento em breve">
+                            <i class="fas fa-clock"></i> Em Breve
+                        </button>
+                    </li>
+                    
+                    <li class="documento-item" data-animate="fade-up" data-delay="100">
+                        <div class="doc-number">02</div>
+                        <div class="doc-info">
+                            <h4>Regimento Interno do CENI-RJ</h4>
+                            <p><i class="fas fa-calendar-alt"></i> Previsão: 1º Trimestre 2026</p>
+                        </div>
+                        <button class="btn-doc disabled" disabled aria-label="Documento em elaboração">
+                            <i class="fas fa-hourglass-half"></i> Em Elaboração
+                        </button>
+                    </li>
+                    
+                    <li class="documento-item" data-animate="fade-up" data-delay="200">
+                        <div class="doc-number">03</div>
+                        <div class="doc-info">
+                            <h4>Política Estadual de Negócios de Impacto</h4>
+                            <p><i class="fas fa-info-circle"></i> Framework regulatório - RJ é o 2º estado</p>
+                        </div>
+                        <button class="btn-doc disabled" disabled aria-label="Documento em breve">
+                            <i class="fas fa-clock"></i> Em Breve
+                        </button>
+                    </li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Atas de Reunião -->
+        <section class="categoria-section">
+            <div class="swiss-grid">
+                <div class="col-full" style="position: relative;">
+                    <span class="section-number" aria-hidden="true">02</span>
+                    <div class="categoria-header">
+                        <span class="label">Categoria 02</span>
+                        <h2>Atas de<br>Reunião</h2>
+                    </div>
+                </div>
+                
+                <div class="col-full">
+                    <div class="em-breve-box" data-animate="scale-in">
+                        <h3><i class="fas fa-calendar-check"></i> Primeira Reunião Ordinária</h3>
+                        <p>A primeira reunião ordinária do CENI-RJ está prevista para o 1º trimestre de 2026.</p>
+                        <p style="margin-top: 1rem;">As atas das reuniões serão disponibilizadas aqui após sua realização.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Relatórios -->
+        <section class="categoria-section">
+            <div class="swiss-grid">
+                <div class="col-full" style="position: relative;">
+                    <span class="section-number" aria-hidden="true">03</span>
+                    <div class="categoria-header">
+                        <span class="label">Categoria 03</span>
+                        <h2>Relatórios e<br>Estudos</h2>
+                    </div>
+                </div>
+                
+                <ul class="documento-list" style="grid-column: 1 / -1;">
+                    <li class="documento-item" data-animate="fade-up" data-delay="0">
+                        <div class="doc-number">01</div>
+                        <div class="doc-info">
+                            <h4>Mapeamento do Ecossistema de Impacto - RJ</h4>
+                            <p><i class="fas fa-flask"></i> Estudo em desenvolvimento pela FAPERJ</p>
+                        </div>
+                        <button class="btn-doc disabled" disabled aria-label="Estudo em desenvolvimento">
+                            <i class="fas fa-hourglass-half"></i> Em Desenvolvimento
+                        </button>
+                    </li>
+                    
+                    <li class="documento-item" data-animate="fade-up" data-delay="100">
+                        <div class="doc-number">02</div>
+                        <div class="doc-info">
+                            <h4>Base de Dados - Negócios de Impacto RJ</h4>
+                            <p><i class="fas fa-database"></i> Produção e difusão de dados do setor</p>
+                        </div>
+                        <button class="btn-doc disabled" disabled aria-label="Em construção">
+                            <i class="fas fa-tools"></i> Em Construção
+                        </button>
+                    </li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Materiais de Apoio -->
+        <section class="categoria-section">
+            <div class="swiss-grid">
+                <div class="col-full" style="position: relative;">
+                    <span class="section-number" aria-hidden="true">04</span>
+                    <div class="categoria-header">
+                        <span class="label">Categoria 04</span>
+                        <h2>Materiais de<br>Apoio</h2>
+                    </div>
+                </div>
+                
+                <ul class="documento-list" style="grid-column: 1 / -1;">
+                    <li class="documento-item" data-animate="fade-up" data-delay="0">
+                        <div class="doc-number">01</div>
+                        <div class="doc-info">
+                            <h4>Apresentação Institucional CENI-RJ</h4>
+                            <p><i class="fas fa-presentation"></i> Material de divulgação atualizado</p>
+                        </div>
+                        <button class="btn-doc disabled" disabled aria-label="Documento em breve">
+                            <i class="fas fa-clock"></i> Em Breve
+                        </button>
+                    </li>
+                    
+                    <li class="documento-item" data-animate="fade-up" data-delay="100">
+                        <div class="doc-number">02</div>
+                        <div class="doc-info">
+                            <h4>Guia: O que são Negócios de Impacto?</h4>
+                            <p><i class="fas fa-book"></i> Material educativo sobre a definição</p>
+                        </div>
+                        <button class="btn-doc disabled" disabled aria-label="Material em elaboração">
+                            <i class="fas fa-hourglass-half"></i> Em Elaboração
+                        </button>
+                    </li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Edital FAPERJ -->
+        <section class="full-width-section full-width-bg">
+            <div class="swiss-grid">
+                <div class="col-full">
+                    <span class="label" style="color: rgba(255,255,255,0.6);">Destaque</span>
+                    <h2 style="font-size: clamp(2rem, 5vw, 2.5rem); font-weight: 700; text-transform: uppercase; color: white; margin-bottom: 2rem;">
+                        Edital FAPERJ<br>1ª FAP Dedicada
+                    </h2>
+                </div>
+                
+                <div class="col-full">
+                    <div style="border: 4px solid white; padding: clamp(2rem, 5vw, 3rem);">
+                        <h3 style="font-size: clamp(1.25rem, 3vw, 1.5rem); font-weight: 700; text-transform: uppercase; margin-bottom: 1rem;">
+                            <i class="fas fa-rocket"></i> Edital de Fomento a Negócios de Impacto
+                        </h3>
+                        <p style="font-size: clamp(1rem, 2vw, 1.125rem); line-height: 1.6; margin-bottom: 1.5rem;">
+                            Rio de Janeiro é a primeira Fundação de Amparo à Pesquisa a lançar edital específico para o setor
+                        </p>
+                        <p style="font-size: clamp(0.75rem, 1.5vw, 0.875rem); text-transform: uppercase; letter-spacing: 0.1em;">
+                            <i class="fas fa-calendar-alt"></i> Previsão de lançamento: 2026
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <button class="back-to-top" id="backToTop" aria-label="Voltar ao topo">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <footer class="page-footer">
+        <div class="swiss-grid">
+            <div class="footer-grid" style="grid-column: 1 / -1;">
+                <div class="footer-section">
+                    <h4>Sobre</h4>
+                    <p>
+                        Promovemos a articulação entre governo, instituições de fomento, 
+                        sociedade civil e setor privado para fortalecer o ecossistema de 
+                        impacto socioambiental no Rio de Janeiro.
+                    </p>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Navegação</h4>
+                    <a href="ceni-index.html">Início</a>
+                    <a href="ceni-sobre.html">Sobre o Comitê</a>
+                    <a href="ceni-gts.html">Grupos de Trabalho</a>
+                    <a href="ceni-canais.html">Canais</a>
+                    <a href="ceni-repositorio.html">Repositório</a>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Contato</h4>
+                    <a href="mailto:nucleo.acompanhamento@desenvolvimento.rj.gov.br">
+                        <i class="fas fa-envelope"></i> nucleo.acompanhamento@desenvolvimento.rj.gov.br
+                    </a>
+                    <a href="mailto:gabinete@desenvolvimento.rj.gov.br">
+                        <i class="fas fa-envelope"></i> gabinete@desenvolvimento.rj.gov.br
+                    </a>
+                    <p style="margin-top: 1rem;"><i class="fas fa-map-marker-alt"></i> SEDEICS - Rio de Janeiro, RJ</p>
+                </div>
+            </div>
+            
+            <div class="footer-bottom" style="grid-column: 1 / -1;">
+                <p>© <span id="current-year"></span> CENI-RJ - Comitê Estadual de Investimentos e Negócios de Impacto</p>
+                <p>SEDEICS - Secretaria de Desenvolvimento Econômico, Indústria, Comércio e Serviços</p>
+                <p>Desenvolvido por Gabriel Felizardo da Silva</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="ceni-animations.js"></script>
+
+    <script>
+        document.getElementById('current-year').textContent = new Date().getFullYear();
+        
+        const header = document.querySelector('.gov-header');
+        window.addEventListener('scroll', () => {
+            header.classList.toggle('scrolled', window.scrollY > 100);
+        });
+
+        window.addEventListener('scroll', () => {
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            document.getElementById('progressBar').style.width = ((winScroll / height) * 100) + '%';
+        });
+
+        const menuToggle = document.getElementById('menuToggle');
+        const mainNav = document.getElementById('mainNav');
+        const mobileOverlay = document.getElementById('mobileOverlay');
+
+        menuToggle.addEventListener('click', () => {
+            const isOpen = mainNav.classList.toggle('active');
+            mobileOverlay.classList.toggle('active');
+            menuToggle.setAttribute('aria-expanded', isOpen);
+            menuToggle.innerHTML = isOpen ? '<i class="fas fa-times"></i>' : '<i class="fas fa-bars"></i>';
+        });
+
+        mobileOverlay.addEventListener('click', () => {
+            mainNav.classList.remove('active');
+            mobileOverlay.classList.remove('active');
+            menuToggle.setAttribute('aria-expanded', 'false');
+            menuToggle.innerHTML = '<i class="fas fa-bars"></i>';
+        });
+
+        const backToTop = document.getElementById('backToTop');
+        window.addEventListener('scroll', () => {
+            backToTop.classList.toggle('visible', window.scrollY > 300);
+        });
+
+        backToTop.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+    </script>
+</body>
+</html>
