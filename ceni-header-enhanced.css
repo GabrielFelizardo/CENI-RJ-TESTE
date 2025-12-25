@@ -1,0 +1,486 @@
+/* ========================================
+   HEADER APRIMORADO - NÍVEL FOOTER
+   Sistema visual refinado com microinterações
+   ======================================== */
+
+:root {
+    --header-height: 90px;
+    --header-height-scrolled: 70px;
+    --header-transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ========================================
+   ESTRUTURA PRINCIPAL
+   ======================================== */
+
+.gov-header {
+    background: var(--primary, #1e3a8a);
+    border-bottom: 4px solid var(--accent, #000000);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    transition: all var(--header-transition);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0);
+}
+
+.gov-header.scrolled {
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+    border-bottom-width: 2px;
+}
+
+/* ========================================
+   GRID E LAYOUT
+   ======================================== */
+
+.header-grid {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 3rem;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 3rem;
+    align-items: center;
+    min-height: var(--header-height);
+    transition: min-height var(--header-transition);
+}
+
+.gov-header.scrolled .header-grid {
+    min-height: var(--header-height-scrolled);
+}
+
+/* ========================================
+   MARCA DUPLA - SEDEICS + CENI-RJ
+   ======================================== */
+
+.header-brand {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    position: relative;
+}
+
+.gov-logo-img {
+    height: 50px;
+    transition: height var(--header-transition);
+    display: block;
+    position: relative;
+}
+
+.gov-header.scrolled .gov-logo-img {
+    height: 40px;
+}
+
+/* Separador vertical ENTRE SEDEICS e CENI-RJ */
+.gov-logo-img::after {
+    content: '';
+    position: absolute;
+    right: -1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 2px;
+    height: 40px;
+    background: rgba(255, 255, 255, 0.3);
+    transition: height var(--header-transition);
+}
+
+.gov-header.scrolled .gov-logo-img::after {
+    height: 30px;
+}
+
+/* Marca CENI-RJ */
+.header-ceni-mark {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.header-ceni-title {
+    font-size: 1.5rem;
+    font-weight: 900;
+    line-height: 1;
+    color: white;
+    letter-spacing: -0.02em;
+    transition: font-size var(--header-transition);
+}
+
+.gov-header.scrolled .header-ceni-title {
+    font-size: 1.25rem;
+}
+
+.header-ceni-subtitle {
+    font-size: 0.625rem;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    font-weight: 700;
+    color: rgba(255, 255, 255, 0.75);
+    opacity: 1;
+    max-height: 20px;
+    transition: all var(--header-transition);
+    overflow: hidden;
+}
+
+.gov-header.scrolled .header-ceni-subtitle {
+    opacity: 0;
+    max-height: 0;
+}
+
+/* ========================================
+   NAVEGAÇÃO APRIMORADA
+   ======================================== */
+
+.main-nav {
+    display: flex;
+    gap: 0;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    justify-self: end;
+}
+
+.main-nav a {
+    color: white;
+    text-decoration: none;
+    padding: 1.5rem 1.75rem;
+    position: relative;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    border-right: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.main-nav a:first-child {
+    border-left: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+/* Hover overlay */
+.main-nav a::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(255, 255, 255, 0.1);
+    opacity: 0;
+    transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.main-nav a:hover::before {
+    opacity: 1;
+}
+
+/* Underline animado */
+.main-nav a::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 0;
+    height: 3px;
+    background: white;
+    transform: translateX(-50%);
+    transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.main-nav a:hover::after {
+    width: calc(100% - 3.5rem);
+}
+
+/* Estado ativo com underline colorido */
+.main-nav a.active {
+    background: rgba(0, 0, 0, 0.15);
+}
+
+.main-nav a.active::after {
+    width: calc(100% - 3.5rem);
+    background: white;
+    box-shadow: 0 0 8px rgba(255, 255, 255, 0.6);
+}
+
+/* ========================================
+   MENU MOBILE APRIMORADO
+   ======================================== */
+
+.mobile-menu-toggle {
+    display: none;
+    background: rgba(255, 255, 255, 0.1);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    color: white;
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 0.75rem;
+    min-width: 50px;
+    min-height: 50px;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+    border-radius: 4px;
+}
+
+/* Ripple effect no botão mobile */
+.mobile-menu-toggle::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: width 0.4s ease, height 0.4s ease;
+}
+
+.mobile-menu-toggle:hover::before {
+    width: 100px;
+    height: 100px;
+}
+
+.mobile-menu-toggle:hover {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.5);
+    transform: scale(1.05);
+}
+
+.mobile-menu-toggle i {
+    position: relative;
+    z-index: 1;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.mobile-menu-toggle:active i {
+    transform: scale(0.9);
+}
+
+/* ========================================
+   BREADCRUMB INTEGRADO (OPCIONAL)
+   ======================================== */
+
+.header-with-breadcrumb {
+    border-bottom: none;
+}
+
+.header-breadcrumb {
+    background: rgba(0, 0, 0, 0.05);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 0.75rem 0;
+}
+
+.header-breadcrumb .breadcrumb {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 3rem;
+    display: flex;
+    gap: 0.5rem;
+    font-size: 0.75rem;
+    list-style: none;
+    color: rgba(255, 255, 255, 0.75);
+}
+
+.header-breadcrumb .breadcrumb a {
+    color: rgba(255, 255, 255, 0.75);
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+.header-breadcrumb .breadcrumb a:hover {
+    color: white;
+}
+
+.header-breadcrumb .breadcrumb .active {
+    color: white;
+    font-weight: 700;
+}
+
+/* ========================================
+   RESPONSIVIDADE MOBILE
+   ======================================== */
+
+@media (max-width: 968px) {
+    .header-grid {
+        grid-template-columns: 1fr auto;
+        gap: 1rem;
+        padding: 0 2rem;
+        min-height: 80px;
+    }
+    
+    .gov-header.scrolled .header-grid {
+        min-height: 70px;
+    }
+    
+    .header-brand {
+        gap: 1rem;
+    }
+    
+    .header-brand::after {
+        height: 30px;
+    }
+    
+    .gov-header.scrolled .header-brand::after {
+        height: 25px;
+    }
+    
+    .gov-logo-img {
+        height: 40px;
+    }
+    
+    .gov-header.scrolled .gov-logo-img {
+        height: 35px;
+    }
+    
+    .header-ceni-title {
+        font-size: 1.25rem;
+    }
+    
+    .gov-header.scrolled .header-ceni-title {
+        font-size: 1.125rem;
+    }
+    
+    .header-ceni-subtitle {
+        font-size: 0.5rem;
+    }
+    
+    .mobile-menu-toggle {
+        display: flex;
+    }
+    
+    .main-nav {
+        position: fixed;
+        top: 0;
+        right: -100%;
+        height: 100vh;
+        width: 85%;
+        max-width: 320px;
+        background: linear-gradient(180deg, var(--primary, #1e3a8a) 0%, #1e2d6a 100%);
+        flex-direction: column;
+        padding: 6rem 0 2rem 0;
+        transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        z-index: 10001;
+        box-shadow: -8px 0 32px rgba(0, 0, 0, 0.6);
+        isolation: isolate;
+        overflow-y: auto;
+    }
+    
+    .main-nav.active {
+        right: 0;
+    }
+    
+    .main-nav a {
+        border: none !important;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+        padding: 1.75rem 2.5rem;
+        font-size: 0.875rem;
+    }
+    
+    .main-nav a::after {
+        left: 2.5rem;
+        transform: none;
+        width: 0;
+        height: 2px;
+    }
+    
+    .main-nav a:hover::after,
+    .main-nav a.active::after {
+        width: 60px;
+    }
+    
+    .header-breadcrumb .breadcrumb {
+        padding: 0 2rem;
+    }
+}
+
+/* ========================================
+   ESTADOS DE FOCO PARA ACESSIBILIDADE
+   ======================================== */
+
+.main-nav a:focus-visible {
+    outline: 3px solid white;
+    outline-offset: -3px;
+    z-index: 1;
+}
+
+.mobile-menu-toggle:focus-visible {
+    outline: 3px solid white;
+    outline-offset: 4px;
+}
+
+.gov-logo-img:focus-visible {
+    outline: 3px solid white;
+    outline-offset: 4px;
+}
+
+/* ========================================
+   ANIMAÇÕES DE ENTRADA
+   ======================================== */
+
+@keyframes headerSlideDown {
+    from {
+        transform: translateY(-100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.gov-header {
+    animation: headerSlideDown 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ========================================
+   PREFERS REDUCED MOTION
+   ======================================== */
+
+@media (prefers-reduced-motion: reduce) {
+    .gov-header,
+    .header-grid,
+    .gov-logo-img,
+    .header-brand::after,
+    .header-ceni-title,
+    .header-ceni-subtitle,
+    .main-nav a,
+    .main-nav a::before,
+    .main-nav a::after,
+    .mobile-menu-toggle,
+    .mobile-menu-toggle::before,
+    .mobile-menu-toggle i,
+    .main-nav {
+        transition: none !important;
+        animation: none !important;
+    }
+}
+
+/* ========================================
+   PRINT STYLES
+   ======================================== */
+
+@media print {
+    .gov-header {
+        position: static;
+        box-shadow: none;
+        border-bottom: 2px solid black !important;
+        background: white !important;
+        color: black !important;
+    }
+    
+    .header-brand::after {
+        background: black !important;
+    }
+    
+    .header-ceni-title {
+        color: black !important;
+    }
+    
+    .header-ceni-subtitle {
+        color: #666 !important;
+        opacity: 1 !important;
+        max-height: none !important;
+    }
+    
+    .main-nav,
+    .mobile-menu-toggle {
+        display: none !important;
+    }
+}
