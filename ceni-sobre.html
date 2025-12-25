@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Grupos de Trabalho - CENI-RJ</title>
+    <title>Sobre - CENI-RJ</title>
     
-    <meta name="description" content="5 Grupos de Trabalho articulam 17 organizações para executar as estratégias do CENI-RJ">
+    <meta name="description" content="Conheça o CENI-RJ - Definição, características e objetivos dos negócios de impacto no Rio de Janeiro">
     
     <link rel="preconnect" href="https://cdn.jsdelivr.net">
     <link rel="preconnect" href="https://cdnjs.cloudflare.com">
@@ -23,13 +23,9 @@
             --accent: #000000;
             --background: #ffffff;
             --text-primary: #000000;
-            --text-secondary: #666666;
+            --text-secondary: #4a4a4a;
             --grid-line: #e0e0e0;
-            --gt1-color: #1e3a8a;
-            --gt2-color: #1e5631;
-            --gt3-color: #e89bb8;
-            --gt4-color: #e8632e;
-            --gt5-color: #f4b942;
+            --transition-base: 250ms cubic-bezier(0.4, 0, 0.2, 1);
         }
         
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -63,7 +59,7 @@
             left: 0;
             height: 3px;
             background: var(--primary);
-            z-index: 9999;
+            z-index: 10001;
             transition: width 0.2s;
         }
 
@@ -103,6 +99,7 @@
         
         .col-full { grid-column: 1 / -1; position: relative; z-index: 1; }
         .col-8 { grid-column: span 8; position: relative; z-index: 1; }
+        .col-6 { grid-column: span 6; position: relative; z-index: 1; }
         
         .gov-header {
             background: var(--primary);
@@ -158,6 +155,8 @@
             font-size: 1.5rem;
             cursor: pointer;
             padding: 0.5rem;
+            min-width: 44px;
+            min-height: 44px;
         }
 
         @media (max-width: 968px) {
@@ -172,21 +171,17 @@
                 flex-direction: column;
                 padding: 5rem 0 2rem 0;
                 transition: right 0.3s ease;
-                z-index: 10001;
-                box-shadow: -8px 0 32px rgba(0,0,0,0.6);
-                isolation: isolate;
+                z-index: 9999;
+                box-shadow: -4px 0 12px rgba(0,0,0,0.3);
             }
             .main-nav.active { right: 0; }
             .main-nav a {
                 border: none !important;
                 border-bottom: 1px solid rgba(255,255,255,0.1) !important;
                 padding: 1.5rem 2rem;
+                min-height: 44px;
             }
-            .mobile-menu-toggle { 
-                display: block;
-                position: relative;
-                z-index: 10002;
-            }
+            .mobile-menu-toggle { display: flex; align-items: center; justify-content: center; }
             .mobile-overlay {
                 display: none;
                 position: fixed;
@@ -195,33 +190,10 @@
                 right: 0;
                 bottom: 0;
                 background: transparent;
-                z-index: 10000;
+                z-index: 9998;
                 transition: opacity 0.3s ease;
             }
             .mobile-overlay.active { display: block; }
-        }
-        
-        .section-number {
-            font-size: 10rem;
-            font-weight: 900;
-            line-height: 1;
-            color: var(--primary);
-            opacity: 0.08;
-            position: absolute;
-            top: -3rem;
-            left: -2rem;
-            z-index: 0;
-        }
-        
-        .section-title {
-            font-size: 2.5rem;
-            font-weight: 700;
-            line-height: 1.2;
-            text-transform: uppercase;
-            letter-spacing: -0.02em;
-            margin-bottom: 3rem;
-            position: relative;
-            z-index: 1;
         }
         
         .label {
@@ -254,137 +226,383 @@
             margin: 2rem 0;
         }
         
-        .info-box {
+        /* ======================================
+           SISTEMA DE TABS
+           ====================================== */
+        
+        .tabs-container {
+            margin: 4rem 0;
+        }
+        
+        .tabs-nav {
+            display: flex;
+            gap: 0;
+            border-bottom: 4px solid var(--accent);
+            margin-bottom: 3rem;
+        }
+        
+        .tab-button {
+            background: transparent;
+            border: none;
+            padding: 1.25rem 2rem;
+            font-size: 0.875rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all var(--transition-base);
+            border-bottom: 4px solid transparent;
+            margin-bottom: -4px;
+            white-space: nowrap;
+            position: relative;
+        }
+        
+        .tab-button:hover {
+            color: var(--text-primary);
+            background: transparent;
+        }
+        
+        .tab-button.active {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+            background: rgba(30, 58, 138, 0.03);
+        }
+        
+        .tab-button:focus-visible {
+            outline: 3px solid var(--primary);
+            outline-offset: 4px;
+        }
+        
+        .tab-content {
+            display: none;
+            animation: fadeInUp 0.4s ease;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* ======================================
+           COMPONENTES DA PÁGINA
+           ====================================== */
+        
+        .definition-box {
             border: 4px solid var(--accent);
-            padding: 2rem 3rem;
-            margin: 4rem 0;
+            padding: 3rem;
+            margin: 3rem 0;
+            background: white;
         }
         
-        .orientacoes-box {
-            border-left: 4px solid var(--primary);
-            padding-left: 2rem;
-            margin: 4rem 0;
+        .definition-box p {
+            font-size: 1.5rem;
+            line-height: 1.4;
+            font-weight: 500;
+        }
+
+        .exemplo-box {
+            background: var(--primary);
+            color: white;
+            padding: 3rem;
+            margin: 3rem 0;
+        }
+
+        .exemplo-box h4 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid rgba(255,255,255,0.3);
+        }
+
+        .exemplo-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+        }
+
+        .exemplo-item {
+            border-left: 3px solid white;
+            padding-left: 1.5rem;
+        }
+
+        .exemplo-item strong {
+            display: block;
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            opacity: 0.8;
+            margin-bottom: 0.5rem;
+        }
+
+        .exemplo-item p {
+            font-size: 1rem;
+            line-height: 1.6;
+            margin: 0;
         }
         
-        .orientacoes-box ul {
+        .caracteristica-list {
             list-style: none;
             padding: 0;
         }
         
-        .orientacoes-box li {
-            padding: 1rem 0;
+        .caracteristica-list li {
+            padding: 1.5rem 0;
             border-bottom: 1px solid var(--grid-line);
             font-size: 1.125rem;
+            display: flex;
+            align-items: start;
+            gap: 2rem;
         }
         
-        .orientacoes-box li:last-child { border-bottom: none; }
+        .caracteristica-list li:last-child { border-bottom: none; }
         
-        .gt-section {
-            margin-bottom: 8rem;
-            position: relative;
-            scroll-margin-top: 100px;
+        .caracteristica-number {
+            font-size: 2rem;
+            font-weight: 900;
+            color: var(--primary);
+            min-width: 60px;
         }
         
-        .gt-header {
-            border: 4px solid var(--accent);
-            padding: 3rem;
-            margin-bottom: 3rem;
-            background: white;
+        .negative-list {
+            list-style: none;
+            padding: 0;
         }
         
-        .gt-header.gt1 { border-color: var(--gt1-color); }
-        .gt-header.gt2 { border-color: var(--gt2-color); }
-        .gt-header.gt3 { border-color: var(--gt3-color); }
-        .gt-header.gt4 { border-color: var(--gt4-color); }
-        .gt-header.gt5 { border-color: var(--gt5-color); }
+        .negative-list li {
+            padding: 2rem 0;
+            border-bottom: 1px solid rgba(255,255,255,0.2);
+            font-size: 1.125rem;
+            display: flex;
+            gap: 2rem;
+        }
         
-        .gt-number-large {
-            font-size: 8rem;
+        .negative-list li:last-child { border-bottom: none; }
+
+        .marcos-legais-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+
+        .marco-legal-box {
+            border: 2px solid var(--accent);
+            padding: 2.5rem;
+        }
+
+        .marco-legal-box h4 {
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+        }
+
+        .marco-legal-item {
+            margin-bottom: 1.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid var(--grid-line);
+        }
+
+        .marco-legal-item:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+
+        .marco-legal-item strong {
+            display: block;
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .marco-legal-item p {
+            font-size: 0.875rem;
+            line-height: 1.6;
+            margin: 0;
+            color: var(--text-secondary);
+        }
+        
+        .marcos-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin: 4rem 0;
+        }
+        
+        .marco-card {
+            border: 2px solid var(--accent);
+            padding: 3rem 2rem;
+            text-align: center;
+        }
+        
+        .marco-number {
+            font-size: 5rem;
             font-weight: 900;
             line-height: 1;
-            margin-bottom: 1rem;
-        }
-        
-        .gt1 .gt-number-large { color: var(--gt1-color); }
-        .gt2 .gt-number-large { color: var(--gt2-color); }
-        .gt3 .gt-number-large { color: var(--gt3-color); }
-        .gt4 .gt-number-large { color: var(--gt4-color); }
-        .gt5 .gt-number-large { color: var(--gt5-color); }
-        
-        .gt-header h2 {
-            font-size: 2rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            margin-bottom: 1rem;
-            line-height: 1.2;
-        }
-        
-        .gt-header p {
-            font-size: 1.125rem;
-            line-height: 1.6;
-        }
-        
-        .org-item {
-            border: 2px solid var(--accent);
-            padding: 2rem 1.5rem;
-            text-align: center;
-            transition: all 0.2s;
-        }
-        
-        .org-item:hover {
-            background: var(--accent);
-            color: white;
-            transform: translateY(-4px);
-        }
-
-        .org-icon {
-            font-size: 3rem;
-            margin-bottom: 1rem;
             color: var(--primary);
-            transition: color 0.2s;
-        }
-
-        .org-item:hover .org-icon {
-            color: white;
         }
         
-        .org-item h4 {
-            font-size: 1rem;
+        .marco-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            font-weight: 700;
+            margin-top: 1rem;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin: 4rem 0;
+        }
+        
+        .stat-item {
+            border-left: 4px solid var(--primary);
+            padding-left: 2rem;
+        }
+        
+        .stat-number {
+            font-size: 4rem;
+            font-weight: 900;
+            line-height: 1;
+            color: var(--primary);
+        }
+        
+        .stat-label {
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            font-weight: 700;
+            margin-top: 0.5rem;
+        }
+        
+        .objetivos-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+        
+        .objetivo-item {
+            border-left: 4px solid var(--primary);
+            padding: 2rem;
+        }
+        
+        .objetivo-item h4 {
+            font-size: 1.25rem;
             font-weight: 700;
             text-transform: uppercase;
             margin-bottom: 0.5rem;
         }
-        
-        .org-item p {
-            font-size: 0.75rem;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            opacity: 0.7;
-            margin: 0;
-        }
 
-        .org-members {
-            font-size: 0.75rem;
-            margin-top: 1rem;
-            padding-top: 1rem;
-            border-top: 1px solid var(--grid-line);
+        .objetivo-item p {
+            font-size: 1rem;
             line-height: 1.6;
         }
 
-        .org-item:hover .org-members {
-            border-top-color: rgba(255,255,255,0.3);
+        .organograma-box {
+            border: 3px solid var(--accent);
+            padding: 2.5rem 2rem;
+            margin: 3rem auto;
+            text-align: center;
+            max-width: 700px;
         }
 
-        .org-members strong {
-            display: block;
-            margin-bottom: 0.25rem;
-            letter-spacing: 0.05em;
+        .organograma-nivel {
+            margin: 1rem 0;
         }
 
-        .org-members span {
-            display: block;
-            opacity: 0.8;
+        .organograma-nivel-title {
             font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .organograma-box-item {
+            display: inline-block;
+            border: 2px solid var(--accent);
+            padding: 0.75rem 1.25rem;
+            margin: 0.25rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+        }
+
+        .organograma-arrow {
+            font-size: 1.5rem;
+            color: var(--primary);
+            margin: 0.5rem 0;
+        }
+
+        .recursos-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+
+        .recurso-card {
+            border: 2px solid var(--accent);
+            padding: 2.5rem;
+            transition: all var(--transition-base);
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+
+        .recurso-card:hover {
+            background: var(--accent);
+            color: white;
+            transform: translateY(-4px);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+        }
+
+        .recurso-card h4 {
+            font-size: 1.125rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-bottom: 0.75rem;
+            line-height: 1.3;
+        }
+
+        .recurso-card p {
+            font-size: 0.875rem;
+            line-height: 1.6;
+            margin: 0;
+            opacity: 0.8;
+        }
+
+        .recurso-card:hover p {
+            opacity: 1;
+        }
+
+        .recurso-card .recurso-icon {
+            font-size: 2rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+            transition: color var(--transition-base);
+        }
+
+        .recurso-card:hover .recurso-icon {
+            color: white;
         }
 
         .back-to-top {
@@ -404,6 +622,11 @@
             transition: all 0.3s;
             z-index: 999;
             box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            min-width: 44px;
+            min-height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         .back-to-top.visible {
             opacity: 1;
@@ -463,13 +686,33 @@
                 grid-template-columns: 1fr;
             }
             .breadcrumb { padding: 0 2rem; }
-            .col-8 { grid-column: 1 / -1; }
+            .col-8, .col-6 { grid-column: 1 / -1; }
             .hero-title { font-size: 2.5rem; }
-            .section-title { font-size: 2rem; }
-            .section-number { font-size: 6rem; }
-            .gt-number-large { font-size: 5rem; }
+            .marcos-grid, .stats-grid, .objetivos-grid, 
+            .marcos-legais-grid, .recursos-grid, .exemplo-grid { 
+                grid-template-columns: 1fr; 
+            }
             .footer-grid { grid-template-columns: 1fr; }
             .header-grid { padding: 0 2rem; }
+            
+            /* Tabs mobile - ativar scroll horizontal */
+            .tabs-nav {
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+            
+            .tab-button {
+                padding: 1.25rem 1.5rem;
+                font-size: 0.75rem;
+            }
+            
+            .definition-box,
+            .exemplo-box,
+            .marco-legal-box,
+            .recurso-card,
+            .organograma-box {
+                padding: 2rem !important;
+            }
         }
     </style>
 </head>
@@ -488,8 +731,8 @@
 
             <nav class="main-nav" id="mainNav" role="navigation" aria-label="Navegação principal">
                 <a href="ceni-index.html">Início</a>
-                <a href="ceni-sobre.html">Sobre</a>
-                <a href="ceni-gts.html" class="active" aria-current="page">GTs</a>
+                <a href="ceni-sobre.html" class="active" aria-current="page">Sobre</a>
+                <a href="ceni-gts.html">GTs</a>
                 <a href="ceni-canais.html">Canais</a>
                 <a href="ceni-repositorio.html">Repositório</a>
             </nav>
@@ -499,7 +742,7 @@
     <nav class="breadcrumb-container" aria-label="Breadcrumb">
         <ol class="breadcrumb">
             <li><a href="ceni-index.html">CENI-RJ</a></li>
-            <li class="active" aria-current="page">→ Grupos de Trabalho</li>
+            <li class="active" aria-current="page">→ Sobre</li>
         </ol>
     </nav>
 
@@ -507,342 +750,367 @@
         <section class="hero-section">
             <div class="swiss-grid">
                 <div class="col-full">
-                    <span class="label">Estrutura Operacional</span>
+                    <span class="label">Institucional</span>
                     <h1 class="hero-title">
-                        Grupos de<br>Trabalho
+                        Sobre o<br>CENI-RJ
                     </h1>
                     <div class="hero-line"></div>
                 </div>
                 
                 <div class="col-8">
                     <p style="font-size: 1.25rem; line-height: 1.6;">
-                        Os Grupos de Trabalho são as instâncias operacionais do CENI-RJ, responsáveis por 
-                        desenvolver e executar as estratégias de fomento aos negócios de impacto no Estado.
+                        O <strong>Comitê Estadual de Investimentos e Negócios de Impacto – CENI-RJ</strong> é uma 
+                        instância estratégica do Governo do Estado do Rio de Janeiro responsável por promover a 
+                        articulação entre governo, instituições de fomento, sociedade civil, universidades, 
+                        organizações intermediárias e setor privado.
                     </p>
                 </div>
             </div>
         </section>
 
-        <section style="margin-bottom: 6rem;">
+        <!-- SISTEMA DE TABS -->
+        <section class="tabs-container">
             <div class="swiss-grid">
                 <div class="col-full">
-                    <div class="info-box">
-                        <p style="font-size: 1.125rem; line-height: 1.6; margin: 0;">
-                            <strong>5 Grupos de Trabalho</strong> • 
-                            <strong>17 Organizações</strong> • 
-                            <strong>Governança Multissetorial</strong>
-                        </p>
+                    <nav class="tabs-nav" role="tablist" aria-label="Seções de conteúdo">
+                        <button class="tab-button active" role="tab" aria-selected="true" aria-controls="tab-marcos" id="btn-marcos">
+                            Marcos Legais
+                        </button>
+                        <button class="tab-button" role="tab" aria-selected="false" aria-controls="tab-definicao" id="btn-definicao">
+                            Definição
+                        </button>
+                        <button class="tab-button" role="tab" aria-selected="false" aria-controls="tab-governanca" id="btn-governanca">
+                            Governança
+                        </button>
+                        <button class="tab-button" role="tab" aria-selected="false" aria-controls="tab-objetivos" id="btn-objetivos">
+                            Objetivos
+                        </button>
+                        <button class="tab-button" role="tab" aria-selected="false" aria-controls="tab-recursos" id="btn-recursos">
+                            Saiba Mais
+                        </button>
+                    </nav>
+
+                    <!-- TAB 1: MARCOS LEGAIS -->
+                    <div class="tab-content active" role="tabpanel" id="tab-marcos" aria-labelledby="btn-marcos">
+                        <div class="col-8">
+                            <p style="font-size: 1.125rem; line-height: 1.6; color: var(--text-secondary); margin-bottom: 3rem;">
+                                O CENI-RJ está fundamentado em instrumentos legais estaduais e nacionais que 
+                                consolidam a agenda de negócios de impacto no Brasil.
+                            </p>
+                        </div>
+                        
+                        <div class="marcos-legais-grid">
+                            <div class="marco-legal-box">
+                                <h4><i class="fas fa-landmark"></i> Marcos Estaduais</h4>
+                                
+                                <div class="marco-legal-item">
+                                    <strong>Lei Estadual nº 8.571/2019</strong>
+                                    <p>Institui a Política Estadual de Investimentos e Negócios de Impacto</p>
+                                </div>
+                                
+                                <div class="marco-legal-item">
+                                    <strong>Decreto Estadual nº 49.635/2025</strong>
+                                    <p>Regulamenta a Política e cria oficialmente o Comitê Estadual de Investimentos e Negócios de Impacto – CENI-RJ</p>
+                                </div>
+                            </div>
+                            
+                            <div class="marco-legal-box">
+                                <h4><i class="fas fa-flag"></i> Marcos Nacionais</h4>
+                                
+                                <div class="marco-legal-item">
+                                    <strong>Decreto Federal nº 11.646/2023</strong>
+                                    <p>Institui o ENIMPACTO – Estratégia Nacional de Investimentos e Negócios de Impacto</p>
+                                </div>
+                                
+                                <div class="marco-legal-item">
+                                    <strong>Portaria MDIC nº 192/2024</strong>
+                                    <p>Estrutura o SIMPACTO – Sistema Nacional de Investimentos e Negócios de Impacto</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="marcos-grid">
+                            <div class="marco-card">
+                                <div class="marco-number">2°</div>
+                                <div class="marco-label">Estado</div>
+                                <p style="margin-top: 1rem; font-size: 1rem;">A estabelecer a Política Estadual</p>
+                            </div>
+                            
+                            <div class="marco-card">
+                                <div class="marco-number">4°</div>
+                                <div class="marco-label">Estado</div>
+                                <p style="margin-top: 1rem; font-size: 1rem;">A instituir o Comitê Estadual</p>
+                            </div>
+                            
+                            <div class="marco-card">
+                                <div class="marco-number">1ª</div>
+                                <div class="marco-label">FAP</div>
+                                <p style="margin-top: 1rem; font-size: 1rem;">A ter edital dedicado à Pauta</p>
+                            </div>
+                        </div>
                     </div>
-                </div>
-                
-                <div class="col-full">
-                    <div class="orientacoes-box">
-                        <span class="label">Diretrizes</span>
-                        <h3 style="font-size: 1.5rem; font-weight: 700; text-transform: uppercase; margin-bottom: 2rem;">
-                            Orientações Gerais
-                        </h3>
-                        <ul>
-                            <li>→ Cada GT contará com 2 colíderes (Governo + Sociedade Civil)</li>
-                            <li>→ As instituições devem participar de pelo menos 1 GT e podem integrar outros</li>
-                            <li>→ Cada organização indica 1 titular e 1 suplente por GT</li>
+
+                    <!-- TAB 2: DEFINIÇÃO -->
+                    <div class="tab-content" role="tabpanel" id="tab-definicao" aria-labelledby="btn-definicao">
+                        <div class="definition-box">
+                            <p>
+                                Empreendimentos com o objetivo de gerar 
+                                <strong>impacto socioambiental</strong> e 
+                                <strong>resultado financeiro positivo</strong> 
+                                de forma sustentável.
+                            </p>
+                        </div>
+
+                        <div class="exemplo-box">
+                            <h4><i class="fas fa-lightbulb"></i> Exemplo Prático: "LimpAção"</h4>
+                            <p style="margin-bottom: 2rem; opacity: 0.9;">
+                                Sabão ecológico feito por mulheres de comunidades
+                            </p>
+                            
+                            <div class="exemplo-grid">
+                                <div class="exemplo-item">
+                                    <strong><i class="fas fa-recycle"></i> Solução de Impacto</strong>
+                                    <p>Produção de sabão e produtos de limpeza a partir de óleo de cozinha reciclado</p>
+                                </div>
+                                
+                                <div class="exemplo-item">
+                                    <strong><i class="fas fa-dollar-sign"></i> Retorno Financeiro</strong>
+                                    <p>Venda dos produtos em mercados locais e pequenos atacados</p>
+                                </div>
+                                
+                                <div class="exemplo-item">
+                                    <strong><i class="fas fa-heart"></i> Intencionalidade</strong>
+                                    <p>Reduzir descarte inadequado de óleo e gerar renda local</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <span class="label">Características</span>
+                        <ul class="caracteristica-list">
+                            <li>
+                                <span class="caracteristica-number">01</span>
+                                <div>
+                                    <strong>Atividade Principal</strong><br>
+                                    A solução de impacto é a atividade principal do negócio
+                                </div>
+                            </li>
+                            <li>
+                                <span class="caracteristica-number">02</span>
+                                <div>
+                                    <strong>Lógica de Mercado</strong><br>
+                                    Busca de retorno financeiro, operando pela lógica de mercado
+                                </div>
+                            </li>
+                            <li>
+                                <span class="caracteristica-number">03</span>
+                                <div>
+                                    <strong>Intencionalidade</strong><br>
+                                    Resolução de um problema social e/ou ambiental
+                                </div>
+                            </li>
+                            <li>
+                                <span class="caracteristica-number">04</span>
+                                <div>
+                                    <strong>Inclusão Social</strong><br>
+                                    Presente no ambiente institucional
+                                </div>
+                            </li>
+                            <li>
+                                <span class="caracteristica-number">05</span>
+                                <div>
+                                    <strong>Monitoramento</strong><br>
+                                    Interesse no monitoramento do impacto gerado
+                                </div>
+                            </li>
                         </ul>
-                    </div>
-                </div>
-            </div>
-        </section>
 
-        <!-- GT 1 -->
-        <section class="gt-section gt1" id="gt1">
-            <div class="swiss-grid">
-                <div class="col-full" style="position: relative;">
-                    <span class="section-number" aria-hidden="true">01</span>
-                    <div class="gt-header gt1">
-                        <div class="gt-number-large">01</div>
-                        <h2>Capital e Financiamento<br>de Impacto</h2>
-                        <p>Mobilizar mecanismos financeiros e promover acesso a capital para negócios de impacto, articulando investidores, fundos e instituições financeiras.</p>
+                        <div class="full-width-section full-width-bg" style="margin-top: 4rem;">
+                            <div class="swiss-grid">
+                                <div class="col-full">
+                                    <span class="label" style="color: rgba(255,255,255,0.6);">Exclusões</span>
+                                    <h2 style="font-size: 2.5rem; font-weight: 700; text-transform: uppercase; color: white; margin-bottom: 2rem;">
+                                        O que NÃO é<br>Negócio de Impacto
+                                    </h2>
+                                </div>
+                                
+                                <div class="col-full">
+                                    <ul class="negative-list">
+                                        <li>
+                                            <span style="font-size: 2rem; font-weight: 900; min-width: 60px;">01</span>
+                                            <div>Iniciativas de grupos minorizados que não têm foco em resolver problemas sociais ou ambientais.</div>
+                                        </li>
+                                        <li>
+                                            <span style="font-size: 2rem; font-weight: 900; min-width: 60px;">02</span>
+                                            <div>Organizações sem fins lucrativos que atuam pelo interesse público, mas não operam como negócios.</div>
+                                        </li>
+                                        <li>
+                                            <span style="font-size: 2rem; font-weight: 900; min-width: 60px;">03</span>
+                                            <div>Empreendimentos que têm impacto social apenas de forma indireta, sem que isso faça parte do núcleo do negócio.</div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </div>
-        </section>
 
-        <!-- GT 2 -->
-        <section class="gt-section gt2" id="gt2">
-            <div class="swiss-grid">
-                <div class="col-full" style="position: relative;">
-                    <span class="section-number" aria-hidden="true">02</span>
-                    <div class="gt-header gt2">
-                        <div class="gt-number-large">02</div>
-                        <h2>Fomento a<br>Negócios de Impacto</h2>
-                        <p>Promover ações de formação, capacitação, aceleração e desenvolvimento técnico para negócios de impacto em diferentes estágios de maturidade.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
+                    <!-- TAB 3: GOVERNANÇA -->
+                    <div class="tab-content" role="tabpanel" id="tab-governanca" aria-labelledby="btn-governanca">
+                        <div class="organograma-box">
+                            <div class="organograma-nivel">
+                                <div class="organograma-nivel-title">Instância Deliberativa</div>
+                                <div class="organograma-box-item">COMITÊ - PLENÁRIO</div>
+                            </div>
+                            
+                            <div class="organograma-arrow">↓</div>
+                            
+                            <div class="organograma-nivel">
+                                <div class="organograma-nivel-title">Presidência</div>
+                                <div class="organograma-box-item">SEDEICS</div>
+                            </div>
+                            
+                            <div class="organograma-arrow">↓</div>
+                            
+                            <div class="organograma-nivel">
+                                <div class="organograma-nivel-title">Secretaria Executiva</div>
+                                <div class="organograma-box-item">SUBAPE - SEC. EXECUTIVA</div>
+                            </div>
+                            
+                            <div class="organograma-arrow">↓</div>
+                            
+                            <div class="organograma-nivel">
+                                <div class="organograma-nivel-title">Composição</div>
+                                <div class="organograma-box-item" style="background: var(--primary); color: white;">GOVERNO</div>
+                                <div class="organograma-box-item" style="background: var(--accent); color: white;">SOCIEDADE CIVIL</div>
+                            </div>
+                            
+                            <div class="organograma-arrow">↓</div>
+                            
+                            <div class="organograma-nivel">
+                                <div class="organograma-nivel-title">Instâncias Operacionais</div>
+                                <div>
+                                    <div class="organograma-box-item" style="margin: 0.25rem; padding: 0.5rem 1rem; font-size: 0.75rem; background: #1e3a8a; color: white;">GT 1</div>
+                                    <div class="organograma-box-item" style="margin: 0.25rem; padding: 0.5rem 1rem; font-size: 0.75rem; background: #1e5631; color: white;">GT 2</div>
+                                    <div class="organograma-box-item" style="margin: 0.25rem; padding: 0.5rem 1rem; font-size: 0.75rem; background: #e89bb8; color: white;">GT 3</div>
+                                    <div class="organograma-box-item" style="margin: 0.25rem; padding: 0.5rem 1rem; font-size: 0.75rem; background: #e8632e; color: white;">GT 4</div>
+                                    <div class="organograma-box-item" style="margin: 0.25rem; padding: 0.5rem 1rem; font-size: 0.75rem; background: #f4b942; color: white;">GT 5</div>
+                                </div>
+                            </div>
+                        </div>
 
-        <!-- GT 3 -->
-        <section class="gt-section gt3" id="gt3">
-            <div class="swiss-grid">
-                <div class="col-full" style="position: relative;">
-                    <span class="section-number" aria-hidden="true">03</span>
-                    <div class="gt-header gt3">
-                        <div class="gt-number-large">03</div>
-                        <h2>Fortalecimento de<br>Organizações Intermediárias</h2>
-                        <p>Fortalecer aceleradoras, institutos, hubs, coletivos e demais organizações que apoiam o ecossistema de impacto.</p>
+                        <div class="stats-grid">
+                            <div class="stat-item">
+                                <div class="stat-number">17</div>
+                                <div class="stat-label">
+                                    Organizações Participantes
+                                </div>
+                            </div>
+                            
+                            <div class="stat-item">
+                                <div class="stat-number">5</div>
+                                <div class="stat-label">
+                                    Grupos de Trabalho
+                                </div>
+                            </div>
+                            
+                            <div class="stat-item">
+                                <div class="stat-number">34</div>
+                                <div class="stat-label">
+                                    Membros (Titular + Suplente)
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </div>
-        </section>
 
-        <!-- GT 4 -->
-        <section class="gt-section gt4" id="gt4">
-            <div class="swiss-grid">
-                <div class="col-full" style="position: relative;">
-                    <span class="section-number" aria-hidden="true">04</span>
-                    <div class="gt-header gt4">
-                        <div class="gt-number-large">04</div>
-                        <h2>Ambiente Institucional<br>e Normativo</h2>
-                        <p>Consolidar um ambiente institucional favorável à agenda de impacto, trabalhando marcos regulatórios e políticas públicas.</p>
+                    <!-- TAB 4: OBJETIVOS -->
+                    <div class="tab-content" role="tabpanel" id="tab-objetivos" aria-labelledby="btn-objetivos">
+                        <div class="objetivos-grid">
+                            <div class="objetivo-item">
+                                <h4>Aumento de Negócios</h4>
+                                <p>Expandir o número e escala de negócios de impacto no RJ</p>
+                            </div>
+                            
+                            <div class="objetivo-item">
+                                <h4>Fomento e Crédito</h4>
+                                <p>Facilitar acesso a financiamento e recursos</p>
+                            </div>
+                            
+                            <div class="objetivo-item">
+                                <h4>Participação no Mercado</h4>
+                                <p>Fortalecer presença em compras públicas</p>
+                            </div>
+                            
+                            <div class="objetivo-item">
+                                <h4>Inovação Social</h4>
+                                <p>Promover soluções inovadoras para problemas sociais</p>
+                            </div>
+                            
+                            <div class="objetivo-item">
+                                <h4>Organizações Intermediárias</h4>
+                                <p>Fortalecer ecossistema de suporte (aceleradoras, hubs)</p>
+                            </div>
+                            
+                            <div class="objetivo-item">
+                                <h4>Articulação de Atores</h4>
+                                <p>Integrar governo, sociedade civil e setor privado</p>
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </div>
-        </section>
 
-        <!-- GT 5 -->
-        <section class="gt-section gt5" id="gt5">
-            <div class="swiss-grid">
-                <div class="col-full" style="position: relative;">
-                    <span class="section-number" aria-hidden="true">05</span>
-                    <div class="gt-header gt5">
-                        <div class="gt-number-large">05</div>
-                        <h2>Articulação<br>Interfederativa</h2>
-                        <p>Fortalecer a articulação com municípios, consórcios, governos federal e entes federativos para ampliar o alcance das ações de impacto.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- MEMBROS DO COMITÊ -->
-        <section style="margin-top: 8rem; margin-bottom: 6rem;">
-            <div class="swiss-grid">
-                <div class="col-full" style="position: relative;">
-                    <span class="section-number" aria-hidden="true">17</span>
-                    <span class="label">Composição</span>
-                    <h2 class="section-title">
-                        Membros do<br>Comitê
-                    </h2>
-                </div>
-                
-                <div class="col-8">
-                    <p style="font-size: 1.125rem; line-height: 1.6; color: var(--text-secondary); margin-bottom: 3rem;">
-                        17 organizações compõem o CENI-RJ, representando governo, sociedade civil, 
-                        universidades e setor privado.
-                    </p>
-                </div>
-                
-                <div style="grid-column: 1 / -1; display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem;">
-                    <!-- GOVERNO -->
-                    <div class="org-item">
-                        <i class="fas fa-landmark org-icon"></i>
-                        <h4>Casa Civil - SECC</h4>
-                        <p>Governo do Estado</p>
-                        <div class="org-members">
-                            <strong>Titular:</strong>
-                            <span>Rubens Antonio Albuquerque Junior</span>
-                            <strong>Suplente:</strong>
-                            <span>Rafael Landa Montenegro Nuno</span>
-                        </div>
-                    </div>
-                    
-                    <div class="org-item">
-                        <i class="fas fa-users org-icon"></i>
-                        <h4>SEGOV</h4>
-                        <p>Secretaria de Governo</p>
-                        <div class="org-members">
-                            <strong>Titular:</strong>
-                            <span>Karoline da Silva Mendez</span>
-                            <strong>Suplente:</strong>
-                            <span>Rafael Landa Montenegro Nuno</span>
-                        </div>
-                    </div>
-                    
-                    <div class="org-item">
-                        <i class="fas fa-leaf org-icon"></i>
-                        <h4>SEAS</h4>
-                        <p>Ambiente e Sustentabilidade</p>
-                        <div class="org-members">
-                            <strong>Titular:</strong>
-                            <span>Ana Larronda Asti</span>
-                            <strong>Suplente:</strong>
-                            <span>Irlaine Alvarenga Cidade</span>
-                        </div>
-                    </div>
-                    
-                    <div class="org-item">
-                        <i class="fas fa-briefcase org-icon"></i>
-                        <h4>SETRAB</h4>
-                        <p>Trabalho e Renda</p>
-                        <div class="org-members">
-                            <strong>Titular:</strong>
-                            <span>Alexandre Mauro Prado</span>
-                            <strong>Suplente:</strong>
-                            <span>Bruno Rocha Rodriguez</span>
-                        </div>
-                    </div>
-                    
-                    <div class="org-item">
-                        <i class="fas fa-bolt org-icon"></i>
-                        <h4>SEENEMAR</h4>
-                        <p>Energia e Economia do Mar</p>
-                        <div class="org-members">
-                            <strong>Titular:</strong>
-                            <span>Mariana Pisani Mata</span>
-                            <strong>Suplente:</strong>
-                            <span>Erick José Guimarães de Andrade Junior</span>
-                        </div>
-                    </div>
-                    
-                    <div class="org-item">
-                        <i class="fas fa-palette org-icon"></i>
-                        <h4>SECEC</h4>
-                        <p>Cultura e Economia Criativa</p>
-                        <div class="org-members">
-                            <strong>Titular:</strong>
-                            <span>Nilza Valéria Zacarias do Nascimento Oliveira</span>
-                            <strong>Suplente:</strong>
-                            <span>Sergio Almeida Firmino</span>
-                        </div>
-                    </div>
-                    
-                    <div class="org-item">
-                        <i class="fas fa-venus org-icon"></i>
-                        <h4>Secretaria da Mulher</h4>
-                        <p>Governo do Estado</p>
-                        <div class="org-members">
-                            <strong>Titular:</strong>
-                            <span>Heloisa Helena de Alencar Aguiar</span>
-                            <strong>Suplente:</strong>
-                            <span>Marcele Porto da Silva</span>
-                        </div>
-                    </div>
-                    
-                    <div class="org-item">
-                        <i class="fas fa-globe org-icon"></i>
-                        <h4>Comissão ODS RJ</h4>
-                        <p>Objetivos de Desenvolvimento</p>
-                        <div class="org-members">
-                            <strong>Titular:</strong>
-                            <span>Ana Larronda Asti</span>
-                            <strong>Suplente:</strong>
-                            <span>Irlaine Alvarenga Cidade</span>
-                        </div>
-                    </div>
-                    
-                    <!-- SOCIEDADE CIVIL -->
-                    <div class="org-item">
-                        <i class="fas fa-chart-line org-icon"></i>
-                        <h4>SEBRAE-RJ</h4>
-                        <p>Apoio a Pequenos Negócios</p>
-                        <div class="org-members">
-                            <strong>Titular:</strong>
-                            <span>Carla Geraldo de Moraes Teixeira Panisset</span>
-                            <strong>Suplente:</strong>
-                            <span>Juliana Cristina Carlos de Oliveira</span>
-                        </div>
-                    </div>
-                    
-                    <div class="org-item">
-                        <i class="fas fa-graduation-cap org-icon"></i>
-                        <h4>PUC-Rio</h4>
-                        <p>Universidade</p>
-                        <div class="org-members">
-                            <strong>Titular:</strong>
-                            <span>Marcelo Gattass</span>
-                            <strong>Suplente:</strong>
-                            <span>Gustavo Robichez</span>
-                        </div>
-                    </div>
-                    
-                    <div class="org-item">
-                        <i class="fas fa-lightbulb org-icon"></i>
-                        <h4>Impact Hub Rio</h4>
-                        <p>Hub de Inovação Social</p>
-                        <div class="org-members">
-                            <strong>Titular:</strong>
-                            <span>Liliana Pinelli Caldas da Cunha</span>
-                            <strong>Suplente:</strong>
-                            <span>Luciana Rodriguez</span>
-                        </div>
-                    </div>
-                    
-                    <div class="org-item">
-                        <i class="fas fa-flask org-icon"></i>
-                        <h4>FAPERJ</h4>
-                        <p>Fundação de Amparo à Pesquisa</p>
-                        <div class="org-members">
-                            <strong>Titular:</strong>
-                            <span>Caroline Alves da Costa</span>
-                            <strong>Suplente:</strong>
-                            <span>Juliana Maciel de Aguiar</span>
-                        </div>
-                    </div>
-                    
-                    <div class="org-item">
-                        <i class="fas fa-store org-icon"></i>
-                        <h4>Fecomércio RJ</h4>
-                        <p>Federação do Comércio</p>
-                        <div class="org-members">
-                            <strong>Titular:</strong>
-                            <span>João Carlos Gomes</span>
-                            <strong>Suplente:</strong>
-                            <span>Guilherme Mercês</span>
-                        </div>
-                    </div>
-                    
-                    <div class="org-item">
-                        <i class="fas fa-industry org-icon"></i>
-                        <h4>Firjan</h4>
-                        <p>Sistema FIRJAN</p>
-                        <div class="org-members">
-                            <strong>Titular:</strong>
-                            <span>Jorge Vicente Peron Mendes</span>
-                            <strong>Suplente:</strong>
-                            <span>Eliane Carvalhar Damasceno</span>
-                        </div>
-                    </div>
-                    
-                    <div class="org-item">
-                        <i class="fas fa-university org-icon"></i>
-                        <h4>UFRJ</h4>
-                        <p>Universidade Federal</p>
-                        <div class="org-members">
-                            <strong>Titular:</strong>
-                            <span>Helios Malebranche Olbrisch Freres Filho</span>
-                            <strong>Suplente:</strong>
-                            <span>Rita de Cássia Monteiro Afonso</span>
-                        </div>
-                    </div>
-                    
-                    <div class="org-item">
-                        <i class="fas fa-building org-icon"></i>
-                        <h4>ABERJ</h4>
-                        <p>Associação de Bancos</p>
-                        <div class="org-members">
-                            <strong>Titular:</strong>
-                            <span>Istvan Karoly Kasznar</span>
-                            <strong>Suplente:</strong>
-                            <span>Angélica Moreira da Silva</span>
-                        </div>
-                    </div>
-                    
-                    <div class="org-item">
-                        <i class="fas fa-water org-icon"></i>
-                        <h4>Rio de Impacto</h4>
-                        <p>Organização de Impacto</p>
-                        <div class="org-members">
-                            <strong>Titular:</strong>
-                            <span>Dayse Maria Valença Ferreira</span>
-                            <strong>Suplente:</strong>
-                            <span>Luciana Costa Souza Tristão</span>
+                    <!-- TAB 5: RECURSOS -->
+                    <div class="tab-content" role="tabpanel" id="tab-recursos" aria-labelledby="btn-recursos">
+                        <p style="font-size: 1.125rem; line-height: 1.6; color: var(--text-secondary); margin-bottom: 3rem;">
+                            Acesse materiais, estudos e recursos externos para aprofundar seu conhecimento 
+                            sobre investimentos e negócios de impacto no Brasil.
+                        </p>
+                        
+                        <div class="recursos-grid">
+                            <a href="https://www.gov.br/mdic/pt-br/assuntos/enimpacto" target="_blank" rel="noopener" class="recurso-card">
+                                <div class="recurso-icon"><i class="fas fa-flag"></i></div>
+                                <h4>ENIMPACTO – Estratégia Nacional</h4>
+                                <p>Página oficial do Governo Federal sobre a Estratégia Nacional de Investimentos e Negócios de Impacto</p>
+                            </a>
+                            
+                            <a href="https://mapa2023.pipelabo.com/" target="_blank" rel="noopener" class="recurso-card">
+                                <div class="recurso-icon"><i class="fas fa-map-marked-alt"></i></div>
+                                <h4>Mapa de Negócios de Impacto 2023</h4>
+                                <p>Principal diagnóstico nacional sobre negócios de impacto - Pipe.Labo</p>
+                            </a>
+                            
+                            <a href="https://conteudo.ice.org.br/curso-com-impacto" target="_blank" rel="noopener" class="recurso-card">
+                                <div class="recurso-icon"><i class="fas fa-graduation-cap"></i></div>
+                                <h4>Curso "Com Impacto" – ICE (Gratuito)</h4>
+                                <p>Curso referência para quem inicia na agenda de impacto</p>
+                            </a>
+                            
+                            <a href="https://sitawi.net/tendencias-para-a-economia-de-impacto-em-2025/" target="_blank" rel="noopener" class="recurso-card">
+                                <div class="recurso-icon"><i class="fas fa-chart-line"></i></div>
+                                <h4>Tendências para a Economia de Impacto 2025</h4>
+                                <p>Análise anual com projeções sobre o crescimento da economia de impacto – SITAWI</p>
+                            </a>
+                            
+                            <a href="https://coalizaopeloimpacto.org.br/" target="_blank" rel="noopener" class="recurso-card">
+                                <div class="recurso-icon"><i class="fas fa-handshake"></i></div>
+                                <h4>Coalizão pelo Impacto</h4>
+                                <p>Iniciativa colaborativa nacional que articula organizações e fortalece ações estruturantes</p>
+                            </a>
+                            
+                            <a href="https://repositorio.ipea.gov.br/entities/publication/c18700ba-8509-40e2-8bd3-eac806441b2e" target="_blank" rel="noopener" class="recurso-card">
+                                <div class="recurso-icon"><i class="fas fa-file-alt"></i></div>
+                                <h4>IPEA – Marco Conceitual e Agenda Pública</h4>
+                                <p>Documento estruturante que consolida definições oficiais e orienta políticas públicas</p>
+                            </a>
+                            
+                            <a href="https://repositorio.ipea.gov.br/entities/publication/ffcfe2ba-6911-48ba-84d9-31d40de54074" target="_blank" rel="noopener" class="recurso-card">
+                                <div class="recurso-icon"><i class="fas fa-chart-bar"></i></div>
+                                <h4>IPEA – Panorama dos Negócios de Impacto</h4>
+                                <p>Análise abrangente sobre perfil, desafios e oportunidades dos negócios de impacto no Brasil</p>
+                            </a>
+                            
+                            <a href="https://www.oecd.org/en/publications/social-impact-investment_9789264233430-en.html" target="_blank" rel="noopener" class="recurso-card">
+                                <div class="recurso-icon"><i class="fas fa-globe"></i></div>
+                                <h4>OECD – Social Impact Investment Report</h4>
+                                <p>Relatório internacional com métricas e tendências globais de investimento de impacto</p>
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -940,17 +1208,20 @@
     <script>
         document.getElementById('current-year').textContent = new Date().getFullYear();
         
+        // Header sticky
         const header = document.querySelector('.gov-header');
         window.addEventListener('scroll', () => {
             header.classList.toggle('scrolled', window.scrollY > 100);
         });
 
+        // Progress indicator
         window.addEventListener('scroll', () => {
             const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
             const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
             document.getElementById('progressBar').style.width = ((winScroll / height) * 100) + '%';
         });
 
+        // Mobile menu
         const menuToggle = document.getElementById('menuToggle');
         const mainNav = document.getElementById('mainNav');
         const mobileOverlay = document.getElementById('mobileOverlay');
@@ -969,6 +1240,7 @@
             menuToggle.innerHTML = '<i class="fas fa-bars"></i>';
         });
 
+        // Back to top
         const backToTop = document.getElementById('backToTop');
         window.addEventListener('scroll', () => {
             backToTop.classList.toggle('visible', window.scrollY > 300);
@@ -976,6 +1248,67 @@
 
         backToTop.addEventListener('click', () => {
             window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        // ======================================
+        // SISTEMA DE TABS
+        // ======================================
+        
+        const tabButtons = document.querySelectorAll('.tab-button');
+        const tabContents = document.querySelectorAll('.tab-content');
+        
+        tabButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                // Remove active de todos
+                tabButtons.forEach(btn => {
+                    btn.classList.remove('active');
+                    btn.setAttribute('aria-selected', 'false');
+                });
+                tabContents.forEach(content => {
+                    content.classList.remove('active');
+                });
+                
+                // Adiciona active ao clicado
+                button.classList.add('active');
+                button.setAttribute('aria-selected', 'true');
+                
+                // Mostra conteúdo correspondente
+                const tabId = button.getAttribute('aria-controls');
+                document.getElementById(tabId).classList.add('active');
+                
+                // Scroll suave ao início das tabs
+                document.querySelector('.tabs-container').scrollIntoView({ 
+                    behavior: 'smooth', 
+                    block: 'start' 
+                });
+            });
+        });
+        
+        // Navegação por teclado entre tabs
+        tabButtons.forEach((button, index) => {
+            button.addEventListener('keydown', (e) => {
+                let newIndex;
+                
+                if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+                    e.preventDefault();
+                    newIndex = (index + 1) % tabButtons.length;
+                    tabButtons[newIndex].click();
+                    tabButtons[newIndex].focus();
+                } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+                    e.preventDefault();
+                    newIndex = (index - 1 + tabButtons.length) % tabButtons.length;
+                    tabButtons[newIndex].click();
+                    tabButtons[newIndex].focus();
+                } else if (e.key === 'Home') {
+                    e.preventDefault();
+                    tabButtons[0].click();
+                    tabButtons[0].focus();
+                } else if (e.key === 'End') {
+                    e.preventDefault();
+                    tabButtons[tabButtons.length - 1].click();
+                    tabButtons[tabButtons.length - 1].focus();
+                }
+            });
         });
     </script>
 </body>
