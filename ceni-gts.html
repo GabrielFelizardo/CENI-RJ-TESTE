@@ -15,6 +15,7 @@
     <link rel="stylesheet" href="ceni-animations.css">
     <link rel="stylesheet" href="ceni-scroll-enhancements.css">
     <link rel="stylesheet" href="ceni-theme-enhanced.css">
+    <link rel="stylesheet" href="ceni-header-enhanced.css">
     <link rel="stylesheet" href="ceni-footer-enhanced.css">
     
     <style>
@@ -103,90 +104,11 @@
         
         .col-full { grid-column: 1 / -1; position: relative; z-index: 1; }
         .col-8 { grid-column: span 8; position: relative; z-index: 1; }
-        
-        .gov-header {
-            background: var(--primary);
-            padding: 2rem 0;
-            border-bottom: 4px solid var(--accent);
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            transition: all 0.3s ease;
-        }
-        
-        .gov-header.scrolled {
-            padding: 1rem 0;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-        }
-        
-        .header-grid {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 0 3rem;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-        
-        .gov-logo-img { height: 50px; }
-        
-        .main-nav {
-            display: flex;
-            gap: 0;
-            text-transform: uppercase;
-            font-size: 0.75rem;
-            font-weight: 700;
-            letter-spacing: 0.1em;
-        }
-        
-        .main-nav a {
-            color: white;
-            text-decoration: none;
-            padding: 0.75rem 1.5rem;
-            border-right: 1px solid rgba(255,255,255,0.2);
-            transition: background 0.2s;
-        }
-        
-        .main-nav a:first-child { border-left: 1px solid rgba(255,255,255,0.2); }
-        .main-nav a:hover, .main-nav a.active { background: rgba(255,255,255,0.1); }
-
-        .mobile-menu-toggle {
-            display: none;
-            background: none;
-            border: none;
-            color: white;
-            font-size: 1.5rem;
-            cursor: pointer;
-            padding: 0.5rem;
-        }
 
         @media (max-width: 968px) {
-            .main-nav {
-                position: fixed;
-                top: 0;
-                right: -100%;
-                height: 100vh;
-                width: 80%;
-                max-width: 300px;
-                background: var(--primary);
-                flex-direction: column;
-                padding: 5rem 0 2rem 0;
-                transition: right 0.3s ease;
-                z-index: 10001;
-                box-shadow: -8px 0 32px rgba(0,0,0,0.6);
-                isolation: isolate;
-            }
+            
             .main-nav.active { right: 0; }
-            .main-nav a {
-                border: none !important;
-                border-bottom: 1px solid rgba(255,255,255,0.1) !important;
-                padding: 1.5rem 2rem;
-            }
-            .mobile-menu-toggle { 
-                display: block;
-                position: relative;
-                z-index: 10002;
-            }
+
             .mobile-overlay {
                 display: none;
                 position: fixed;
@@ -469,7 +391,7 @@
             .section-number { font-size: 6rem; }
             .gt-number-large { font-size: 5rem; }
             .footer-grid { grid-template-columns: 1fr; }
-            .header-grid { padding: 0 2rem; }
+            
         }
     </style>
 </head>
@@ -480,7 +402,14 @@
 
     <header class="gov-header">
         <div class="header-grid">
-            <img src="https://raw.githubusercontent.com/GabrielFelizardo/almoxarifado-sistema/main/logo.png" alt="SEDEICS" class="gov-logo-img" loading="lazy">
+            <div class="header-brand">
+                <img src="https://raw.githubusercontent.com/GabrielFelizardo/almoxarifado-sistema/main/logo.png" alt="SEDEICS" class="gov-logo-img" loading="lazy">
+                
+                <div class="header-ceni-mark">
+                    <div class="header-ceni-title">CENI-RJ</div>
+                    <div class="header-ceni-subtitle">Comitê Estadual de Impacto</div>
+                </div>
+            </div>
             
             <button class="mobile-menu-toggle" id="menuToggle" aria-label="Abrir menu de navegação" aria-expanded="false">
                 <i class="fas fa-bars"></i>
