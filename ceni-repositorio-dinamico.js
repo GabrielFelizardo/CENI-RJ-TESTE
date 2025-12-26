@@ -1,15 +1,3 @@
-/**
- * CENI-RJ - Sistema de Repositório Dinâmico
- * Versão Apps Script - Cliente JavaScript
- * 
- * Este módulo consome dados do Google Apps Script ao invés da API Sheets diretamente,
- * eliminando a necessidade de expor uma API Key no código cliente.
- * 
- * @author Gabriel Felizardo da Silva
- * @version 2.0 - Apps Script Edition
- * @date Dezembro 2025
- */
-
 (function() {
     'use strict';
 
@@ -19,7 +7,7 @@
     
     const CONFIG = {
         // URL do Web App do Apps Script (será fornecida após implantação)
-        APPS_SCRIPT_URL: 'COLE_AQUI_A_URL_DO_SEU_WEB_APP',
+        APPS_SCRIPT_URL: 'https://script.google.com/macros/s/AKfycbzMxem5ek9F3UP0uI8yqGjmBfxMNaBaxF6RQKl0fWECTVkeL6Mh94NhElRBeOmCPmcaQA/exec',
         
         // Configurações de cache local
         CACHE_KEY: 'ceni_repositorio_cache',
