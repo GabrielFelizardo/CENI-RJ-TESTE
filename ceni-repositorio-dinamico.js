@@ -1,12 +1,3 @@
-/**
- * CENI-RJ - Sistema de Repositório Dinâmico
- * Módulo responsável por consumir dados do Google Sheets e renderizar
- * dinamicamente o repositório de documentos do site institucional.
- * 
- * @version 1.0.0
- * @author Gabriel Felizardo da Silva
- */
-
 (function() {
     'use strict';
 
