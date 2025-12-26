@@ -7,7 +7,7 @@
     
     const CONFIG = {
         // ID da planilha Google Sheets (será fornecido após criação)
-        SHEET_ID: 'SUA_PLANILHA_ID_AQUI',
+        SHEET_ID: 'https://script.google.com/macros/s/AKfycbzMxem5ek9F3UP0uI8yqGjmBfxMNaBaxF6RQKl0fWECTVkeL6Mh94NhElRBeOmCPmcaQA/exec',
         
         // IDs das abas específicas (serão fornecidos após publicação)
         GID: {
