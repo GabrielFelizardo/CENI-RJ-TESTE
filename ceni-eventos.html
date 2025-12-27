@@ -689,20 +689,35 @@
     <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="ceni-animations.js"></script>
     <script src="ceni-footer-enhanced.js"></script>
     
-    <!-- Sistema de Eventos - INLINE -->
+    <!-- Sistema de Eventos - INLINE OTIMIZADO -->
     <script>
         // ========================================
         // CONFIGURAÇÃO
         // ========================================
         
         const CONFIG = {
-            API_URL: 'https://script.google.com/macros/s/AKfycbxHNu6qm1BScGdc6JEQBTrECz0RINKapGCK3FJ4dz1WQ7XSRqInjpKZtu3GeFOh0py1/exec',
+            API_URL: 'https://script.google.com/macros/s/AKfycbzwl0Yv29O6ekRdUvxGDS2cfRzr6cBlmWtDXOf_iybS3hggnDeKyzd35xVdSgyBjU0l/exec',
             CACHE_KEY: 'ceni_todos_eventos',
-            CACHE_DURATION: 30 * 60 * 1000 // 30 minutos
+            CACHE_DURATION: 30 * 60 * 1000, // 30 minutos
+            DEBUG: true // Ativar logs detalhados
         };
         
         let todosEventos = [];
         let filtroAtivo = 'todos';
+        
+        // ========================================
+        // FUNÇÕES DE LOG
+        // ========================================
+        
+        function log(emoji, ...args) {
+            if (CONFIG.DEBUG) {
+                console.log(emoji, ...args);
+            }
+        }
+        
+        function logError(emoji, ...args) {
+            console.error(emoji, ...args);
+        }
         
         // ========================================
         // FUNÇÕES DE CACHE
@@ -711,21 +726,25 @@
         function getCachedData() {
             try {
                 const cached = localStorage.getItem(CONFIG.CACHE_KEY);
-                if (!cached) return null;
+                if (!cached) {
+                    log('ℹ️', 'Nenhum cache encontrado');
+                    return null;
+                }
                 
                 const data = JSON.parse(cached);
                 const now = Date.now();
                 
                 if (now - data.timestamp > CONFIG.CACHE_DURATION) {
                     localStorage.removeItem(CONFIG.CACHE_KEY);
+                    log('⏱️', 'Cache expirado, removido');
                     return null;
                 }
                 
-                console.log('✅ Dados carregados do cache');
+                log('✅', 'Dados carregados do cache:', data.value);
                 return data.value;
                 
             } catch (error) {
-                console.error('Erro ao ler cache:', error);
+                logError('❌', 'Erro ao ler cache:', error);
                 return null;
             }
         }
@@ -737,9 +756,9 @@
                     timestamp: Date.now()
                 };
                 localStorage.setItem(CONFIG.CACHE_KEY, JSON.stringify(data));
-                console.log('✅ Dados salvos no cache');
+                log('💾', 'Dados salvos no cache');
             } catch (error) {
-                console.error('Erro ao salvar cache:', error);
+                logError('❌', 'Erro ao salvar cache:', error);
             }
         }
         
@@ -748,8 +767,12 @@
         // ========================================
         
         function renderLoading(containerId) {
+            log('⏳', `Renderizando loading em ${containerId}`);
             const container = document.getElementById(containerId);
-            if (!container) return;
+            if (!container) {
+                logError('⚠️', `Container ${containerId} não encontrado`);
+                return;
+            }
             
             container.innerHTML = `
                 <div class="eventos-loading">
@@ -760,8 +783,12 @@
         }
         
         function renderEmpty(containerId, mensagem) {
+            log('📭', `Renderizando vazio em ${containerId}: ${mensagem}`);
             const container = document.getElementById(containerId);
-            if (!container) return;
+            if (!container) {
+                logError('⚠️', `Container ${containerId} não encontrado`);
+                return;
+            }
             
             container.innerHTML = `
                 <div class="eventos-empty">
@@ -774,8 +801,12 @@
         }
         
         function renderError(containerId, message) {
+            logError('🚨', `Renderizando erro em ${containerId}: ${message}`);
             const container = document.getElementById(containerId);
-            if (!container) return;
+            if (!container) {
+                logError('⚠️', `Container ${containerId} não encontrado`);
+                return;
+            }
             
             container.innerHTML = `
                 <div class="eventos-error">
@@ -784,6 +815,9 @@
                     </div>
                     <h4 style="color: #dc3545; margin-bottom: 1rem;">Erro ao Carregar Eventos</h4>
                     <p style="color: #721c24;">${message}</p>
+                    <button onclick="window.CENI_Eventos.recarregar()" style="margin-top: 1rem; padding: 0.75rem 1.5rem; background: #dc3545; color: white; border: none; cursor: pointer; font-weight: 700; text-transform: uppercase;">
+                        Tentar Novamente
+                    </button>
                 </div>
             `;
         }
@@ -803,12 +837,12 @@
             const tipoBadge = getTipoBadge(evento.tipo);
             
             return `
-                <div class="evento-card" data-tipo="${evento.tipo}" data-animate="fade-up">
+                <div class="evento-card" data-tipo="${evento.tipo || ''}" data-animate="fade-up">
                     <div class="evento-badge">${tipoBadge}</div>
                     <div class="evento-meta">
                         <span class="evento-data">
                             <i class="fas fa-calendar-alt"></i>
-                            ${evento.data}
+                            ${evento.data || 'Data não disponível'}
                         </span>
                         ${evento.horario ? `
                             <span class="evento-horario">
@@ -818,13 +852,13 @@
                         ` : ''}
                     </div>
                     
-                    <h3 class="evento-titulo">${evento.titulo}</h3>
+                    <h3 class="evento-titulo">${evento.titulo || 'Sem título'}</h3>
                     
-                    <p class="evento-descricao">${evento.descricao}</p>
+                    <p class="evento-descricao">${evento.descricao || 'Sem descrição'}</p>
                     
                     <div class="evento-local">
                         <i class="fas fa-map-marker-alt"></i>
-                        <span>${evento.local}</span>
+                        <span>${evento.local || 'Local a definir'}</span>
                     </div>
                     
                     ${evento.link_inscricao ? `
@@ -840,68 +874,29 @@
             `;
         }
         
-        function renderEventos() {
-            const futurosContainer = document.getElementById('eventosFuturosContainer');
-            const passadosContainer = document.getElementById('eventosPassadosContainer');
-            
-            if (!futurosContainer || !passadosContainer) return;
-            
-            // Filtrar eventos
-            let eventosFiltrados = todosEventos;
-            if (filtroAtivo !== 'todos') {
-                eventosFiltrados = todosEventos.filter(e => e.tipo === filtroAtivo);
-            }
-            
-            // Separar futuros e passados
-            const hoje = new Date();
-            hoje.setHours(0, 0, 0, 0);
-            
-            const futuros = eventosFiltrados.filter(e => {
-                const dataEvento = parseDataBrasileira(e.data);
-                return dataEvento >= hoje;
-            });
-            
-            const passados = eventosFiltrados.filter(e => {
-                const dataEvento = parseDataBrasileira(e.data);
-                return dataEvento < hoje;
-            }).reverse(); // Mais recentes primeiro
-            
-            // Renderizar futuros
-            if (futuros.length === 0) {
-                renderEmpty('eventosFuturosContainer', 
-                    filtroAtivo === 'todos' 
-                        ? 'Nenhum evento futuro agendado no momento' 
-                        : `Nenhum evento futuro do tipo "${filtroAtivo}"`
-                );
-            } else {
-                futurosContainer.innerHTML = futuros.map(e => renderEvento(e)).join('');
-            }
-            
-            // Renderizar passados
-            if (passados.length === 0) {
-                renderEmpty('eventosPassadosContainer', 
-                    filtroAtivo === 'todos' 
-                        ? 'Nenhum evento realizado ainda' 
-                        : `Nenhum evento realizado do tipo "${filtroAtivo}"`
-                );
-            } else {
-                passadosContainer.innerHTML = passados.map(e => renderEvento(e)).join('');
-            }
-            
-            // Aplicar animações
-            if (typeof CENIScroll !== 'undefined' && typeof CENIScroll.refresh === 'function') {
-                setTimeout(() => CENIScroll.refresh(), 100);
-            }
-        }
-        
         function parseDataBrasileira(dataStr) {
-            // Espera formato: "DD/MM/YYYY" ou "DD de MMMM de YYYY"
-            const partes = dataStr.split('/');
-            if (partes.length === 3) {
-                return new Date(partes[2], partes[1] - 1, partes[0]);
+            log('📅', `Parseando data: "${dataStr}"`);
+            
+            if (!dataStr) {
+                logError('⚠️', 'Data vazia recebida');
+                return new Date();
             }
             
-            // Tentar parsing alternativo
+            // Formato DD/MM/YYYY
+            const partes = dataStr.trim().split('/');
+            if (partes.length === 3) {
+                const dia = parseInt(partes[0], 10);
+                const mes = parseInt(partes[1], 10) - 1; // Mês começa em 0
+                const ano = parseInt(partes[2], 10);
+                
+                if (!isNaN(dia) && !isNaN(mes) && !isNaN(ano)) {
+                    const data = new Date(ano, mes, dia);
+                    log('✅', `Data parseada: ${data.toLocaleDateString('pt-BR')}`);
+                    return data;
+                }
+            }
+            
+            // Formato "DD de MMMM de YYYY"
             const meses = {
                 'janeiro': 0, 'fevereiro': 1, 'março': 2, 'abril': 3,
                 'maio': 4, 'junho': 5, 'julho': 6, 'agosto': 7,
@@ -912,13 +907,97 @@
             const match = dataStr.match(regex);
             
             if (match) {
-                const dia = parseInt(match[1]);
-                const mes = meses[match[2].toLowerCase()];
-                const ano = parseInt(match[3]);
-                return new Date(ano, mes, dia);
+                const dia = parseInt(match[1], 10);
+                const mesNome = match[2].toLowerCase();
+                const mes = meses[mesNome];
+                const ano = parseInt(match[3], 10);
+                
+                if (!isNaN(dia) && mes !== undefined && !isNaN(ano)) {
+                    const data = new Date(ano, mes, dia);
+                    log('✅', `Data parseada (formato extenso): ${data.toLocaleDateString('pt-BR')}`);
+                    return data;
+                }
             }
             
+            logError('⚠️', `Não foi possível parsear a data: "${dataStr}"`);
             return new Date();
+        }
+        
+        function renderEventos() {
+            log('🎨', 'Iniciando renderização de eventos');
+            log('📊', `Total de eventos: ${todosEventos.length}`);
+            log('🔍', `Filtro ativo: ${filtroAtivo}`);
+            
+            const futurosContainer = document.getElementById('eventosFuturosContainer');
+            const passadosContainer = document.getElementById('eventosPassadosContainer');
+            
+            if (!futurosContainer || !passadosContainer) {
+                logError('❌', 'Containers não encontrados!');
+                return;
+            }
+            
+            // Filtrar eventos por tipo
+            let eventosFiltrados = todosEventos;
+            if (filtroAtivo !== 'todos') {
+                eventosFiltrados = todosEventos.filter(e => e.tipo === filtroAtivo);
+                log('🔍', `Eventos após filtro: ${eventosFiltrados.length}`);
+            }
+            
+            // Separar futuros e passados
+            const hoje = new Date();
+            hoje.setHours(0, 0, 0, 0);
+            log('📆', `Data atual (00:00): ${hoje.toLocaleDateString('pt-BR')}`);
+            
+            const futuros = [];
+            const passados = [];
+            
+            eventosFiltrados.forEach((evento, index) => {
+                log(`🔢 Evento ${index + 1}:`, evento);
+                const dataEvento = parseDataBrasileira(evento.data);
+                
+                if (dataEvento >= hoje) {
+                    futuros.push(evento);
+                    log('⏭️', `"${evento.titulo}" é FUTURO`);
+                } else {
+                    passados.push(evento);
+                    log('⏮️', `"${evento.titulo}" é PASSADO`);
+                }
+            });
+            
+            log('📈', `Eventos futuros: ${futuros.length}`);
+            log('📉', `Eventos passados: ${passados.length}`);
+            
+            // Renderizar futuros
+            if (futuros.length === 0) {
+                renderEmpty('eventosFuturosContainer', 
+                    filtroAtivo === 'todos' 
+                        ? 'Nenhum evento futuro agendado no momento' 
+                        : `Nenhum evento futuro do tipo "${filtroAtivo}"`
+                );
+            } else {
+                const htmlFuturos = futuros.map(e => renderEvento(e)).join('');
+                futurosContainer.innerHTML = htmlFuturos;
+                log('✅', `${futuros.length} eventos futuros renderizados`);
+            }
+            
+            // Renderizar passados (mais recentes primeiro)
+            passados.reverse();
+            if (passados.length === 0) {
+                renderEmpty('eventosPassadosContainer', 
+                    filtroAtivo === 'todos' 
+                        ? 'Nenhum evento realizado ainda' 
+                        : `Nenhum evento realizado do tipo "${filtroAtivo}"`
+                );
+            } else {
+                const htmlPassados = passados.map(e => renderEvento(e)).join('');
+                passadosContainer.innerHTML = htmlPassados;
+                log('✅', `${passados.length} eventos passados renderizados`);
+            }
+            
+            // Aplicar animações se disponível
+            if (typeof CENIScroll !== 'undefined' && typeof CENIScroll.refresh === 'function') {
+                setTimeout(() => CENIScroll.refresh(), 100);
+            }
         }
         
         // ========================================
@@ -926,7 +1005,9 @@
         // ========================================
         
         function setupFiltros() {
+            log('🎛️', 'Configurando filtros');
             const buttons = document.querySelectorAll('.btn-filtro');
+            log('🔘', `Botões de filtro encontrados: ${buttons.length}`);
             
             buttons.forEach(button => {
                 button.addEventListener('click', () => {
@@ -938,6 +1019,7 @@
                     
                     // Atualizar filtro
                     filtroAtivo = button.dataset.tipo;
+                    log('🔄', `Filtro alterado para: ${filtroAtivo}`);
                     
                     // Re-renderizar
                     renderEventos();
@@ -950,13 +1032,14 @@
         // ========================================
         
         async function fetchEventos() {
-            console.log('🔄 Buscando todos os eventos...');
+            log('🚀', '========== INICIANDO BUSCA DE EVENTOS ==========');
             
-            // Verificar cache
+            // Verificar cache primeiro
             const cached = getCachedData();
             if (cached && cached.eventos) {
-                console.log('✅ Usando dados do cache');
+                log('💨', 'Usando dados do cache');
                 todosEventos = cached.eventos;
+                log('📋', 'Eventos do cache:', todosEventos);
                 renderEventos();
                 return;
             }
@@ -967,33 +1050,43 @@
             
             try {
                 const url = `${CONFIG.API_URL}?action=todos_eventos&_t=${Date.now()}`;
-                console.log('📡 Fazendo requisição:', url);
+                log('🌐', 'URL da requisição:', url);
                 
                 const response = await fetch(url);
+                log('📡', 'Status HTTP:', response.status, response.statusText);
                 
                 if (!response.ok) {
                     throw new Error(`HTTP ${response.status}: ${response.statusText}`);
                 }
                 
                 const result = await response.json();
-                console.log('📥 Resposta da API:', result);
+                log('📦', 'Resposta completa da API:', result);
                 
                 if (!result.success) {
                     throw new Error(result.error || 'Erro desconhecido na API');
                 }
                 
+                // Validar estrutura da resposta
+                if (!result.eventos || !Array.isArray(result.eventos)) {
+                    throw new Error('Resposta da API não contém array de eventos');
+                }
+                
+                log('📊', `Total de eventos recebidos: ${result.eventos.length}`);
+                
                 // Salvar no cache
-                setCachedData({ eventos: result.eventos || [] });
+                setCachedData({ eventos: result.eventos });
                 
                 // Atualizar dados
-                todosEventos = result.eventos || [];
+                todosEventos = result.eventos;
                 
                 // Renderizar
-                console.log(`✅ ${todosEventos.length} eventos carregados`);
+                log('✅', '========== EVENTOS CARREGADOS COM SUCESSO ==========');
                 renderEventos();
                 
             } catch (error) {
-                console.error('❌ Erro ao buscar eventos:', error);
+                logError('💥', '========== ERRO AO BUSCAR EVENTOS ==========');
+                logError('❌', 'Detalhes do erro:', error);
+                logError('📋', 'Stack trace:', error.stack);
                 renderError('eventosFuturosContainer', error.message);
                 renderError('eventosPassadosContainer', error.message);
             }
@@ -1004,20 +1097,36 @@
         // ========================================
         
         document.addEventListener('DOMContentLoaded', () => {
-            console.log('🎯 Sistema de eventos inicializado');
+            log('🎯', '========== SISTEMA DE EVENTOS INICIALIZADO ==========');
+            log('⚙️', 'Configuração:', CONFIG);
             setupFiltros();
             fetchEventos();
         });
         
         // Expor funções globalmente para debug
         window.CENI_Eventos = {
-            recarregar: fetchEventos,
+            recarregar: () => {
+                log('🔄', 'Recarregamento manual solicitado');
+                fetchEventos();
+            },
             limparCache: () => {
                 localStorage.removeItem(CONFIG.CACHE_KEY);
-                console.log('🗑️ Cache limpo');
+                log('🗑️', 'Cache limpo');
                 fetchEventos();
+            },
+            verEventos: () => {
+                log('👀', 'Eventos atuais:', todosEventos);
+                return todosEventos;
+            },
+            testarData: (dataStr) => {
+                log('🧪', 'Testando parse de data:', dataStr);
+                const resultado = parseDataBrasileira(dataStr);
+                log('📅', 'Resultado:', resultado);
+                return resultado;
             }
         };
+        
+        log('✅', 'Funções de debug expostas em window.CENI_Eventos');
     </script>
 
     <!-- Scripts do Site -->
