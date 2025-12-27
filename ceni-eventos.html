@@ -1,0 +1,1070 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CENI-RJ - Eventos e Agenda</title>
+    
+    <!-- Meta Tags SEO -->
+    <meta name="description" content="Agenda completa de eventos do Comitê Estadual de Investimentos e Negócios de Impacto do Rio de Janeiro">
+    <meta property="og:title" content="CENI-RJ - Eventos e Agenda">
+    <meta property="og:description" content="Acompanhe reuniões, workshops e eventos do ecossistema de impacto no Rio de Janeiro">
+    <meta property="og:type" content="website">
+    
+    <!-- Preconnect -->
+    <link rel="preconnect" href="https://cdn.jsdelivr.net">
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+    
+    <!-- CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Sistema de Animações -->
+    <link rel="stylesheet" href="ceni-animations.css">
+    <link rel="stylesheet" href="ceni-scroll-enhancements.css">
+    <link rel="stylesheet" href="ceni-theme-enhanced.css">
+    <link rel="stylesheet" href="ceni-header-enhanced.css">
+    <link rel="stylesheet" href="ceni-footer-enhanced.css">
+    
+    <style>
+        :root {
+            --primary: #1e3a8a;
+            --accent: #000000;
+            --background: #ffffff;
+            --text-primary: #000000;
+            --text-secondary: #666666;
+            --grid-line: #e0e0e0;
+            --gt1-color: #1e3a8a;
+            --gt2-color: #1e5631;
+            --gt3-color: #e89bb8;
+            --gt4-color: #e8632e;
+            --gt5-color: #f4b942;
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            background-color: var(--background);
+            color: var(--text-primary);
+            line-height: 1.5;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+        }
+
+        .skip-link {
+            position: absolute;
+            top: -40px;
+            left: 0;
+            background: var(--accent);
+            color: white;
+            padding: 8px;
+            z-index: 100;
+            text-decoration: none;
+        }
+        .skip-link:focus { top: 0; }
+
+        .progress-indicator {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: var(--primary);
+            z-index: 9999;
+            transition: width 0.2s;
+        }
+
+        .breadcrumb-container {
+            background: var(--background);
+            border-bottom: 1px solid var(--grid-line);
+            padding: 1rem 0;
+        }
+        .breadcrumb {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 3rem;
+            display: flex;
+            gap: 0.5rem;
+            font-size: 0.875rem;
+            list-style: none;
+        }
+        .breadcrumb a {
+            color: var(--text-secondary);
+            text-decoration: none;
+        }
+        .breadcrumb a:hover { color: var(--primary); }
+        .breadcrumb .active {
+            color: var(--text-primary);
+            font-weight: 700;
+        }
+        
+        .swiss-grid {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 3rem;
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 2rem;
+            position: relative;
+        }
+        
+        .col-full { grid-column: 1 / -1; position: relative; z-index: 1; }
+        .col-8 { grid-column: span 8; position: relative; z-index: 1; }
+        .col-4 { grid-column: span 4; position: relative; z-index: 1; }
+
+        .section-number {
+            font-size: 10rem;
+            font-weight: 900;
+            line-height: 1;
+            color: var(--primary);
+            opacity: 0.08;
+            position: absolute;
+            top: -3rem;
+            left: -2rem;
+            z-index: 0;
+        }
+        
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            line-height: 1.2;
+            text-transform: uppercase;
+            letter-spacing: -0.02em;
+            margin-bottom: 3rem;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .label {
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+            display: block;
+        }
+        
+        .hero-section {
+            padding: 4rem 0 6rem 0;
+            position: relative;
+        }
+        
+        .hero-title {
+            font-size: 3.5rem;
+            font-weight: 700;
+            line-height: 1.1;
+            margin: 2rem 0 2rem 0;
+            text-transform: uppercase;
+            letter-spacing: -0.02em;
+        }
+        
+        .hero-line {
+            width: 100px;
+            height: 4px;
+            background: var(--primary);
+            margin: 2rem 0;
+        }
+        
+        .hero-description {
+            font-size: 1.25rem;
+            line-height: 1.6;
+            max-width: 700px;
+            color: var(--text-secondary);
+        }
+
+        /* ========================================
+           FILTROS DE EVENTOS
+        ======================================== */
+        
+        .eventos-filtros {
+            margin: 3rem 0;
+            padding: 2rem;
+            border: 4px solid var(--grid-line);
+            background: var(--background);
+        }
+        
+        .filtros-header {
+            font-size: 0.875rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 1.5rem;
+            color: var(--text-secondary);
+        }
+        
+        .filtros-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        
+        .btn-filtro {
+            padding: 0.75rem 1.5rem;
+            background: transparent;
+            border: 2px solid var(--accent);
+            color: var(--accent);
+            font-size: 0.875rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-filtro:hover {
+            background: var(--accent);
+            color: white;
+        }
+        
+        .btn-filtro.active {
+            background: var(--primary);
+            border-color: var(--primary);
+            color: white;
+        }
+
+        /* ========================================
+           LISTA DE EVENTOS
+        ======================================== */
+        
+        .eventos-lista {
+            display: grid;
+            gap: 2rem;
+            margin-bottom: 4rem;
+        }
+        
+        .evento-card {
+            border: 4px solid var(--accent);
+            background: var(--background);
+            padding: 3rem;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+        }
+        
+        .evento-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+        }
+        
+        .evento-badge {
+            display: inline-block;
+            background: var(--primary);
+            color: white;
+            padding: 0.5rem 1.5rem;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            margin-bottom: 2rem;
+        }
+        
+        .evento-meta {
+            display: flex;
+            gap: 2rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+        
+        .evento-data,
+        .evento-horario {
+            font-size: 0.875rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .evento-data i,
+        .evento-horario i {
+            color: var(--primary);
+        }
+        
+        .evento-titulo {
+            font-size: 2rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            line-height: 1.2;
+            margin-bottom: 1.5rem;
+            color: var(--accent);
+        }
+        
+        .evento-descricao {
+            font-size: 1.125rem;
+            line-height: 1.6;
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+        }
+        
+        .evento-local {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+            padding: 1rem 0;
+            border-top: 2px solid var(--grid-line);
+            border-bottom: 2px solid var(--grid-line);
+            margin-bottom: 2rem;
+        }
+        
+        .evento-local i {
+            color: var(--primary);
+            margin-top: 0.25rem;
+        }
+        
+        .btn-evento {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 1rem 2.5rem;
+            background: var(--accent);
+            color: white;
+            text-decoration: none;
+            text-transform: uppercase;
+            font-size: 0.875rem;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            border: none;
+            transition: all 0.3s ease, transform 0.2s ease;
+        }
+        
+        .btn-evento:hover {
+            background: var(--primary);
+            color: white;
+            transform: translateX(4px);
+        }
+        
+        .btn-evento i {
+            transition: transform 0.3s ease;
+        }
+        
+        .btn-evento:hover i {
+            transform: translateX(4px);
+        }
+
+        /* Estados de Carregamento */
+        .eventos-loading {
+            border: 4px solid var(--grid-line);
+            padding: 3rem;
+            text-align: center;
+            background: var(--background);
+        }
+        
+        .eventos-loading-spinner {
+            width: 48px;
+            height: 48px;
+            border: 4px solid var(--grid-line);
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        .eventos-empty {
+            border: 4px solid var(--grid-line);
+            padding: 4rem 3rem;
+            text-align: center;
+            background: var(--background);
+        }
+        
+        .eventos-empty-icon {
+            font-size: 4rem;
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+            opacity: 0.3;
+        }
+        
+        .eventos-empty h4 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-bottom: 1rem;
+            color: var(--accent);
+        }
+        
+        .eventos-error {
+            border: 4px solid #dc3545;
+            padding: 3rem;
+            text-align: center;
+            background: #fff5f5;
+        }
+
+        /* Separadores de Seção */
+        .secao-separador {
+            margin: 4rem 0;
+            padding: 2rem;
+            background: var(--primary);
+            color: white;
+            text-align: center;
+        }
+        
+        .secao-separador h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        .back-to-top {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 50px;
+            height: 50px;
+            background: var(--accent);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            font-size: 1.5rem;
+            cursor: pointer;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s;
+            z-index: 999;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+
+        .back-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .back-to-top:hover {
+            background: var(--primary);
+            transform: translateY(-4px);
+        }
+
+        @media (max-width: 968px) {
+            .swiss-grid { 
+                padding: 0 2rem; 
+                grid-template-columns: 1fr;
+            }
+            .breadcrumb { padding: 0 2rem; }
+            .col-8, .col-4 { grid-column: 1 / -1; }
+            .hero-title { font-size: 2.5rem; }
+            .section-title { font-size: 2rem; }
+            .section-number { font-size: 6rem; }
+            
+            .evento-card {
+                padding: 2rem;
+            }
+            
+            .evento-titulo {
+                font-size: 1.5rem;
+            }
+            
+            .evento-descricao {
+                font-size: 1rem;
+            }
+            
+            .evento-meta {
+                flex-direction: column;
+                gap: 0.75rem;
+            }
+            
+            .filtros-buttons {
+                flex-direction: column;
+            }
+            
+            .btn-filtro {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .btn-evento {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <a href="#main-content" class="skip-link">Pular para o conteúdo principal</a>
+    <div class="progress-indicator" id="progressBar"></div>
+
+    <header class="gov-header">
+        <div class="header-grid">
+            <div class="header-brand">
+                <img src="https://raw.githubusercontent.com/GabrielFelizardo/almoxarifado-sistema/main/logo.png" alt="SEDEICS" class="gov-logo-img" loading="lazy">
+                
+                <div class="header-ceni-mark">
+                    <div class="header-ceni-title">CENI-RJ</div>
+                    <div class="header-ceni-subtitle">Comitê Estadual de Impacto</div>
+                </div>
+            </div>
+            
+            <button class="mobile-menu-toggle" id="menuToggle" aria-label="Abrir menu de navegação" aria-expanded="false">
+                <i class="fas fa-bars"></i>
+            </button>
+
+            <nav class="main-nav" id="mainNav" role="navigation" aria-label="Navegação principal">
+                <a href="ceni-index.html">Início</a>
+                <a href="ceni-sobre.html">Sobre</a>
+                <a href="ceni-gts.html">GTs</a>
+                <a href="ceni-eventos.html" class="active" aria-current="page">Eventos</a>
+                <a href="ceni-canais.html">Canais</a>
+                <a href="ceni-repositorio.html">Repositório</a>
+            </nav>
+        </div>
+    </header>
+
+    <nav class="breadcrumb-container" aria-label="Breadcrumb">
+        <ol class="breadcrumb">
+            <li><a href="ceni-index.html">CENI-RJ</a></li>
+            <li class="active" aria-current="page">→ Eventos</li>
+        </ol>
+    </nav>
+
+    <main id="main-content">
+        <!-- HERO -->
+        <section class="hero-section">
+            <div class="swiss-grid">
+                <div class="col-full">
+                    <span class="label" data-animate="fade-up">Agenda</span>
+                    <div class="hero-line" aria-hidden="true" data-animate="scale-in" data-delay="100"></div>
+                    <h1 class="hero-title" data-animate="fade-up" data-delay="200">
+                        Eventos e<br>
+                        Agenda CENI-RJ
+                    </h1>
+                    <p class="hero-description" data-animate="fade-up" data-delay="300">
+                        Acompanhe as reuniões, workshops e eventos do ecossistema de investimentos e 
+                        negócios de impacto no Estado do Rio de Janeiro. Participe da construção de 
+                        uma economia mais inclusiva e sustentável.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- FILTROS -->
+        <section>
+            <div class="swiss-grid">
+                <div class="col-full">
+                    <div class="eventos-filtros" data-animate="fade-up">
+                        <div class="filtros-header">
+                            <i class="fas fa-filter"></i> Filtrar por tipo de evento
+                        </div>
+                        <div class="filtros-buttons" id="filtrosContainer">
+                            <button class="btn-filtro active" data-tipo="todos">
+                                Todos os Eventos
+                            </button>
+                            <button class="btn-filtro" data-tipo="Reunião Ordinária">
+                                📋 Reuniões Ordinárias
+                            </button>
+                            <button class="btn-filtro" data-tipo="Workshop">
+                                🎯 Workshops
+                            </button>
+                            <button class="btn-filtro" data-tipo="Lançamento">
+                                🚀 Lançamentos
+                            </button>
+                            <button class="btn-filtro" data-tipo="Evento Público">
+                                🎤 Eventos Públicos
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- EVENTOS FUTUROS -->
+        <section style="margin-top: 4rem;">
+            <div class="swiss-grid">
+                <div class="col-full">
+                    <span class="label" data-animate="fade-up">Próximos</span>
+                    <h2 class="section-title" data-animate="fade-up" data-delay="100">
+                        Eventos<br>Futuros
+                    </h2>
+                </div>
+                
+                <div class="col-full">
+                    <div id="eventosFuturosContainer" class="eventos-lista">
+                        <!-- Conteúdo será inserido dinamicamente -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- EVENTOS PASSADOS -->
+        <section style="margin: 4rem 0 8rem 0;">
+            <div class="swiss-grid">
+                <div class="col-full">
+                    <div class="secao-separador">
+                        <h3>Eventos Realizados</h3>
+                    </div>
+                </div>
+                
+                <div class="col-full">
+                    <div id="eventosPassadosContainer" class="eventos-lista">
+                        <!-- Conteúdo será inserido dinamicamente -->
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <button class="back-to-top" id="backToTop" aria-label="Voltar ao topo">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <footer class="page-footer-enhanced" data-animate>
+        <div class="swiss-grid">
+            <div class="footer-grid-enhanced" style="grid-column: 1 / -1;">
+                
+                <div class="footer-brand">
+                    <div class="footer-logo-text">CENI-RJ</div>
+                    <p class="footer-tagline">
+                        Comitê Estadual de Investimentos e Negócios de Impacto do Rio de Janeiro
+                    </p>
+                </div>
+                
+                <div class="footer-section-enhanced gt-accent-1">
+                    <h4>Navegação</h4>
+                    <div class="footer-section-content">
+                        <a href="ceni-index.html">
+                            <i class="fas fa-home"></i>
+                            <span>Início</span>
+                        </a>
+                        <a href="ceni-sobre.html">
+                            <i class="fas fa-info-circle"></i>
+                            <span>Sobre o Comitê</span>
+                        </a>
+                        <a href="ceni-gts.html">
+                            <i class="fas fa-users"></i>
+                            <span>Grupos de Trabalho</span>
+                        </a>
+                        <a href="ceni-eventos.html">
+                            <i class="fas fa-calendar-alt"></i>
+                            <span>Eventos</span>
+                        </a>
+                        <a href="ceni-canais.html">
+                            <i class="fas fa-comments"></i>
+                            <span>Canais</span>
+                        </a>
+                        <a href="ceni-repositorio.html">
+                            <i class="fas fa-folder-open"></i>
+                            <span>Repositório</span>
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="footer-section-enhanced gt-accent-2">
+                    <h4>Contato</h4>
+                    <div class="footer-section-content">
+                        <a href="mailto:ceni@sedeics.rj.gov.br" class="footer-contact-link">
+                            <i class="fas fa-envelope"></i>
+                            <span>ceni@sedeics.rj.gov.br</span>
+                        </a>
+                        <a href="mailto:sedeics@sedeics.rj.gov.br" class="footer-contact-link">
+                            <i class="fas fa-envelope"></i>
+                            <span>sedeics@sedeics.rj.gov.br</span>
+                        </a>
+                        <a href="tel:+552133987000">
+                            <i class="fas fa-phone"></i>
+                            <span>(21) 3398-7000</span>
+                        </a>
+                        <div style="margin-top: 1rem; color: rgba(255,255,255,0.75); font-size: 0.875rem;">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span style="margin-left: 0.75rem;">SEDEICS - Rio de Janeiro, RJ</span>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+            
+            <div class="footer-bottom-enhanced" style="grid-column: 1 / -1;">
+                <p>© <span id="current-year"></span> CENI-RJ - Comitê Estadual de Investimentos e Negócios de Impacto</p>
+                <p>SEDEICS - Secretaria de Desenvolvimento Econômico, Indústria, Comércio e Serviços</p>
+                <p>Desenvolvido por Gabriel Felizardo da Silva</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Sistema de Animações -->
+    <script src="ceni-animations.js"></script>
+    <script src="ceni-footer-enhanced.js"></script>
+    
+    <!-- Sistema de Eventos - INLINE -->
+    <script>
+        // ========================================
+        // CONFIGURAÇÃO
+        // ========================================
+        
+        const CONFIG = {
+            API_URL: 'https://script.google.com/macros/s/AKfycbwK2yrE4LdANPPvzEztemfcrea2nE5B93tESSgmB6E0WKzsHNtPa-XwXAWfdYWMYZw/exec',
+            CACHE_KEY: 'ceni_todos_eventos',
+            CACHE_DURATION: 30 * 60 * 1000 // 30 minutos
+        };
+        
+        let todosEventos = [];
+        let filtroAtivo = 'todos';
+        
+        // ========================================
+        // FUNÇÕES DE CACHE
+        // ========================================
+        
+        function getCachedData() {
+            try {
+                const cached = localStorage.getItem(CONFIG.CACHE_KEY);
+                if (!cached) return null;
+                
+                const data = JSON.parse(cached);
+                const now = Date.now();
+                
+                if (now - data.timestamp > CONFIG.CACHE_DURATION) {
+                    localStorage.removeItem(CONFIG.CACHE_KEY);
+                    return null;
+                }
+                
+                console.log('✅ Dados carregados do cache');
+                return data.value;
+                
+            } catch (error) {
+                console.error('Erro ao ler cache:', error);
+                return null;
+            }
+        }
+        
+        function setCachedData(value) {
+            try {
+                const data = {
+                    value: value,
+                    timestamp: Date.now()
+                };
+                localStorage.setItem(CONFIG.CACHE_KEY, JSON.stringify(data));
+                console.log('✅ Dados salvos no cache');
+            } catch (error) {
+                console.error('Erro ao salvar cache:', error);
+            }
+        }
+        
+        // ========================================
+        // RENDERIZAÇÃO
+        // ========================================
+        
+        function renderLoading(containerId) {
+            const container = document.getElementById(containerId);
+            if (!container) return;
+            
+            container.innerHTML = `
+                <div class="eventos-loading">
+                    <div class="eventos-loading-spinner"></div>
+                    <p style="color: #666; font-weight: 600;">Carregando eventos...</p>
+                </div>
+            `;
+        }
+        
+        function renderEmpty(containerId, mensagem) {
+            const container = document.getElementById(containerId);
+            if (!container) return;
+            
+            container.innerHTML = `
+                <div class="eventos-empty">
+                    <div class="eventos-empty-icon">
+                        <i class="fas fa-calendar-check"></i>
+                    </div>
+                    <h4>${mensagem}</h4>
+                </div>
+            `;
+        }
+        
+        function renderError(containerId, message) {
+            const container = document.getElementById(containerId);
+            if (!container) return;
+            
+            container.innerHTML = `
+                <div class="eventos-error">
+                    <div style="font-size: 3rem; color: #dc3545; margin-bottom: 1rem;">
+                        <i class="fas fa-exclamation-triangle"></i>
+                    </div>
+                    <h4 style="color: #dc3545; margin-bottom: 1rem;">Erro ao Carregar Eventos</h4>
+                    <p style="color: #721c24;">${message}</p>
+                </div>
+            `;
+        }
+        
+        function getTipoBadge(tipo) {
+            const badges = {
+                'Reunião Ordinária': '📋 Reunião Ordinária',
+                'Workshop': '🎯 Workshop',
+                'Lançamento': '🚀 Lançamento',
+                'Evento Público': '🎤 Evento Público',
+                'Reunião Extraordinária': '⚡ Reunião Extraordinária'
+            };
+            return badges[tipo] || tipo || '📅 Evento';
+        }
+        
+        function renderEvento(evento) {
+            const tipoBadge = getTipoBadge(evento.tipo);
+            
+            return `
+                <div class="evento-card" data-tipo="${evento.tipo}" data-animate="fade-up">
+                    <div class="evento-badge">${tipoBadge}</div>
+                    <div class="evento-meta">
+                        <span class="evento-data">
+                            <i class="fas fa-calendar-alt"></i>
+                            ${evento.data}
+                        </span>
+                        ${evento.horario ? `
+                            <span class="evento-horario">
+                                <i class="fas fa-clock"></i>
+                                ${evento.horario}
+                            </span>
+                        ` : ''}
+                    </div>
+                    
+                    <h3 class="evento-titulo">${evento.titulo}</h3>
+                    
+                    <p class="evento-descricao">${evento.descricao}</p>
+                    
+                    <div class="evento-local">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>${evento.local}</span>
+                    </div>
+                    
+                    ${evento.link_inscricao ? `
+                        <a href="${evento.link_inscricao}" 
+                           class="btn-evento" 
+                           target="_blank" 
+                           rel="noopener noreferrer">
+                            <span>Inscreva-se</span>
+                            <i class="fas fa-arrow-right"></i>
+                        </a>
+                    ` : ''}
+                </div>
+            `;
+        }
+        
+        function renderEventos() {
+            const futurosContainer = document.getElementById('eventosFuturosContainer');
+            const passadosContainer = document.getElementById('eventosPassadosContainer');
+            
+            if (!futurosContainer || !passadosContainer) return;
+            
+            // Filtrar eventos
+            let eventosFiltrados = todosEventos;
+            if (filtroAtivo !== 'todos') {
+                eventosFiltrados = todosEventos.filter(e => e.tipo === filtroAtivo);
+            }
+            
+            // Separar futuros e passados
+            const hoje = new Date();
+            hoje.setHours(0, 0, 0, 0);
+            
+            const futuros = eventosFiltrados.filter(e => {
+                const dataEvento = parseDataBrasileira(e.data);
+                return dataEvento >= hoje;
+            });
+            
+            const passados = eventosFiltrados.filter(e => {
+                const dataEvento = parseDataBrasileira(e.data);
+                return dataEvento < hoje;
+            }).reverse(); // Mais recentes primeiro
+            
+            // Renderizar futuros
+            if (futuros.length === 0) {
+                renderEmpty('eventosFuturosContainer', 
+                    filtroAtivo === 'todos' 
+                        ? 'Nenhum evento futuro agendado no momento' 
+                        : `Nenhum evento futuro do tipo "${filtroAtivo}"`
+                );
+            } else {
+                futurosContainer.innerHTML = futuros.map(e => renderEvento(e)).join('');
+            }
+            
+            // Renderizar passados
+            if (passados.length === 0) {
+                renderEmpty('eventosPassadosContainer', 
+                    filtroAtivo === 'todos' 
+                        ? 'Nenhum evento realizado ainda' 
+                        : `Nenhum evento realizado do tipo "${filtroAtivo}"`
+                );
+            } else {
+                passadosContainer.innerHTML = passados.map(e => renderEvento(e)).join('');
+            }
+            
+            // Aplicar animações
+            if (typeof CENIScroll !== 'undefined' && typeof CENIScroll.refresh === 'function') {
+                setTimeout(() => CENIScroll.refresh(), 100);
+            }
+        }
+        
+        function parseDataBrasileira(dataStr) {
+            // Espera formato: "DD/MM/YYYY" ou "DD de MMMM de YYYY"
+            const partes = dataStr.split('/');
+            if (partes.length === 3) {
+                return new Date(partes[2], partes[1] - 1, partes[0]);
+            }
+            
+            // Tentar parsing alternativo
+            const meses = {
+                'janeiro': 0, 'fevereiro': 1, 'março': 2, 'abril': 3,
+                'maio': 4, 'junho': 5, 'julho': 6, 'agosto': 7,
+                'setembro': 8, 'outubro': 9, 'novembro': 10, 'dezembro': 11
+            };
+            
+            const regex = /(\d+)\s+de\s+(\w+)\s+de\s+(\d+)/i;
+            const match = dataStr.match(regex);
+            
+            if (match) {
+                const dia = parseInt(match[1]);
+                const mes = meses[match[2].toLowerCase()];
+                const ano = parseInt(match[3]);
+                return new Date(ano, mes, dia);
+            }
+            
+            return new Date();
+        }
+        
+        // ========================================
+        // FILTROS
+        // ========================================
+        
+        function setupFiltros() {
+            const buttons = document.querySelectorAll('.btn-filtro');
+            
+            buttons.forEach(button => {
+                button.addEventListener('click', () => {
+                    // Remover active de todos
+                    buttons.forEach(b => b.classList.remove('active'));
+                    
+                    // Adicionar active no clicado
+                    button.classList.add('active');
+                    
+                    // Atualizar filtro
+                    filtroAtivo = button.dataset.tipo;
+                    
+                    // Re-renderizar
+                    renderEventos();
+                });
+            });
+        }
+        
+        // ========================================
+        // BUSCAR DADOS DA API
+        // ========================================
+        
+        async function fetchEventos() {
+            console.log('🔄 Buscando todos os eventos...');
+            
+            // Verificar cache
+            const cached = getCachedData();
+            if (cached && cached.eventos) {
+                console.log('✅ Usando dados do cache');
+                todosEventos = cached.eventos;
+                renderEventos();
+                return;
+            }
+            
+            // Mostrar loading
+            renderLoading('eventosFuturosContainer');
+            renderLoading('eventosPassadosContainer');
+            
+            try {
+                const url = `${CONFIG.API_URL}?action=todos_eventos&_t=${Date.now()}`;
+                console.log('📡 Fazendo requisição:', url);
+                
+                const response = await fetch(url);
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+                
+                const result = await response.json();
+                console.log('📥 Resposta da API:', result);
+                
+                if (!result.success) {
+                    throw new Error(result.error || 'Erro desconhecido na API');
+                }
+                
+                // Salvar no cache
+                setCachedData({ eventos: result.eventos || [] });
+                
+                // Atualizar dados
+                todosEventos = result.eventos || [];
+                
+                // Renderizar
+                console.log(`✅ ${todosEventos.length} eventos carregados`);
+                renderEventos();
+                
+            } catch (error) {
+                console.error('❌ Erro ao buscar eventos:', error);
+                renderError('eventosFuturosContainer', error.message);
+                renderError('eventosPassadosContainer', error.message);
+            }
+        }
+        
+        // ========================================
+        // INICIALIZAÇÃO
+        // ========================================
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('🎯 Sistema de eventos inicializado');
+            setupFiltros();
+            fetchEventos();
+        });
+        
+        // Expor funções globalmente para debug
+        window.CENI_Eventos = {
+            recarregar: fetchEventos,
+            limparCache: () => {
+                localStorage.removeItem(CONFIG.CACHE_KEY);
+                console.log('🗑️ Cache limpo');
+                fetchEventos();
+            }
+        };
+    </script>
+
+    <!-- Scripts do Site -->
+    <script>
+        // Year
+        document.getElementById('current-year').textContent = new Date().getFullYear();
+        
+        // Sticky header
+        const header = document.querySelector('.gov-header');
+        window.addEventListener('scroll', () => {
+            header.classList.toggle('scrolled', window.scrollY > 100);
+        });
+
+        // Progress indicator
+        window.addEventListener('scroll', () => {
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            document.getElementById('progressBar').style.width = ((winScroll / height) * 100) + '%';
+        });
+
+        // Mobile menu
+        const menuToggle = document.getElementById('menuToggle');
+        const mainNav = document.getElementById('mainNav');
+
+        menuToggle.addEventListener('click', () => {
+            const isOpen = mainNav.classList.toggle('active');
+            menuToggle.setAttribute('aria-expanded', isOpen);
+            menuToggle.innerHTML = isOpen ? '<i class="fas fa-times"></i>' : '<i class="fas fa-bars"></i>';
+        });
+
+        // Back to top
+        const backToTop = document.getElementById('backToTop');
+        
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 300) {
+                backToTop.classList.add('visible');
+            } else {
+                backToTop.classList.remove('visible');
+            }
+        });
+
+        backToTop.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+    </script>
+</body>
+</html>
