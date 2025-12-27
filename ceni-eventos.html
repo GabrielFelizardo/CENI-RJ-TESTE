@@ -46,15 +46,6 @@
             background: var(--primary);
             padding: 1.5rem 0;
             border-bottom: 4px solid var(--accent);
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            transition: all 0.3s ease;
-        }
-        
-        .gov-header.scrolled {
-            padding: 1rem 0;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
         }
         
         .header-grid {
@@ -403,6 +394,37 @@
             background: #fff5f5;
         }
 
+        .eventos-error h4 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-bottom: 1rem;
+            color: #dc3545;
+        }
+
+        .eventos-error p {
+            font-size: 1rem;
+            margin-bottom: 1.5rem;
+            color: var(--text-secondary);
+        }
+
+        .btn-retry {
+            padding: 1rem 2rem;
+            background: var(--accent);
+            color: white;
+            border: none;
+            font-size: 0.875rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-retry:hover {
+            background: var(--primary);
+        }
+
         .secao-separador {
             margin: 4rem 0 3rem 0;
             padding: 2rem;
@@ -475,207 +497,6 @@
             margin-bottom: 0.5rem;
         }
 
-        /* ANIMAÇÕES E SCROLL ENHANCEMENTS */
-        .fade-in {
-            opacity: 0;
-            transform: translateY(30px);
-            transition: opacity 0.6s ease, transform 0.6s ease;
-        }
-        
-        .fade-in.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-        
-        .slide-in-left {
-            opacity: 0;
-            transform: translateX(-50px);
-            transition: opacity 0.8s ease, transform 0.8s ease;
-        }
-        
-        .slide-in-left.visible {
-            opacity: 1;
-            transform: translateX(0);
-        }
-        
-        .slide-in-right {
-            opacity: 0;
-            transform: translateX(50px);
-            transition: opacity 0.8s ease, transform 0.8s ease;
-        }
-        
-        .slide-in-right.visible {
-            opacity: 1;
-            transform: translateX(0);
-        }
-        
-        .scale-in {
-            opacity: 0;
-            transform: scale(0.9);
-            transition: opacity 0.6s ease, transform 0.6s ease;
-        }
-        
-        .scale-in.visible {
-            opacity: 1;
-            transform: scale(1);
-        }
-        
-        .stagger-delay-1 { transition-delay: 0.1s; }
-        .stagger-delay-2 { transition-delay: 0.2s; }
-        .stagger-delay-3 { transition-delay: 0.3s; }
-        .stagger-delay-4 { transition-delay: 0.4s; }
-        .stagger-delay-5 { transition-delay: 0.5s; }
-        
-        /* Animações específicas dos elementos */
-        .evento-card {
-            opacity: 0;
-            transform: translateY(30px);
-            transition: opacity 0.6s ease, transform 0.6s ease, box-shadow 0.3s ease;
-        }
-        
-        .evento-card.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-        
-        .hero-title,
-        .hero-description,
-        .hero-line {
-            opacity: 0;
-            transform: translateY(20px);
-            transition: opacity 0.8s ease, transform 0.8s ease;
-        }
-        
-        .hero-title.visible,
-        .hero-description.visible,
-        .hero-line.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-        
-        .eventos-filtros {
-            opacity: 0;
-            transform: translateY(20px);
-            transition: opacity 0.6s ease, transform 0.6s ease;
-        }
-        
-        .eventos-filtros.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-        
-        .section-title {
-            opacity: 0;
-            transform: translateX(-30px);
-            transition: opacity 0.7s ease, transform 0.7s ease;
-        }
-        
-        .section-title.visible {
-            opacity: 1;
-            transform: translateX(0);
-        }
-        
-        .label {
-            opacity: 0;
-            transform: translateY(-10px);
-            transition: opacity 0.5s ease, transform 0.5s ease;
-        }
-        
-        .label.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-        
-        .secao-separador {
-            opacity: 0;
-            transform: scaleX(0);
-            transition: opacity 0.8s ease, transform 0.8s ease;
-            transform-origin: left;
-        }
-        
-        .secao-separador.visible {
-            opacity: 1;
-            transform: scaleX(1);
-        }
-        
-        /* Smooth scroll behavior */
-        html {
-            scroll-behavior: smooth;
-        }
-        
-        /* Animação de pulse para badges */
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-        }
-        
-        .evento-badge {
-            animation: pulse 2s ease-in-out infinite;
-        }
-        
-        .evento-card:hover .evento-badge {
-            animation: none;
-            transform: scale(1.1);
-        }
-        
-        /* Animação de loading spinner */
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-        
-        /* Transição suave da progress bar */
-        .progress-indicator {
-            transition: width 0.1s ease-out;
-        }
-        
-        /* Efeito de hover nos botões de filtro */
-        .btn-filtro {
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .btn-filtro::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 0;
-            height: 0;
-            border-radius: 50%;
-            background: rgba(30, 58, 138, 0.1);
-            transform: translate(-50%, -50%);
-            transition: width 0.6s, height 0.6s;
-        }
-        
-        .btn-filtro:hover::before {
-            width: 300px;
-            height: 300px;
-        }
-        
-        /* Efeito de brilho no hover dos cards */
-        .evento-card::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, 
-                transparent, 
-                rgba(255, 255, 255, 0.2), 
-                transparent);
-            transition: left 0.5s;
-        }
-        
-        .evento-card {
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .evento-card:hover::after {
-            left: 100%;
-        }
-
         @media (max-width: 968px) {
             .header-grid {
                 padding: 0 1rem;
@@ -704,16 +525,6 @@
             
             .btn-filtro {
                 width: 100%;
-            }
-        }
-        
-        @media (prefers-reduced-motion: reduce) {
-            *,
-            *::before,
-            *::after {
-                animation-duration: 0.01ms !important;
-                animation-iteration-count: 1 !important;
-                transition-duration: 0.01ms !important;
             }
         }
     </style>
@@ -754,13 +565,13 @@
         <!-- HERO -->
         <section class="hero-section">
             <div class="swiss-grid">
-                <span class="label fade-in">Agenda</span>
-                <div class="hero-line fade-in stagger-delay-1"></div>
-                <h1 class="hero-title fade-in stagger-delay-2">
+                <span class="label">Agenda</span>
+                <div class="hero-line"></div>
+                <h1 class="hero-title">
                     Eventos e<br>
                     Agenda CENI-RJ
                 </h1>
-                <p class="hero-description fade-in stagger-delay-3">
+                <p class="hero-description">
                     Acompanhe as reuniões, workshops e eventos do ecossistema de investimentos e 
                     negócios de impacto no Estado do Rio de Janeiro.
                 </p>
@@ -770,7 +581,7 @@
         <!-- FILTROS -->
         <section>
             <div class="swiss-grid">
-                <div class="eventos-filtros scale-in">
+                <div class="eventos-filtros">
                     <div class="filtros-header">
                         <i class="fas fa-filter"></i> Filtrar por tipo de evento
                     </div>
@@ -798,9 +609,14 @@
         <!-- EVENTOS FUTUROS -->
         <section class="eventos-section">
             <div class="swiss-grid">
-                <span class="label slide-in-left">Próximos</span>
-                <h2 class="section-title slide-in-left stagger-delay-1">Eventos Futuros</h2>
-                <div id="eventosFuturosContainer" class="eventos-lista"></div>
+                <span class="label">Próximos</span>
+                <h2 class="section-title">Eventos Futuros</h2>
+                <div id="eventosFuturosContainer" class="eventos-lista">
+                    <div class="eventos-loading">
+                        <div class="eventos-loading-spinner"></div>
+                        <p>Carregando eventos...</p>
+                    </div>
+                </div>
             </div>
         </section>
 
@@ -810,7 +626,12 @@
                 <div class="secao-separador">
                     <h3>Eventos Realizados</h3>
                 </div>
-                <div id="eventosPassadosContainer" class="eventos-lista"></div>
+                <div id="eventosPassadosContainer" class="eventos-lista">
+                    <div class="eventos-loading">
+                        <div class="eventos-loading-spinner"></div>
+                        <p>Carregando eventos...</p>
+                    </div>
+                </div>
             </div>
         </section>
     </main>
@@ -828,8 +649,12 @@
     </footer>
 
     <script>
-        // DADOS HARDCODED
-        const EVENTOS_HARDCODED = [
+        // ===== CONFIGURAÇÃO DA API =====
+        // SUBSTITUA ESTA URL PELA URL DO SEU GOOGLE APPS SCRIPT
+        const API_URL = 'https://script.google.com/macros/library/d/16dVcZRbQddmdfMBon41cN1drvTicAvJup-txLe6NzC4dJSuQQ3kyyfxU/8';
+        
+        // ===== DADOS DE FALLBACK =====
+        const EVENTOS_FALLBACK = [
             {
                 id: "EVT001",
                 titulo: "1ª Reunião Ordinária do CENI-RJ",
@@ -896,7 +721,7 @@
         let filtroAtivo = 'todos';
 
         function log(emoji, ...args) {
-            console.log(emoji, ...args);
+            console.log(`${emoji}`, ...args);
         }
 
         function getTipoBadge(tipo) {
@@ -910,11 +735,11 @@
             return badges[tipo] || tipo || '📅 Evento';
         }
 
-        function renderEvento(evento, staggerClass = '') {
+        function renderEvento(evento) {
             const tipoBadge = getTipoBadge(evento.tipo);
             
             return `
-                <div class="evento-card ${staggerClass}" data-tipo="${evento.tipo || ''}">
+                <div class="evento-card" data-tipo="${evento.tipo || ''}">
                     <div class="evento-badge">${tipoBadge}</div>
                     <div class="evento-meta">
                         <span class="evento-data">
@@ -982,6 +807,7 @@
             let eventosFiltrados = todosEventos;
             if (filtroAtivo !== 'todos') {
                 eventosFiltrados = todosEventos.filter(e => e.tipo === filtroAtivo);
+                log('🔍', `Filtro aplicado: ${filtroAtivo}, Resultados: ${eventosFiltrados.length}`);
             }
             
             const hoje = new Date();
@@ -1001,36 +827,45 @@
             
             if (futuros.length === 0) {
                 futurosContainer.innerHTML = `
-                    <div class="eventos-empty fade-in">
+                    <div class="eventos-empty">
                         <div class="eventos-empty-icon"><i class="fas fa-calendar-check"></i></div>
-                        <h4>Nenhum evento futuro</h4>
+                        <h4>Nenhum evento futuro ${filtroAtivo !== 'todos' ? 'nesta categoria' : ''}</h4>
+                        ${filtroAtivo !== 'todos' ? '<p>Tente selecionar outro tipo de evento.</p>' : ''}
                     </div>
                 `;
             } else {
-                futurosContainer.innerHTML = futuros.map((e, index) => {
-                    const staggerClass = `stagger-delay-${Math.min(index + 1, 5)}`;
-                    return renderEvento(e, staggerClass);
-                }).join('');
+                futurosContainer.innerHTML = futuros.map(e => renderEvento(e)).join('');
             }
             
             if (passados.length === 0) {
                 passadosContainer.innerHTML = `
-                    <div class="eventos-empty fade-in">
+                    <div class="eventos-empty">
                         <div class="eventos-empty-icon"><i class="fas fa-calendar-check"></i></div>
-                        <h4>Nenhum evento realizado ainda</h4>
+                        <h4>Nenhum evento realizado ${filtroAtivo !== 'todos' ? 'nesta categoria' : 'ainda'}</h4>
+                        ${filtroAtivo !== 'todos' ? '<p>Tente selecionar outro tipo de evento.</p>' : ''}
                     </div>
                 `;
             } else {
-                passadosContainer.innerHTML = passados.map((e, index) => {
-                    const staggerClass = `stagger-delay-${Math.min(index + 1, 5)}`;
-                    return renderEvento(e, staggerClass);
-                }).join('');
+                passadosContainer.innerHTML = passados.map(e => renderEvento(e)).join('');
             }
             
-            // Reativar o observer para os novos elementos
-            setTimeout(() => {
-                setupScrollAnimations();
-            }, 50);
+            log('✅', 'Renderização concluída');
+        }
+
+        function mostrarErro(mensagem) {
+            const errorHTML = `
+                <div class="eventos-error">
+                    <i class="fas fa-exclamation-triangle" style="font-size: 3rem; margin-bottom: 1rem;"></i>
+                    <h4>Erro ao Carregar Eventos</h4>
+                    <p>${mensagem}</p>
+                    <button class="btn-retry" onclick="carregarEventos()">
+                        <i class="fas fa-redo"></i> Tentar Novamente
+                    </button>
+                </div>
+            `;
+            
+            document.getElementById('eventosFuturosContainer').innerHTML = errorHTML;
+            document.getElementById('eventosPassadosContainer').innerHTML = '';
         }
 
         function setupFiltros() {
@@ -1041,88 +876,71 @@
                     buttons.forEach(b => b.classList.remove('active'));
                     button.classList.add('active');
                     filtroAtivo = button.dataset.tipo;
+                    log('🔍', `Filtro alterado para: ${filtroAtivo}`);
                     renderEventos();
                 });
             });
         }
 
-        function carregarEventos() {
-            log('🚀', 'Carregando eventos hardcoded...');
-            todosEventos = EVENTOS_HARDCODED;
-            log('✅', `${todosEventos.length} eventos carregados`);
-            renderEventos();
-        }
-
-        // SISTEMA DE ANIMAÇÕES SCROLL
-        function setupScrollAnimations() {
-            const observerOptions = {
-                threshold: 0.1,
-                rootMargin: '0px 0px -50px 0px'
-            };
+        async function carregarEventos() {
+            log('🚀', '========== INICIANDO CARREGAMENTO DE EVENTOS ==========');
+            log('🔗', `URL da API: ${API_URL}`);
             
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('visible');
-                        // Não desconectar para permitir re-animação se necessário
-                    }
-                });
-            }, observerOptions);
-            
-            // Observar todos os elementos animáveis
-            const animatedElements = document.querySelectorAll(`
-                .fade-in,
-                .slide-in-left,
-                .slide-in-right,
-                .scale-in,
-                .evento-card,
-                .hero-title,
-                .hero-description,
-                .hero-line,
-                .eventos-filtros,
-                .section-title,
-                .label,
-                .secao-separador
-            `);
-            
-            animatedElements.forEach(el => observer.observe(el));
-            
-            log('✨', `Sistema de animações ativado: ${animatedElements.length} elementos`);
-        }
-        
-        // Sticky header com transição suave
-        function setupStickyHeader() {
-            const header = document.querySelector('.gov-header');
-            let lastScroll = 0;
-            
-            window.addEventListener('scroll', () => {
-                const currentScroll = window.pageYOffset;
+            try {
+                log('⏳', 'Fazendo requisição para a API...');
                 
-                // Adiciona classe 'scrolled' quando passa de 100px
-                if (currentScroll > 100) {
-                    header.classList.add('scrolled');
-                } else {
-                    header.classList.remove('scrolled');
+                const response = await fetch(API_URL);
+                
+                log('📡', `Status da resposta: ${response.status}`);
+                
+                if (!response.ok) {
+                    throw new Error(`Erro HTTP: ${response.status}`);
                 }
                 
-                lastScroll = currentScroll;
-            }, { passive: true });
+                const data = await response.json();
+                
+                log('📦', 'Dados recebidos da API:', data);
+                
+                if (!data || !Array.isArray(data.eventos)) {
+                    throw new Error('Formato de resposta inválido');
+                }
+                
+                todosEventos = data.eventos.filter(e => 
+                    e.publicado && 
+                    (e.publicado.toLowerCase() === 'sim' || e.publicado.toLowerCase() === 'true')
+                );
+                
+                log('✅', `${todosEventos.length} eventos carregados da API`);
+                log('📊', 'Eventos carregados:', todosEventos);
+                
+                renderEventos();
+                
+            } catch (error) {
+                log('🚨', 'ERRO ao carregar eventos da API:', error);
+                log('⚠️', 'Tentando usar dados de fallback...');
+                
+                try {
+                    todosEventos = EVENTOS_FALLBACK;
+                    log('✅', `${todosEventos.length} eventos carregados do fallback`);
+                    renderEventos();
+                    
+                } catch (fallbackError) {
+                    log('💥', 'ERRO CRÍTICO no fallback:', fallbackError);
+                    mostrarErro('Não foi possível carregar os eventos. Por favor, tente novamente mais tarde.');
+                }
+            }
         }
 
         // INICIALIZAÇÃO
         document.addEventListener('DOMContentLoaded', () => {
-            log('🎯', 'Sistema inicializado');
+            log('🎯', '========== SISTEMA INICIALIZADO ==========');
+            
             document.getElementById('current-year').textContent = new Date().getFullYear();
+            
             setupFiltros();
             carregarEventos();
             
-            // Aguardar renderização antes de ativar animações
-            setTimeout(() => {
-                setupScrollAnimations();
-                setupStickyHeader();
-            }, 100);
-            
-            // Back to top
+            // Back to top button
             const backToTop = document.getElementById('backToTop');
             window.addEventListener('scroll', () => {
                 backToTop.classList.toggle('visible', window.scrollY > 300);
@@ -1131,12 +949,59 @@
                 const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
                 const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
                 document.getElementById('progressBar').style.width = ((winScroll / height) * 100) + '%';
-            }, { passive: true });
+            });
             
             backToTop.addEventListener('click', () => {
                 window.scrollTo({ top: 0, behavior: 'smooth' });
             });
         });
+
+        // FUNÇÕES DE DEBUG GLOBAIS
+        window.CENI_Eventos = {
+            verEventos: () => {
+                console.table(todosEventos);
+                return todosEventos;
+            },
+            recarregar: () => {
+                log('🔄', 'Recarregando eventos...');
+                carregarEventos();
+            },
+            testarAPI: async () => {
+                log('🧪', 'Testando conexão com API...');
+                try {
+                    const response = await fetch(API_URL);
+                    const data = await response.json();
+                    log('✅', 'Teste bem-sucedido:', data);
+                    return data;
+                } catch (error) {
+                    log('❌', 'Teste falhou:', error);
+                    return error;
+                }
+            },
+            usarFallback: () => {
+                log('⚠️', 'Usando dados de fallback manualmente');
+                todosEventos = EVENTOS_FALLBACK;
+                renderEventos();
+            },
+            info: () => {
+                console.log('═══════════════════════════════════════');
+                console.log('📋 INFORMAÇÕES DO SISTEMA CENI EVENTOS');
+                console.log('═══════════════════════════════════════');
+                console.log('🔗 URL da API:', API_URL);
+                console.log('📊 Total de eventos:', todosEventos.length);
+                console.log('🔍 Filtro ativo:', filtroAtivo);
+                console.log('');
+                console.log('COMANDOS DISPONÍVEIS:');
+                console.log('  CENI_Eventos.verEventos() - Ver todos os eventos');
+                console.log('  CENI_Eventos.recarregar() - Recarregar da API');
+                console.log('  CENI_Eventos.testarAPI() - Testar conexão');
+                console.log('  CENI_Eventos.usarFallback() - Usar dados de fallback');
+                console.log('═══════════════════════════════════════');
+            }
+        };
+
+        // Mostrar informações iniciais no console
+        setTimeout(() => CENI_Eventos.info(), 1000);
     </script>
 </body>
 </html>
