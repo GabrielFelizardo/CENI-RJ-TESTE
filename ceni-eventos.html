@@ -1028,10 +1028,104 @@
         }
         
         // ========================================
-        // BUSCAR DADOS DA API
+        // DADOS HARDCODED (TEMPORÁRIO PARA TESTE)
+        // ========================================
+        
+        const EVENTOS_HARDCODED = [
+            {
+                id: "EVT001",
+                titulo: "1ª Reunião Ordinária do CENI-RJ",
+                data: "15/03/2026",
+                horario: "14:00",
+                local: "Sede SEDEICS - Rua da Assembleia, 10, Centro, Rio de Janeiro",
+                descricao: "Primeira reunião ordinária do Comitê Estadual de Investimentos e Negócios de Impacto do Rio de Janeiro para apresentação dos Grupos de Trabalho e definição das estratégias iniciais.",
+                tipo: "Reunião Ordinária",
+                link_inscricao: "",
+                status: "Agendado",
+                publicado: "Sim"
+            },
+            {
+                id: "EVT002",
+                titulo: "Workshop: Mapeamento do Ecossistema de Impacto",
+                data: "22/04/2026",
+                horario: "09:00",
+                local: "Online - Google Meet (link será enviado aos participantes)",
+                descricao: "Workshop colaborativo para mapeamento das organizações, iniciativas e principais desafios do ecossistema de negócios de impacto no Estado do Rio de Janeiro.",
+                tipo: "Workshop",
+                link_inscricao: "",
+                status: "Agendado",
+                publicado: "Sim"
+            },
+            {
+                id: "EVT003",
+                titulo: "Lançamento do Edital FAPERJ - Negócios de Impacto",
+                data: "15/05/2026",
+                horario: "10:00",
+                local: "Auditório FAPERJ - Centro, Rio de Janeiro",
+                descricao: "Cerimônia oficial de lançamento do primeiro edital de uma Fundação de Amparo à Pesquisa dedicado exclusivamente ao fomento de negócios de impacto no Brasil. Evento histórico para o ecossistema nacional.",
+                tipo: "Lançamento",
+                link_inscricao: "",
+                status: "Agendado",
+                publicado: "Sim"
+            },
+            {
+                id: "EVT004",
+                titulo: "2ª Reunião Ordinária do CENI-RJ",
+                data: "20/06/2026",
+                horario: "14:00",
+                local: "Sede SEDEICS - Rua da Assembleia, 10, Centro, Rio de Janeiro",
+                descricao: "Segunda reunião ordinária do comitê para avaliação dos primeiros resultados dos Grupos de Trabalho e alinhamento das próximas ações estratégicas.",
+                tipo: "Reunião Ordinária",
+                link_inscricao: "",
+                status: "Agendado",
+                publicado: "Sim"
+            },
+            {
+                id: "EVT005",
+                titulo: "Reunião Extraordinária - Aprovação do Regimento Interno",
+                data: "10/02/2026",
+                horario: "15:00",
+                local: "Online - Google Meet (link será enviado aos membros)",
+                descricao: "Reunião extraordinária convocada para discussão final e aprovação do Regimento Interno do CENI-RJ, estabelecendo as regras de funcionamento e governança do comitê.",
+                tipo: "Reunião Extraordinária",
+                link_inscricao: "",
+                status: "Agendado",
+                publicado: "Sim"
+            }
+        ];
+        
+        // ========================================
+        // BUSCAR DADOS (VERSÃO HARDCODED)
         // ========================================
         
         async function fetchEventos() {
+            log('🚀', '========== INICIANDO CARREGAMENTO DE EVENTOS ==========');
+            log('⚠️', 'MODO DE TESTE: Usando dados hardcoded (não conectado à API)');
+            
+            // Simular delay de rede para realismo
+            renderLoading('eventosFuturosContainer');
+            renderLoading('eventosPassadosContainer');
+            
+            setTimeout(() => {
+                log('📦', 'Dados hardcoded carregados:', EVENTOS_HARDCODED);
+                log('📊', `Total de eventos: ${EVENTOS_HARDCODED.length}`);
+                
+                // Atualizar dados globais
+                todosEventos = EVENTOS_HARDCODED;
+                
+                // Renderizar
+                log('✅', '========== EVENTOS CARREGADOS COM SUCESSO ==========');
+                renderEventos();
+            }, 500); // Delay de 500ms para simular requisição
+        }
+        
+        // ========================================
+        // BUSCAR DADOS DA API (VERSÃO ORIGINAL - COMENTADA)
+        // ========================================
+        
+        // Descomente a função abaixo quando quiser reconectar com a planilha
+        /*
+        async function fetchEventosAPI() {
             log('🚀', '========== INICIANDO BUSCA DE EVENTOS ==========');
             
             // Verificar cache primeiro
@@ -1091,6 +1185,7 @@
                 renderError('eventosPassadosContainer', error.message);
             }
         }
+        */
         
         // ========================================
         // INICIALIZAÇÃO
@@ -1123,10 +1218,28 @@
                 const resultado = parseDataBrasileira(dataStr);
                 log('📅', 'Resultado:', resultado);
                 return resultado;
+            },
+            // NOVA FUNÇÃO: Ativar conexão com a API
+            conectarAPI: () => {
+                log('🔌', 'IMPORTANTE: Para conectar com a API da planilha:');
+                log('1️⃣', 'Descomente a função fetchEventosAPI() no código');
+                log('2️⃣', 'Renomeie fetchEventos para fetchEventosHardcoded');
+                log('3️⃣', 'Renomeie fetchEventosAPI para fetchEventos');
+                log('4️⃣', 'Recarregue a página');
+                log('📋', 'Ou copie o código comentado e substitua a função atual');
+            },
+            // Testar renderização de um evento específico
+            testarRenderizacao: (evento) => {
+                if (!evento) {
+                    evento = EVENTOS_HARDCODED[0]; // Usar primeiro evento como exemplo
+                }
+                log('🎨', 'HTML do evento:', renderEvento(evento));
+                return renderEvento(evento);
             }
         };
         
         log('✅', 'Funções de debug expostas em window.CENI_Eventos');
+        log('ℹ️', 'Execute CENI_Eventos.conectarAPI() para instruções de conexão com a planilha');
     </script>
 
     <!-- Scripts do Site -->
