@@ -7,7 +7,7 @@
     
     const API_CONFIG = {
         // IMPORTANTE: Substitua esta URL pela URL do seu Google Apps Script implantado
-        BASE_URL: 'https://script.google.com/macros/s/AKfycbwK2yrE4LdANPPvzEztemfcrea2nE5B93tESSgmB6E0WKzsHNtPa-XwXAWfdYWMYZw/exec',
+        BASE_URL:'https://script.google.com/macros/s/AKfycbwK2yrE4LdANPPvzEztemfcrea2nE5B93tESSgmB6E0WKzsHNtPa-XwXAWfdYWMYZw/exec',
         CACHE_DURATION: 1800000, // 30 minutos em milissegundos
         RETRY_ATTEMPTS: 3,
         RETRY_DELAY: 1000
