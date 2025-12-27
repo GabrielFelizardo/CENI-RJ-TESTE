@@ -1,181 +1,385 @@
-<!-- 
-    CENI-RJ - Exemplo de Integração da Seção de Próximo Evento
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teste - Sistema de Eventos CENI-RJ</title>
     
-    Este exemplo mostra como integrar a seção dinâmica de próximo evento
-    na homepage do site CENI-RJ (ceni-index.html).
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    INSTRUÇÕES DE INSTALAÇÃO:
-    
-    1. Adicione os links CSS no <head> do ceni-index.html:
-       <link rel="stylesheet" href="ceni-evento-styles.css">
-    
-    2. Adicione o script antes do fechamento </body>:
-       <script src="ceni-dynamic-data.js"></script>
-    
-    3. Insira a seção HTML abaixo APÓS a seção "STATS - FULL WIDTH"
-       e ANTES da seção "GTS PREVIEW"
-    
-    4. Configure a URL da API no arquivo ceni-dynamic-data.js
-       substituindo 'SEU_SCRIPT_ID_AQUI' pela URL do seu Google Apps Script
-    
-    @author Gabriel Felizardo da Silva
-    @version 1.0
--->
-
-<!-- ============================================ -->
-<!-- SEÇÃO PRÓXIMO EVENTO - INÍCIO               -->
-<!-- ============================================ -->
-
-<section class="proximo-evento-section">
-    <div class="swiss-grid">
-        <div class="col-full section-evento-header">
-            <span class="label" data-animate="fade-up">Agenda</span>
-            <h2 data-animate="fade-up" data-delay="100">
-                Próximo<br>Evento
-            </h2>
+    <style>
+        :root {
+            --primary: #1e3a8a;
+            --accent: #000000;
+            --background: #ffffff;
+            --text-secondary: #666666;
+            --grid-line: #e0e0e0;
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            background: var(--background);
+            color: var(--accent);
+            padding: 2rem;
+        }
+        
+        .container-test {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        
+        .debug-panel {
+            background: #f8f9fa;
+            border: 2px solid #dee2e6;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            border-radius: 4px;
+        }
+        
+        .debug-panel h3 {
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+        
+        .debug-info {
+            background: white;
+            padding: 1rem;
+            border-radius: 4px;
+            margin-bottom: 1rem;
+            font-family: monospace;
+            font-size: 0.875rem;
+            white-space: pre-wrap;
+            word-break: break-all;
+        }
+        
+        .status {
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            margin-bottom: 1rem;
+            font-weight: bold;
+        }
+        
+        .status.loading {
+            background: #fff3cd;
+            color: #856404;
+        }
+        
+        .status.success {
+            background: #d4edda;
+            color: #155724;
+        }
+        
+        .status.error {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        
+        /* Estilos do Card de Evento */
+        .proximo-evento-card {
+            border: 4px solid var(--accent);
+            background: var(--background);
+            padding: 3rem;
+            margin: 2rem 0;
+        }
+        
+        .evento-badge {
+            display: inline-block;
+            background: var(--primary);
+            color: white;
+            padding: 0.5rem 1.5rem;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            margin-bottom: 2rem;
+        }
+        
+        .evento-meta {
+            display: flex;
+            gap: 2rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+        
+        .evento-data,
+        .evento-horario {
+            font-size: 0.875rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .evento-titulo {
+            font-size: 2rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            line-height: 1.2;
+            margin-bottom: 1.5rem;
+        }
+        
+        .evento-descricao {
+            font-size: 1.125rem;
+            line-height: 1.6;
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+        }
+        
+        .evento-local {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+            padding: 1rem 0;
+            border-top: 2px solid var(--grid-line);
+            border-bottom: 2px solid var(--grid-line);
+            margin-bottom: 2rem;
+        }
+        
+        .btn-evento {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 1rem 2.5rem;
+            background: var(--accent);
+            color: white;
+            text-decoration: none;
+            text-transform: uppercase;
+            font-size: 0.875rem;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            border: none;
+        }
+        
+        .btn-test {
+            margin: 0.5rem 0.5rem 0.5rem 0;
+            padding: 0.75rem 1.5rem;
+            background: var(--primary);
+            color: white;
+            border: none;
+            font-weight: 700;
+            cursor: pointer;
+        }
+        
+        .btn-test:hover {
+            opacity: 0.8;
+        }
+    </style>
+</head>
+<body>
+    <div class="container-test">
+        <h1 style="margin-bottom: 2rem;">🧪 Teste - Sistema de Eventos CENI-RJ</h1>
+        
+        <!-- DEBUG PANEL -->
+        <div class="debug-panel">
+            <h3>🔍 Painel de Debug</h3>
+            
+            <div id="statusPanel" class="status loading">
+                ⏳ Inicializando sistema...
+            </div>
+            
+            <div>
+                <button class="btn-test" onclick="testarAPI()">🔄 Testar API</button>
+                <button class="btn-test" onclick="limparCache()">🗑️ Limpar Cache</button>
+                <button class="btn-test" onclick="verConfig()">⚙️ Ver Configuração</button>
+            </div>
+            
+            <h4 style="margin-top: 1.5rem; margin-bottom: 0.5rem;">Informações da API:</h4>
+            <div id="apiInfo" class="debug-info">Carregando...</div>
+            
+            <h4 style="margin-top: 1rem; margin-bottom: 0.5rem;">Resposta da API:</h4>
+            <div id="apiResponse" class="debug-info">Aguardando requisição...</div>
         </div>
         
-        <!-- Container onde o JavaScript irá renderizar o evento -->
-        <div class="col-full" id="proximoEventoContainer">
-            <!-- Conteúdo será inserido dinamicamente via JavaScript -->
-            <!-- Enquanto carrega, mostra loading state -->
+        <!-- VISUALIZAÇÃO DO EVENTO -->
+        <div>
+            <h2 style="margin-bottom: 1rem;">📅 Próximo Evento</h2>
+            <div id="eventoContainer"></div>
         </div>
     </div>
-</section>
 
-<!-- ============================================ -->
-<!-- SEÇÃO PRÓXIMO EVENTO - FIM                  -->
-<!-- ============================================ -->
-
-
-<!-- 
-    EXEMPLO DE ESTRUTURA COMPLETA DO <head>:
-    
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>CENI-RJ - Início</title>
-        
-        <!-- CDN -->
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-        
-        <!-- Estilos do Sistema CENI -->
-        <link rel="stylesheet" href="ceni-animations.css">
-        <link rel="stylesheet" href="ceni-scroll-enhancements.css">
-        <link rel="stylesheet" href="ceni-theme-enhanced.css">
-        <link rel="stylesheet" href="ceni-header-enhanced.css">
-        <link rel="stylesheet" href="ceni-footer-enhanced.css">
-        
-        <!-- NOVO: Estilos de Eventos -->
-        <link rel="stylesheet" href="ceni-evento-styles.css">
-    </head>
--->
-
-
-<!-- 
-    EXEMPLO DE ESTRUTURA COMPLETA ANTES DO </body>:
-    
-    <!-- Scripts do Sistema CENI -->
-    <script src="ceni-animations.js"></script>
-    <script src="ceni-footer-enhanced.js"></script>
-    
-    <!-- NOVO: Sistema de Dados Dinâmicos -->
-    <script src="ceni-dynamic-data.js"></script>
-    
-    <!-- Scripts específicos da página -->
     <script>
-        document.getElementById('current-year').textContent = new Date().getFullYear();
+        // ========================================
+        // CONFIGURAÇÃO DA API
+        // ========================================
+        const API_URL = 'https://script.google.com/macros/s/AKfycbwK2yrE4LdANPPvzEztemfcrea2nE5B93tESSgmB6E0WKzsHNtPa-XwXAWfdYWMYZw/exec';
         
-        // Sticky header
-        const header = document.querySelector('.gov-header');
-        window.addEventListener('scroll', () => {
-            header.classList.toggle('scrolled', window.scrollY > 100);
+        // ========================================
+        // FUNÇÕES DE TESTE
+        // ========================================
+        
+        function updateStatus(message, type = 'loading') {
+            const panel = document.getElementById('statusPanel');
+            panel.className = `status ${type}`;
+            panel.textContent = message;
+        }
+        
+        function updateApiInfo() {
+            document.getElementById('apiInfo').textContent = 
+                `URL: ${API_URL}\n` +
+                `Cache: ${localStorage.getItem('ceni_proximo_evento') ? 'Existe' : 'Vazio'}\n` +
+                `Timestamp: ${new Date().toLocaleString('pt-BR')}`;
+        }
+        
+        async function testarAPI() {
+            updateStatus('🔄 Testando conexão com a API...', 'loading');
+            updateApiInfo();
+            
+            try {
+                const url = `${API_URL}?action=proximo_evento&_t=${Date.now()}`;
+                console.log('📡 Fazendo requisição para:', url);
+                
+                const response = await fetch(url);
+                console.log('📥 Status da resposta:', response.status, response.statusText);
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+                
+                const data = await response.json();
+                console.log('✅ Dados recebidos:', data);
+                
+                document.getElementById('apiResponse').textContent = JSON.stringify(data, null, 2);
+                
+                if (data && data.data) {
+                    updateStatus('✅ API funcionando! Evento carregado com sucesso.', 'success');
+                    renderEvento(data);
+                } else if (data && data.message) {
+                    updateStatus(`ℹ️ ${data.message}`, 'success');
+                    renderEmpty();
+                } else {
+                    updateStatus('⚠️ API retornou resposta vazia', 'error');
+                    renderEmpty();
+                }
+                
+            } catch (error) {
+                console.error('❌ Erro:', error);
+                updateStatus(`❌ Erro: ${error.message}`, 'error');
+                document.getElementById('apiResponse').textContent = `ERRO:\n${error.message}\n\n${error.stack || ''}`;
+                renderError();
+            }
+        }
+        
+        function limparCache() {
+            localStorage.clear();
+            updateStatus('🗑️ Cache limpo! Clique em "Testar API" novamente.', 'success');
+            updateApiInfo();
+        }
+        
+        function verConfig() {
+            const config = {
+                API_URL: API_URL,
+                localStorage_keys: Object.keys(localStorage).filter(k => k.startsWith('ceni_')),
+                cache_size: new Blob([JSON.stringify(localStorage)]).size,
+                timestamp: new Date().toISOString()
+            };
+            
+            document.getElementById('apiResponse').textContent = JSON.stringify(config, null, 2);
+            updateStatus('⚙️ Configuração exibida', 'success');
+        }
+        
+        // ========================================
+        // RENDERIZAÇÃO DO EVENTO
+        // ========================================
+        
+        function renderEvento(eventoData) {
+            const container = document.getElementById('eventoContainer');
+            
+            if (!eventoData || !eventoData.data) {
+                renderEmpty();
+                return;
+            }
+            
+            const evento = eventoData.data;
+            
+            const html = `
+                <div class="proximo-evento-card">
+                    <div class="evento-badge">${getTipoBadge(evento.tipo)}</div>
+                    <div class="evento-content">
+                        <div class="evento-meta">
+                            <span class="evento-data">
+                                <i class="fas fa-calendar-alt"></i> ${evento.data}
+                            </span>
+                            ${evento.horario ? `
+                                <span class="evento-horario">
+                                    <i class="fas fa-clock"></i> ${evento.horario}
+                                </span>
+                            ` : ''}
+                        </div>
+                        
+                        <h3 class="evento-titulo">${evento.titulo}</h3>
+                        
+                        <p class="evento-descricao">${evento.descricao}</p>
+                        
+                        <div class="evento-local">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>${evento.local}</span>
+                        </div>
+                        
+                        ${evento.link_inscricao ? `
+                            <a href="${evento.link_inscricao}" 
+                               class="btn-evento" 
+                               target="_blank" 
+                               rel="noopener noreferrer">
+                                <i class="fas fa-external-link-alt"></i>
+                                Inscreva-se
+                            </a>
+                        ` : ''}
+                    </div>
+                </div>
+            `;
+            
+            container.innerHTML = html;
+        }
+        
+        function renderEmpty() {
+            document.getElementById('eventoContainer').innerHTML = `
+                <div style="border: 4px solid #e0e0e0; padding: 3rem; text-align: center;">
+                    <i class="fas fa-calendar-check" style="font-size: 3rem; color: #999; margin-bottom: 1rem;"></i>
+                    <h4>Próximos Eventos em Breve</h4>
+                    <p style="color: #666; margin-top: 1rem;">Novos eventos serão anunciados em breve.</p>
+                </div>
+            `;
+        }
+        
+        function renderError() {
+            document.getElementById('eventoContainer').innerHTML = `
+                <div style="border: 4px solid #f8d7da; padding: 3rem; text-align: center; background: #f8d7da;">
+                    <i class="fas fa-exclamation-triangle" style="font-size: 3rem; color: #721c24; margin-bottom: 1rem;"></i>
+                    <h4 style="color: #721c24;">Erro ao Carregar Evento</h4>
+                    <p style="color: #721c24; margin-top: 1rem;">Verifique o painel de debug acima.</p>
+                </div>
+            `;
+        }
+        
+        function getTipoBadge(tipo) {
+            const badges = {
+                'Reunião Ordinária': '📋 Reunião Ordinária',
+                'Workshop': '🎯 Workshop',
+                'Lançamento': '🚀 Lançamento',
+                'Evento Público': '🎤 Evento Público'
+            };
+            return badges[tipo] || tipo;
+        }
+        
+        // ========================================
+        // INICIALIZAÇÃO
+        // ========================================
+        
+        window.addEventListener('DOMContentLoaded', () => {
+            console.log('🎯 Página de teste carregada');
+            updateApiInfo();
+            
+            // Testar automaticamente ao carregar
+            setTimeout(() => {
+                testarAPI();
+            }, 500);
         });
-        
-        // ... resto dos scripts
     </script>
-    
-    </body>
--->
-
-
-<!-- 
-    POSICIONAMENTO RECOMENDADO NA HOMEPAGE:
-    
-    A seção de Próximo Evento deve ser inserida logo após a seção de
-    estatísticas (STATS - FULL WIDTH) e antes da seção de preview dos GTs.
-    
-    Sequência ideal da homepage:
-    
-    1. Hero Section
-    2. Stats (17 Organizações, 5 GTs, 34 Membros)
-    3. ✨ PRÓXIMO EVENTO ✨ [NOVA SEÇÃO]
-    4. GTs Preview
-    5. Destaque (Edital FAPERJ)
-    6. Próximos Passos (Timeline)
-    7. Footer
-    
-    Esta ordem garante que visitantes vejam primeiro informações
-    institucionais básicas e em seguida o evento mais urgente.
--->
-
-
-<!-- 
-    EXEMPLO DE EVENTO RENDERIZADO (para referência):
-    
-    Quando há evento disponível, o JavaScript renderizará algo assim:
-    
-    <div class="proximo-evento-card" data-animate="fade-up">
-        <div class="evento-badge">📋 Reunião Ordinária</div>
-        <div class="evento-content">
-            <div class="evento-meta">
-                <span class="evento-data">
-                    <i class="fas fa-calendar-alt"></i> 15/03/2026
-                </span>
-                <span class="evento-horario">
-                    <i class="fas fa-clock"></i> 14:00
-                </span>
-            </div>
-            
-            <h3 class="evento-titulo">1ª Reunião Ordinária do CENI-RJ</h3>
-            
-            <p class="evento-descricao">
-                Primeira reunião oficial do comitê com aprovação do regimento 
-                interno e definição das diretrizes estratégicas para 2026.
-            </p>
-            
-            <div class="evento-local">
-                <i class="fas fa-map-marker-alt"></i>
-                <span>Sede SEDEICS - Sala 301</span>
-            </div>
-            
-            <a href="https://forms.google.com/..." 
-               class="btn-evento" 
-               target="_blank" 
-               rel="noopener noreferrer">
-                <i class="fas fa-external-link-alt"></i>
-                Inscreva-se
-            </a>
-        </div>
-    </div>
--->
-
-
-<!-- 
-    TESTANDO A INTEGRAÇÃO:
-    
-    Após implementar a seção, você pode testar no console do navegador:
-    
-    // Verificar se sistema foi carregado
-    console.log(window.CENI.Data);
-    
-    // Buscar próximo evento manualmente
-    window.CENI.Data.getProximoEvento().then(console.log);
-    
-    // Limpar cache para forçar nova busca
-    window.CENI.Data.clearCache();
-    
-    // Ver configuração atual da API
-    console.log(window.CENI.Data.config);
--->
+</body>
+</html>
