@@ -466,6 +466,213 @@
             margin-bottom: 0.5rem;
         }
 
+        /* ANIMAÇÕES E SCROLL ENHANCEMENTS */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+        
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .slide-in-left {
+            opacity: 0;
+            transform: translateX(-50px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+        
+        .slide-in-left.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        
+        .slide-in-right {
+            opacity: 0;
+            transform: translateX(50px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+        
+        .slide-in-right.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        
+        .scale-in {
+            opacity: 0;
+            transform: scale(0.9);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+        
+        .scale-in.visible {
+            opacity: 1;
+            transform: scale(1);
+        }
+        
+        .stagger-delay-1 { transition-delay: 0.1s; }
+        .stagger-delay-2 { transition-delay: 0.2s; }
+        .stagger-delay-3 { transition-delay: 0.3s; }
+        .stagger-delay-4 { transition-delay: 0.4s; }
+        .stagger-delay-5 { transition-delay: 0.5s; }
+        
+        /* Animações específicas dos elementos */
+        .evento-card {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease, transform 0.6s ease, box-shadow 0.3s ease;
+        }
+        
+        .evento-card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .hero-title,
+        .hero-description,
+        .hero-line {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+        
+        .hero-title.visible,
+        .hero-description.visible,
+        .hero-line.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .eventos-filtros {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+        
+        .eventos-filtros.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .section-title {
+            opacity: 0;
+            transform: translateX(-30px);
+            transition: opacity 0.7s ease, transform 0.7s ease;
+        }
+        
+        .section-title.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        
+        .label {
+            opacity: 0;
+            transform: translateY(-10px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+        
+        .label.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .secao-separador {
+            opacity: 0;
+            transform: scaleX(0);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+            transform-origin: left;
+        }
+        
+        .secao-separador.visible {
+            opacity: 1;
+            transform: scaleX(1);
+        }
+        
+        /* Parallax suave no header */
+        .gov-header {
+            transform: translateZ(0);
+            will-change: transform;
+        }
+        
+        /* Smooth scroll behavior */
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        /* Animação de pulse para badges */
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        .evento-badge {
+            animation: pulse 2s ease-in-out infinite;
+        }
+        
+        .evento-card:hover .evento-badge {
+            animation: none;
+            transform: scale(1.1);
+        }
+        
+        /* Animação de loading spinner */
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        /* Transição suave da progress bar */
+        .progress-indicator {
+            transition: width 0.1s ease-out;
+        }
+        
+        /* Efeito de hover nos botões de filtro */
+        .btn-filtro {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn-filtro::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(30, 58, 138, 0.1);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+        
+        .btn-filtro:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+        
+        /* Efeito de brilho no hover dos cards */
+        .evento-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, 
+                transparent, 
+                rgba(255, 255, 255, 0.2), 
+                transparent);
+            transition: left 0.5s;
+        }
+        
+        .evento-card {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .evento-card:hover::after {
+            left: 100%;
+        }
+
         @media (max-width: 968px) {
             .header-grid {
                 padding: 0 1rem;
@@ -494,6 +701,16 @@
             
             .btn-filtro {
                 width: 100%;
+            }
+        }
+        
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
             }
         }
     </style>
@@ -534,13 +751,13 @@
         <!-- HERO -->
         <section class="hero-section">
             <div class="swiss-grid">
-                <span class="label">Agenda</span>
-                <div class="hero-line"></div>
-                <h1 class="hero-title">
+                <span class="label fade-in">Agenda</span>
+                <div class="hero-line fade-in stagger-delay-1"></div>
+                <h1 class="hero-title fade-in stagger-delay-2">
                     Eventos e<br>
                     Agenda CENI-RJ
                 </h1>
-                <p class="hero-description">
+                <p class="hero-description fade-in stagger-delay-3">
                     Acompanhe as reuniões, workshops e eventos do ecossistema de investimentos e 
                     negócios de impacto no Estado do Rio de Janeiro.
                 </p>
@@ -550,7 +767,7 @@
         <!-- FILTROS -->
         <section>
             <div class="swiss-grid">
-                <div class="eventos-filtros">
+                <div class="eventos-filtros scale-in">
                     <div class="filtros-header">
                         <i class="fas fa-filter"></i> Filtrar por tipo de evento
                     </div>
@@ -578,8 +795,8 @@
         <!-- EVENTOS FUTUROS -->
         <section class="eventos-section">
             <div class="swiss-grid">
-                <span class="label">Próximos</span>
-                <h2 class="section-title">Eventos Futuros</h2>
+                <span class="label slide-in-left">Próximos</span>
+                <h2 class="section-title slide-in-left stagger-delay-1">Eventos Futuros</h2>
                 <div id="eventosFuturosContainer" class="eventos-lista"></div>
             </div>
         </section>
@@ -690,11 +907,11 @@
             return badges[tipo] || tipo || '📅 Evento';
         }
 
-        function renderEvento(evento) {
+        function renderEvento(evento, staggerClass = '') {
             const tipoBadge = getTipoBadge(evento.tipo);
             
             return `
-                <div class="evento-card" data-tipo="${evento.tipo || ''}">
+                <div class="evento-card ${staggerClass}" data-tipo="${evento.tipo || ''}">
                     <div class="evento-badge">${tipoBadge}</div>
                     <div class="evento-meta">
                         <span class="evento-data">
@@ -781,25 +998,36 @@
             
             if (futuros.length === 0) {
                 futurosContainer.innerHTML = `
-                    <div class="eventos-empty">
+                    <div class="eventos-empty fade-in">
                         <div class="eventos-empty-icon"><i class="fas fa-calendar-check"></i></div>
                         <h4>Nenhum evento futuro</h4>
                     </div>
                 `;
             } else {
-                futurosContainer.innerHTML = futuros.map(e => renderEvento(e)).join('');
+                futurosContainer.innerHTML = futuros.map((e, index) => {
+                    const staggerClass = `stagger-delay-${Math.min(index + 1, 5)}`;
+                    return renderEvento(e, staggerClass);
+                }).join('');
             }
             
             if (passados.length === 0) {
                 passadosContainer.innerHTML = `
-                    <div class="eventos-empty">
+                    <div class="eventos-empty fade-in">
                         <div class="eventos-empty-icon"><i class="fas fa-calendar-check"></i></div>
                         <h4>Nenhum evento realizado ainda</h4>
                     </div>
                 `;
             } else {
-                passadosContainer.innerHTML = passados.map(e => renderEvento(e)).join('');
+                passadosContainer.innerHTML = passados.map((e, index) => {
+                    const staggerClass = `stagger-delay-${Math.min(index + 1, 5)}`;
+                    return renderEvento(e, staggerClass);
+                }).join('');
             }
+            
+            // Reativar o observer para os novos elementos
+            setTimeout(() => {
+                setupScrollAnimations();
+            }, 50);
         }
 
         function setupFiltros() {
@@ -822,12 +1050,74 @@
             renderEventos();
         }
 
+        // SISTEMA DE ANIMAÇÕES SCROLL
+        function setupScrollAnimations() {
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        // Não desconectar para permitir re-animação se necessário
+                    }
+                });
+            }, observerOptions);
+            
+            // Observar todos os elementos animáveis
+            const animatedElements = document.querySelectorAll(`
+                .fade-in,
+                .slide-in-left,
+                .slide-in-right,
+                .scale-in,
+                .evento-card,
+                .hero-title,
+                .hero-description,
+                .hero-line,
+                .eventos-filtros,
+                .section-title,
+                .label,
+                .secao-separador
+            `);
+            
+            animatedElements.forEach(el => observer.observe(el));
+            
+            log('✨', `Sistema de animações ativado: ${animatedElements.length} elementos`);
+        }
+        
+        // Parallax suave no header
+        function setupParallax() {
+            let lastScroll = 0;
+            const header = document.querySelector('.gov-header');
+            
+            window.addEventListener('scroll', () => {
+                const currentScroll = window.pageYOffset;
+                const scrollDiff = currentScroll - lastScroll;
+                
+                if (header && currentScroll < 300) {
+                    const translateY = currentScroll * 0.5;
+                    header.style.transform = `translateY(${translateY}px)`;
+                    header.style.opacity = 1 - (currentScroll / 300) * 0.3;
+                }
+                
+                lastScroll = currentScroll;
+            }, { passive: true });
+        }
+
         // INICIALIZAÇÃO
         document.addEventListener('DOMContentLoaded', () => {
             log('🎯', 'Sistema inicializado');
             document.getElementById('current-year').textContent = new Date().getFullYear();
             setupFiltros();
             carregarEventos();
+            
+            // Aguardar renderização antes de ativar animações
+            setTimeout(() => {
+                setupScrollAnimations();
+                setupParallax();
+            }, 100);
             
             // Back to top
             const backToTop = document.getElementById('backToTop');
@@ -838,7 +1128,7 @@
                 const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
                 const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
                 document.getElementById('progressBar').style.width = ((winScroll / height) * 100) + '%';
-            });
+            }, { passive: true });
             
             backToTop.addEventListener('click', () => {
                 window.scrollTo({ top: 0, behavior: 'smooth' });
