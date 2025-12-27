@@ -3,382 +3,520 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Teste - Sistema de Eventos CENI-RJ</title>
-    
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>🔍 Debug - Sistema CENI-RJ</title>
     
     <style>
-        :root {
-            --primary: #1e3a8a;
-            --accent: #000000;
-            --background: #ffffff;
-            --text-secondary: #666666;
-            --grid-line: #e0e0e0;
-        }
-        
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
         body {
-            font-family: 'Helvetica Neue', Arial, sans-serif;
-            background: var(--background);
-            color: var(--accent);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+            background: #f5f5f5;
             padding: 2rem;
+            line-height: 1.6;
         }
         
-        .container-test {
-            max-width: 1000px;
+        .container {
+            max-width: 1200px;
             margin: 0 auto;
         }
         
-        .debug-panel {
-            background: #f8f9fa;
-            border: 2px solid #dee2e6;
-            padding: 1.5rem;
+        h1 {
+            color: #1e3a8a;
+            margin-bottom: 0.5rem;
+        }
+        
+        .subtitle {
+            color: #666;
             margin-bottom: 2rem;
-            border-radius: 4px;
         }
         
-        .debug-panel h3 {
-            margin-bottom: 1rem;
-            color: var(--primary);
-        }
-        
-        .debug-info {
+        .panel {
             background: white;
-            padding: 1rem;
-            border-radius: 4px;
+            border-radius: 8px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .panel h2 {
+            color: #1e3a8a;
             margin-bottom: 1rem;
-            font-family: monospace;
-            font-size: 0.875rem;
-            white-space: pre-wrap;
-            word-break: break-all;
+            font-size: 1.25rem;
         }
         
         .status {
-            padding: 0.5rem 1rem;
+            padding: 1rem;
             border-radius: 4px;
             margin-bottom: 1rem;
-            font-weight: bold;
+            font-weight: 600;
         }
         
         .status.loading {
             background: #fff3cd;
             color: #856404;
+            border-left: 4px solid #ffc107;
         }
         
         .status.success {
             background: #d4edda;
             color: #155724;
+            border-left: 4px solid #28a745;
         }
         
         .status.error {
             background: #f8d7da;
             color: #721c24;
+            border-left: 4px solid #dc3545;
         }
         
-        /* Estilos do Card de Evento */
-        .proximo-evento-card {
-            border: 4px solid var(--accent);
-            background: var(--background);
-            padding: 3rem;
-            margin: 2rem 0;
+        .status.warning {
+            background: #fff3cd;
+            color: #856404;
+            border-left: 4px solid #ffc107;
         }
         
-        .evento-badge {
-            display: inline-block;
-            background: var(--primary);
+        .btn {
+            padding: 0.75rem 1.5rem;
+            margin: 0.5rem 0.5rem 0.5rem 0;
+            border: none;
+            border-radius: 4px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+        }
+        
+        .btn-primary {
+            background: #1e3a8a;
             color: white;
-            padding: 0.5rem 1.5rem;
-            font-size: 0.75rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.15em;
-            margin-bottom: 2rem;
         }
         
-        .evento-meta {
-            display: flex;
-            gap: 2rem;
-            margin-bottom: 1.5rem;
-            flex-wrap: wrap;
+        .btn-primary:hover {
+            background: #1e40af;
         }
         
-        .evento-data,
-        .evento-horario {
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+        
+        .btn-secondary:hover {
+            background: #5a6268;
+        }
+        
+        .code-block {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+            padding: 1rem;
+            margin: 1rem 0;
+            font-family: 'Courier New', monospace;
             font-size: 0.875rem;
+            overflow-x: auto;
+            white-space: pre-wrap;
+            word-break: break-all;
+        }
+        
+        .evento-card {
+            background: #f8f9fa;
+            border-left: 4px solid #1e3a8a;
+            padding: 1rem;
+            margin: 0.5rem 0;
+            border-radius: 4px;
+        }
+        
+        .evento-card.pode-exibir {
+            border-left-color: #28a745;
+            background: #d4edda;
+        }
+        
+        .evento-card.nao-pode-exibir {
+            border-left-color: #dc3545;
+            background: #f8d7da;
+        }
+        
+        .evento-title {
             font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            color: var(--text-secondary);
+            color: #1e3a8a;
+            margin-bottom: 0.5rem;
+        }
+        
+        .evento-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 0.5rem;
+            margin: 0.5rem 0;
+            font-size: 0.875rem;
+        }
+        
+        .info-item {
             display: flex;
-            align-items: center;
             gap: 0.5rem;
         }
         
-        .evento-titulo {
+        .info-label {
+            font-weight: 600;
+            color: #666;
+        }
+        
+        .check-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin: 0.25rem 0;
+            font-size: 0.875rem;
+        }
+        
+        .check-ok {
+            color: #28a745;
+        }
+        
+        .check-fail {
+            color: #dc3545;
+        }
+        
+        .summary-card {
+            background: #e7f3ff;
+            border-left: 4px solid #1e3a8a;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            border-radius: 4px;
+        }
+        
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .summary-item {
+            text-align: center;
+        }
+        
+        .summary-number {
             font-size: 2rem;
             font-weight: 700;
-            text-transform: uppercase;
-            line-height: 1.2;
-            margin-bottom: 1.5rem;
+            color: #1e3a8a;
         }
         
-        .evento-descricao {
-            font-size: 1.125rem;
-            line-height: 1.6;
-            color: var(--text-secondary);
-            margin-bottom: 2rem;
-        }
-        
-        .evento-local {
-            display: flex;
-            align-items: flex-start;
-            gap: 0.75rem;
-            padding: 1rem 0;
-            border-top: 2px solid var(--grid-line);
-            border-bottom: 2px solid var(--grid-line);
-            margin-bottom: 2rem;
-        }
-        
-        .btn-evento {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.75rem;
-            padding: 1rem 2.5rem;
-            background: var(--accent);
-            color: white;
-            text-decoration: none;
-            text-transform: uppercase;
+        .summary-label {
             font-size: 0.875rem;
-            font-weight: 700;
-            letter-spacing: 0.1em;
-            border: none;
+            color: #666;
+            margin-top: 0.25rem;
         }
         
-        .btn-test {
-            margin: 0.5rem 0.5rem 0.5rem 0;
-            padding: 0.75rem 1.5rem;
-            background: var(--primary);
-            color: white;
-            border: none;
-            font-weight: 700;
-            cursor: pointer;
+        .instructions {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            border-radius: 4px;
         }
         
-        .btn-test:hover {
-            opacity: 0.8;
+        .instructions h3 {
+            color: #856404;
+            margin-bottom: 0.5rem;
+        }
+        
+        .instructions ul {
+            margin-left: 1.5rem;
+            color: #856404;
+        }
+        
+        .instructions li {
+            margin: 0.5rem 0;
         }
     </style>
 </head>
 <body>
-    <div class="container-test">
-        <h1 style="margin-bottom: 2rem;">🧪 Teste - Sistema de Eventos CENI-RJ</h1>
+    <div class="container">
+        <h1>🔍 Debug - Sistema de Eventos CENI-RJ</h1>
+        <p class="subtitle">Diagnóstico completo da base de dados de eventos</p>
         
-        <!-- DEBUG PANEL -->
-        <div class="debug-panel">
-            <h3>🔍 Painel de Debug</h3>
-            
+        <!-- PAINEL DE STATUS -->
+        <div class="panel">
+            <h2>📊 Status Atual</h2>
             <div id="statusPanel" class="status loading">
-                ⏳ Inicializando sistema...
+                ⏳ Aguardando análise...
             </div>
             
             <div>
-                <button class="btn-test" onclick="testarAPI()">🔄 Testar API</button>
-                <button class="btn-test" onclick="limparCache()">🗑️ Limpar Cache</button>
-                <button class="btn-test" onclick="verConfig()">⚙️ Ver Configuração</button>
+                <button class="btn btn-primary" onclick="analisarEventos()">
+                    🔍 Analisar Eventos
+                </button>
+                <button class="btn btn-secondary" onclick="testarProximoEvento()">
+                    📅 Testar Próximo Evento
+                </button>
+                <button class="btn btn-secondary" onclick="limparTela()">
+                    🗑️ Limpar Tela
+                </button>
             </div>
-            
-            <h4 style="margin-top: 1.5rem; margin-bottom: 0.5rem;">Informações da API:</h4>
-            <div id="apiInfo" class="debug-info">Carregando...</div>
-            
-            <h4 style="margin-top: 1rem; margin-bottom: 0.5rem;">Resposta da API:</h4>
-            <div id="apiResponse" class="debug-info">Aguardando requisição...</div>
         </div>
         
-        <!-- VISUALIZAÇÃO DO EVENTO -->
-        <div>
-            <h2 style="margin-bottom: 1rem;">📅 Próximo Evento</h2>
-            <div id="eventoContainer"></div>
+        <!-- RESUMO -->
+        <div id="resumoPanel" style="display: none;">
+            <div class="panel">
+                <h2>📈 Resumo da Análise</h2>
+                <div class="summary-card">
+                    <div class="summary-grid" id="summaryGrid"></div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- INSTRUÇÕES -->
+        <div id="instrucoesPanel" style="display: none;">
+            <div class="panel">
+                <h2>💡 Como Resolver</h2>
+                <div id="instrucoesContent"></div>
+            </div>
+        </div>
+        
+        <!-- TODOS OS EVENTOS -->
+        <div id="eventosPanel" style="display: none;">
+            <div class="panel">
+                <h2>📋 Todos os Eventos na Planilha</h2>
+                <div id="eventosContainer"></div>
+            </div>
+        </div>
+        
+        <!-- RESPOSTA RAW DA API -->
+        <div id="rawPanel" style="display: none;">
+            <div class="panel">
+                <h2>🔧 Resposta Raw da API</h2>
+                <div class="code-block" id="rawResponse"></div>
+            </div>
         </div>
     </div>
 
     <script>
-        // ========================================
-        // CONFIGURAÇÃO DA API
-        // ========================================
+        // URL DA SUA API - ATUALIZE AQUI!
         const API_URL = 'https://script.google.com/macros/s/AKfycbwK2yrE4LdANPPvzEztemfcrea2nE5B93tESSgmB6E0WKzsHNtPa-XwXAWfdYWMYZw/exec';
-        
-        // ========================================
-        // FUNÇÕES DE TESTE
-        // ========================================
         
         function updateStatus(message, type = 'loading') {
             const panel = document.getElementById('statusPanel');
             panel.className = `status ${type}`;
-            panel.textContent = message;
+            panel.innerHTML = message;
         }
         
-        function updateApiInfo() {
-            document.getElementById('apiInfo').textContent = 
-                `URL: ${API_URL}\n` +
-                `Cache: ${localStorage.getItem('ceni_proximo_evento') ? 'Existe' : 'Vazio'}\n` +
-                `Timestamp: ${new Date().toLocaleString('pt-BR')}`;
-        }
-        
-        async function testarAPI() {
-            updateStatus('🔄 Testando conexão com a API...', 'loading');
-            updateApiInfo();
+        async function analisarEventos() {
+            updateStatus('🔄 Conectando com a API...', 'loading');
+            
+            // Esconder painéis
+            document.getElementById('resumoPanel').style.display = 'none';
+            document.getElementById('eventosPanel').style.display = 'none';
+            document.getElementById('instrucoesPanel').style.display = 'none';
+            document.getElementById('rawPanel').style.display = 'none';
             
             try {
-                const url = `${API_URL}?action=proximo_evento&_t=${Date.now()}`;
-                console.log('📡 Fazendo requisição para:', url);
+                const url = `${API_URL}?action=debug_eventos&_t=${Date.now()}`;
+                console.log('📡 Requisição:', url);
                 
                 const response = await fetch(url);
-                console.log('📥 Status da resposta:', response.status, response.statusText);
                 
                 if (!response.ok) {
                     throw new Error(`HTTP ${response.status}: ${response.statusText}`);
                 }
                 
                 const data = await response.json();
-                console.log('✅ Dados recebidos:', data);
+                console.log('✅ Resposta:', data);
                 
-                document.getElementById('apiResponse').textContent = JSON.stringify(data, null, 2);
+                // Mostrar resposta raw
+                document.getElementById('rawResponse').textContent = JSON.stringify(data, null, 2);
+                document.getElementById('rawPanel').style.display = 'block';
                 
-                if (data && data.data) {
-                    updateStatus('✅ API funcionando! Evento carregado com sucesso.', 'success');
-                    renderEvento(data);
-                } else if (data && data.message) {
-                    updateStatus(`ℹ️ ${data.message}`, 'success');
-                    renderEmpty();
-                } else {
-                    updateStatus('⚠️ API retornou resposta vazia', 'error');
-                    renderEmpty();
+                if (!data.success) {
+                    updateStatus(`❌ Erro na API: ${data.error}`, 'error');
+                    return;
                 }
+                
+                if (!data.data) {
+                    updateStatus('⚠️ API não retornou dados', 'warning');
+                    return;
+                }
+                
+                // Renderizar análise
+                renderAnalise(data.data);
                 
             } catch (error) {
                 console.error('❌ Erro:', error);
-                updateStatus(`❌ Erro: ${error.message}`, 'error');
-                document.getElementById('apiResponse').textContent = `ERRO:\n${error.message}\n\n${error.stack || ''}`;
-                renderError();
+                updateStatus(`❌ Erro ao conectar: ${error.message}`, 'error');
             }
         }
         
-        function limparCache() {
-            localStorage.clear();
-            updateStatus('🗑️ Cache limpo! Clique em "Testar API" novamente.', 'success');
-            updateApiInfo();
-        }
-        
-        function verConfig() {
-            const config = {
-                API_URL: API_URL,
-                localStorage_keys: Object.keys(localStorage).filter(k => k.startsWith('ceni_')),
-                cache_size: new Blob([JSON.stringify(localStorage)]).size,
-                timestamp: new Date().toISOString()
-            };
+        function renderAnalise(analise) {
+            const total = analise.total_eventos;
+            const futuros = analise.eventos_futuros_publicados;
+            const eventos = analise.todos_eventos;
             
-            document.getElementById('apiResponse').textContent = JSON.stringify(config, null, 2);
-            updateStatus('⚙️ Configuração exibida', 'success');
-        }
-        
-        // ========================================
-        // RENDERIZAÇÃO DO EVENTO
-        // ========================================
-        
-        function renderEvento(eventoData) {
-            const container = document.getElementById('eventoContainer');
-            
-            if (!eventoData || !eventoData.data) {
-                renderEmpty();
-                return;
+            // Status
+            if (futuros > 0) {
+                updateStatus(`✅ ${futuros} evento(s) futuro(s) encontrado(s)!`, 'success');
+            } else {
+                updateStatus(`⚠️ Nenhum evento futuro encontrado`, 'warning');
             }
             
-            const evento = eventoData.data;
+            // Resumo
+            document.getElementById('summaryGrid').innerHTML = `
+                <div class="summary-item">
+                    <div class="summary-number">${total}</div>
+                    <div class="summary-label">Total de Eventos</div>
+                </div>
+                <div class="summary-item">
+                    <div class="summary-number">${futuros}</div>
+                    <div class="summary-label">Eventos Futuros</div>
+                </div>
+                <div class="summary-item">
+                    <div class="summary-number">${eventos.filter(e => !e.checks.data_futura).length}</div>
+                    <div class="summary-label">Datas Passadas</div>
+                </div>
+                <div class="summary-item">
+                    <div class="summary-number">${eventos.filter(e => !e.checks.publicado).length}</div>
+                    <div class="summary-label">Não Publicados</div>
+                </div>
+            `;
+            document.getElementById('resumoPanel').style.display = 'block';
             
-            const html = `
-                <div class="proximo-evento-card">
-                    <div class="evento-badge">${getTipoBadge(evento.tipo)}</div>
-                    <div class="evento-content">
-                        <div class="evento-meta">
-                            <span class="evento-data">
-                                <i class="fas fa-calendar-alt"></i> ${evento.data}
-                            </span>
-                            ${evento.horario ? `
-                                <span class="evento-horario">
-                                    <i class="fas fa-clock"></i> ${evento.horario}
-                                </span>
-                            ` : ''}
+            // Instruções
+            renderInstrucoes(analise);
+            
+            // Eventos
+            const eventosHtml = eventos.map(evento => {
+                const podeExibir = evento.checks.pode_exibir;
+                const classe = podeExibir ? 'pode-exibir' : 'nao-pode-exibir';
+                
+                return `
+                    <div class="evento-card ${classe}">
+                        <div class="evento-title">
+                            ${podeExibir ? '✅' : '❌'} ${evento.titulo || 'Sem título'}
                         </div>
-                        
-                        <h3 class="evento-titulo">${evento.titulo}</h3>
-                        
-                        <p class="evento-descricao">${evento.descricao}</p>
-                        
-                        <div class="evento-local">
-                            <i class="fas fa-map-marker-alt"></i>
-                            <span>${evento.local}</span>
+                        <div class="evento-info">
+                            <div class="info-item">
+                                <span class="info-label">ID:</span>
+                                <span>${evento.id}</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Data:</span>
+                                <span>${evento.data}</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Status:</span>
+                                <span>${evento.status}</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Publicar:</span>
+                                <span>${evento.publicar} (${evento.publicar_tipo})</span>
+                            </div>
                         </div>
-                        
-                        ${evento.link_inscricao ? `
-                            <a href="${evento.link_inscricao}" 
-                               class="btn-evento" 
-                               target="_blank" 
-                               rel="noopener noreferrer">
-                                <i class="fas fa-external-link-alt"></i>
-                                Inscreva-se
-                            </a>
-                        ` : ''}
+                        <div style="margin-top: 0.5rem;">
+                            <div class="check-item ${evento.checks.data_futura ? 'check-ok' : 'check-fail'}">
+                                ${evento.checks.data_futura ? '✓' : '✗'} Data futura
+                            </div>
+                            <div class="check-item ${evento.checks.publicado ? 'check-ok' : 'check-fail'}">
+                                ${evento.checks.publicado ? '✓' : '✗'} Publicado
+                            </div>
+                            <div class="check-item ${evento.checks.status_agendado ? 'check-ok' : 'check-fail'}">
+                                ${evento.checks.status_agendado ? '✓' : '✗'} Status "Agendado"
+                            </div>
+                        </div>
                     </div>
-                </div>
-            `;
+                `;
+            }).join('');
             
-            container.innerHTML = html;
+            document.getElementById('eventosContainer').innerHTML = eventosHtml;
+            document.getElementById('eventosPanel').style.display = 'block';
         }
         
-        function renderEmpty() {
-            document.getElementById('eventoContainer').innerHTML = `
-                <div style="border: 4px solid #e0e0e0; padding: 3rem; text-align: center;">
-                    <i class="fas fa-calendar-check" style="font-size: 3rem; color: #999; margin-bottom: 1rem;"></i>
-                    <h4>Próximos Eventos em Breve</h4>
-                    <p style="color: #666; margin-top: 1rem;">Novos eventos serão anunciados em breve.</p>
-                </div>
-            `;
+        function renderInstrucoes(analise) {
+            const eventos = analise.todos_eventos;
+            const problemas = [];
+            
+            // Identificar problemas
+            const semDataFutura = eventos.filter(e => !e.checks.data_futura && e.checks.publicado && e.checks.status_agendado);
+            const naoPublicados = eventos.filter(e => e.checks.data_futura && !e.checks.publicado && e.checks.status_agendado);
+            const statusErrado = eventos.filter(e => e.checks.data_futura && e.checks.publicado && !e.checks.status_agendado);
+            
+            let html = '<div class="instructions">';
+            
+            if (semDataFutura.length > 0) {
+                html += `
+                    <h3>📅 ${semDataFutura.length} evento(s) com data no passado</h3>
+                    <ul>
+                        <li>Eventos: ${semDataFutura.map(e => e.titulo).join(', ')}</li>
+                        <li><strong>Solução:</strong> Atualize a coluna "data" com datas futuras (formato DD/MM/YYYY)</li>
+                    </ul>
+                `;
+            }
+            
+            if (naoPublicados.length > 0) {
+                html += `
+                    <h3>🚫 ${naoPublicados.length} evento(s) não publicado(s)</h3>
+                    <ul>
+                        <li>Eventos: ${naoPublicados.map(e => e.titulo).join(', ')}</li>
+                        <li><strong>Solução:</strong> Mude a coluna "publicar" para TRUE ou VERDADEIRO</li>
+                    </ul>
+                `;
+            }
+            
+            if (statusErrado.length > 0) {
+                html += `
+                    <h3>⚠️ ${statusErrado.length} evento(s) com status incorreto</h3>
+                    <ul>
+                        <li>Eventos: ${statusErrado.map(e => e.titulo).join(', ')}</li>
+                        <li><strong>Solução:</strong> Mude a coluna "status" para "Agendado"</li>
+                    </ul>
+                `;
+            }
+            
+            if (semDataFutura.length === 0 && naoPublicados.length === 0 && statusErrado.length === 0) {
+                html += `
+                    <h3>✅ Planilha configurada corretamente!</h3>
+                    <ul>
+                        <li>Todos os eventos futuros estão publicados e agendados</li>
+                        <li>O sistema deve funcionar normalmente</li>
+                    </ul>
+                `;
+            }
+            
+            html += '</div>';
+            
+            document.getElementById('instrucoesContent').innerHTML = html;
+            document.getElementById('instrucoesPanel').style.display = 'block';
         }
         
-        function renderError() {
-            document.getElementById('eventoContainer').innerHTML = `
-                <div style="border: 4px solid #f8d7da; padding: 3rem; text-align: center; background: #f8d7da;">
-                    <i class="fas fa-exclamation-triangle" style="font-size: 3rem; color: #721c24; margin-bottom: 1rem;"></i>
-                    <h4 style="color: #721c24;">Erro ao Carregar Evento</h4>
-                    <p style="color: #721c24; margin-top: 1rem;">Verifique o painel de debug acima.</p>
-                </div>
-            `;
+        async function testarProximoEvento() {
+            updateStatus('🔄 Testando endpoint de próximo evento...', 'loading');
+            
+            try {
+                const url = `${API_URL}?action=proximo_evento&_t=${Date.now()}`;
+                const response = await fetch(url);
+                const data = await response.json();
+                
+                if (data.data) {
+                    updateStatus('✅ Próximo evento encontrado!', 'success');
+                    alert(`Próximo Evento:\n\n${data.data.titulo}\nData: ${data.data.data}\nLocal: ${data.data.local}`);
+                } else {
+                    updateStatus('ℹ️ Nenhum evento futuro encontrado', 'warning');
+                    alert('Nenhum evento futuro encontrado.\n\nExecute a análise completa para diagnóstico.');
+                }
+                
+            } catch (error) {
+                updateStatus(`❌ Erro: ${error.message}`, 'error');
+            }
         }
         
-        function getTipoBadge(tipo) {
-            const badges = {
-                'Reunião Ordinária': '📋 Reunião Ordinária',
-                'Workshop': '🎯 Workshop',
-                'Lançamento': '🚀 Lançamento',
-                'Evento Público': '🎤 Evento Público'
-            };
-            return badges[tipo] || tipo;
+        function limparTela() {
+            document.getElementById('resumoPanel').style.display = 'none';
+            document.getElementById('eventosPanel').style.display = 'none';
+            document.getElementById('instrucoesPanel').style.display = 'none';
+            document.getElementById('rawPanel').style.display = 'none';
+            updateStatus('⏳ Aguardando análise...', 'loading');
         }
         
-        // ========================================
-        // INICIALIZAÇÃO
-        // ========================================
-        
+        // Auto-executar ao carregar
         window.addEventListener('DOMContentLoaded', () => {
-            console.log('🎯 Página de teste carregada');
-            updateApiInfo();
-            
-            // Testar automaticamente ao carregar
-            setTimeout(() => {
-                testarAPI();
-            }, 500);
+            console.log('🎯 Página de debug carregada');
+            console.log('📡 API URL:', API_URL);
         });
     </script>
 </body>
