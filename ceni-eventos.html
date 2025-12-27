@@ -46,6 +46,15 @@
             background: var(--primary);
             padding: 1.5rem 0;
             border-bottom: 4px solid var(--accent);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+        
+        .gov-header.scrolled {
+            padding: 1rem 0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
         }
         
         .header-grid {
@@ -589,12 +598,6 @@
             transform: scaleX(1);
         }
         
-        /* Parallax suave no header */
-        .gov-header {
-            transform: translateZ(0);
-            will-change: transform;
-        }
-        
         /* Smooth scroll behavior */
         html {
             scroll-behavior: smooth;
@@ -1087,19 +1090,19 @@
             log('✨', `Sistema de animações ativado: ${animatedElements.length} elementos`);
         }
         
-        // Parallax suave no header
-        function setupParallax() {
-            let lastScroll = 0;
+        // Sticky header com transição suave
+        function setupStickyHeader() {
             const header = document.querySelector('.gov-header');
+            let lastScroll = 0;
             
             window.addEventListener('scroll', () => {
                 const currentScroll = window.pageYOffset;
-                const scrollDiff = currentScroll - lastScroll;
                 
-                if (header && currentScroll < 300) {
-                    const translateY = currentScroll * 0.5;
-                    header.style.transform = `translateY(${translateY}px)`;
-                    header.style.opacity = 1 - (currentScroll / 300) * 0.3;
+                // Adiciona classe 'scrolled' quando passa de 100px
+                if (currentScroll > 100) {
+                    header.classList.add('scrolled');
+                } else {
+                    header.classList.remove('scrolled');
                 }
                 
                 lastScroll = currentScroll;
@@ -1116,7 +1119,7 @@
             // Aguardar renderização antes de ativar animações
             setTimeout(() => {
                 setupScrollAnimations();
-                setupParallax();
+                setupStickyHeader();
             }, 100);
             
             // Back to top
