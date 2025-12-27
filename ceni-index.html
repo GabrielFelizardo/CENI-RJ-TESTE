@@ -26,7 +26,7 @@
     <link rel="stylesheet" href="ceni-header-enhanced.css">
     <link rel="stylesheet" href="ceni-footer-enhanced.css">
     
-    <!-- NOVO: Sistema de Eventos Dinâmicos -->
+    <!-- Sistema de Eventos Dinâmicos -->
     <link rel="stylesheet" href="ceni-evento-styles.css">
     
     <style>
@@ -597,7 +597,7 @@
             </div>
         </section>
 
-        <!-- PRÓXIMO EVENTO - NOVO -->
+        <!-- PRÓXIMO EVENTO -->
         <section class="proximo-evento-section">
             <div class="swiss-grid">
                 <div class="col-full section-evento-header">
@@ -814,8 +814,249 @@
     <script src="ceni-animations.js"></script>
     <script src="ceni-footer-enhanced.js"></script>
     
-    <!-- NOVO: Sistema de Dados Dinâmicos -->
-    <script src="ceni-dynamic-data.js"></script>
+    <!-- Sistema de Eventos Dinâmicos - INLINE -->
+    <script>
+        // ========================================
+        // CONFIGURAÇÃO
+        // ========================================
+        
+        const CONFIG = {
+            API_URL: 'https://script.google.com/macros/s/AKfycbwK2yrE4LdANPPvzEztemfcrea2nE5B93tESSgmB6E0WKzsHNtPa-XwXAWfdYWMYZw/exec',
+            CACHE_KEY: 'ceni_proximo_evento',
+            CACHE_DURATION: 30 * 60 * 1000 // 30 minutos
+        };
+        
+        // ========================================
+        // FUNÇÕES DE CACHE
+        // ========================================
+        
+        function getCachedData() {
+            try {
+                const cached = localStorage.getItem(CONFIG.CACHE_KEY);
+                if (!cached) return null;
+                
+                const data = JSON.parse(cached);
+                const now = Date.now();
+                
+                if (now - data.timestamp > CONFIG.CACHE_DURATION) {
+                    localStorage.removeItem(CONFIG.CACHE_KEY);
+                    return null;
+                }
+                
+                console.log('✅ Dados carregados do cache');
+                return data.value;
+                
+            } catch (error) {
+                console.error('Erro ao ler cache:', error);
+                return null;
+            }
+        }
+        
+        function setCachedData(value) {
+            try {
+                const data = {
+                    value: value,
+                    timestamp: Date.now()
+                };
+                localStorage.setItem(CONFIG.CACHE_KEY, JSON.stringify(data));
+                console.log('✅ Dados salvos no cache');
+            } catch (error) {
+                console.error('Erro ao salvar cache:', error);
+            }
+        }
+        
+        // ========================================
+        // RENDERIZAÇÃO
+        // ========================================
+        
+        function renderLoading() {
+            const container = document.getElementById('proximoEventoContainer');
+            if (!container) return;
+            
+            container.innerHTML = `
+                <div class="evento-loading">
+                    <div class="evento-loading-spinner"></div>
+                    <p style="color: #666; font-weight: 600;">Carregando próximo evento...</p>
+                </div>
+            `;
+        }
+        
+        function renderEmpty() {
+            const container = document.getElementById('proximoEventoContainer');
+            if (!container) return;
+            
+            container.innerHTML = `
+                <div class="evento-empty">
+                    <div class="evento-empty-icon">
+                        <i class="fas fa-calendar-check"></i>
+                    </div>
+                    <h4>Próximos Eventos em Breve</h4>
+                    <p>Novos eventos serão anunciados em breve. Acompanhe nossas atualizações.</p>
+                </div>
+            `;
+        }
+        
+        function renderError(message) {
+            const container = document.getElementById('proximoEventoContainer');
+            if (!container) return;
+            
+            container.innerHTML = `
+                <div class="evento-error">
+                    <div class="evento-error-icon">
+                        <i class="fas fa-exclamation-triangle"></i>
+                    </div>
+                    <h4 style="color: #dc3545; margin-bottom: 1rem;">Erro ao Carregar Evento</h4>
+                    <p style="color: #721c24;">${message}</p>
+                </div>
+            `;
+        }
+        
+        function renderEvento(evento) {
+            const container = document.getElementById('proximoEventoContainer');
+            if (!container) return;
+            
+            const tipoBadge = getTipoBadge(evento.tipo);
+            
+            const html = `
+                <div class="proximo-evento-card" data-animate="fade-up">
+                    <div class="evento-badge">${tipoBadge}</div>
+                    <div class="evento-content">
+                        <div class="evento-meta">
+                            <span class="evento-data">
+                                <i class="fas fa-calendar-alt"></i>
+                                ${evento.data}
+                            </span>
+                            ${evento.horario ? `
+                                <span class="evento-horario">
+                                    <i class="fas fa-clock"></i>
+                                    ${evento.horario}
+                                </span>
+                            ` : ''}
+                        </div>
+                        
+                        <h3 class="evento-titulo">${evento.titulo}</h3>
+                        
+                        <p class="evento-descricao">${evento.descricao}</p>
+                        
+                        <div class="evento-local">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>${evento.local}</span>
+                        </div>
+                        
+                        ${evento.link_inscricao ? `
+                            <a href="${evento.link_inscricao}" 
+                               class="btn-evento" 
+                               target="_blank" 
+                               rel="noopener noreferrer">
+                                <span>Inscreva-se</span>
+                                <i class="fas fa-arrow-right"></i>
+                            </a>
+                        ` : ''}
+                    </div>
+                </div>
+            `;
+            
+            container.innerHTML = html;
+            
+            // Aplicar animações se disponíveis
+            if (typeof CENIScroll !== 'undefined' && typeof CENIScroll.refresh === 'function') {
+                setTimeout(() => CENIScroll.refresh(), 100);
+            }
+        }
+        
+        function getTipoBadge(tipo) {
+            const badges = {
+                'Reunião Ordinária': '📋 Reunião Ordinária',
+                'Workshop': '🎯 Workshop',
+                'Lançamento': '🚀 Lançamento',
+                'Evento Público': '🎤 Evento Público',
+                'Reunião Extraordinária': '⚡ Reunião Extraordinária'
+            };
+            return badges[tipo] || tipo || '📅 Evento';
+        }
+        
+        // ========================================
+        // BUSCAR DADOS DA API
+        // ========================================
+        
+        async function fetchProximoEvento() {
+            console.log('🔄 Buscando próximo evento...');
+            
+            // Verificar cache primeiro
+            const cached = getCachedData();
+            if (cached) {
+                console.log('✅ Usando dados do cache');
+                if (cached.data) {
+                    renderEvento(cached.data);
+                } else {
+                    renderEmpty();
+                }
+                return;
+            }
+            
+            // Mostrar loading
+            renderLoading();
+            
+            try {
+                const url = `${CONFIG.API_URL}?action=proximo_evento&_t=${Date.now()}`;
+                console.log('📡 Fazendo requisição:', url);
+                
+                const response = await fetch(url);
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+                
+                const result = await response.json();
+                console.log('📥 Resposta da API:', result);
+                
+                if (!result.success) {
+                    throw new Error(result.error || 'Erro desconhecido na API');
+                }
+                
+                // Salvar no cache
+                setCachedData(result);
+                
+                // Renderizar
+                if (result.data) {
+                    console.log('✅ Evento encontrado:', result.data.titulo);
+                    renderEvento(result.data);
+                } else {
+                    console.log('ℹ️ Nenhum evento futuro encontrado');
+                    renderEmpty();
+                }
+                
+            } catch (error) {
+                console.error('❌ Erro ao buscar evento:', error);
+                renderError(error.message);
+            }
+        }
+        
+        // ========================================
+        // INICIALIZAÇÃO
+        // ========================================
+        
+        // Carregar ao abrir a página
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', () => {
+                console.log('🎯 Sistema de eventos inicializado');
+                fetchProximoEvento();
+            });
+        } else {
+            console.log('🎯 Sistema de eventos inicializado (DOM já carregado)');
+            fetchProximoEvento();
+        }
+        
+        // Expor funções globalmente para debug
+        window.CENI_Eventos = {
+            recarregar: fetchProximoEvento,
+            limparCache: () => {
+                localStorage.removeItem(CONFIG.CACHE_KEY);
+                console.log('🗑️ Cache limpo');
+                fetchProximoEvento();
+            }
+        };
+    </script>
 
     <!-- Scripts do Site -->
     <script>
