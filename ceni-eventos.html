@@ -650,8 +650,8 @@
 
     <script>
         // ===== CONFIGURAÇÃO DA API =====
-        // SUBSTITUA ESTA URL PELA URL DO SEU GOOGLE APPS SCRIPT
-        const API_URL = 'https://script.google.com/macros/library/d/16dVcZRbQddmdfMBon41cN1drvTicAvJup-txLe6NzC4dJSuQQ3kyyfxU/8';
+        // URL do Google Apps Script Web App implantado
+        const API_URL = 'https://script.google.com/macros/s/AKfycbxHNu6qm1BScGdc6JEQBTrECz0RINKapGCK3FJ4dz1WQ7XSRqInjpKZtu3GeFOh0py1/exec';
         
         // ===== DADOS DE FALLBACK =====
         const EVENTOS_FALLBACK = [
@@ -889,7 +889,11 @@
             try {
                 log('⏳', 'Fazendo requisição para a API...');
                 
-                const response = await fetch(API_URL);
+                // Adicionar parâmetro action=todos_eventos na requisição
+                const urlComParametros = `${API_URL}?action=todos_eventos`;
+                log('🔗', `URL com parâmetros: ${urlComParametros}`);
+                
+                const response = await fetch(urlComParametros);
                 
                 log('📡', `Status da resposta: ${response.status}`);
                 
@@ -900,9 +904,24 @@
                 const data = await response.json();
                 
                 log('📦', 'Dados recebidos da API:', data);
+                log('🔍', 'Tipo de data:', typeof data);
+                log('🔍', 'Propriedades de data:', Object.keys(data));
+                log('🔍', 'data.success:', data.success);
+                log('🔍', 'data.eventos existe?', data.hasOwnProperty('eventos'));
+                log('🔍', 'data.eventos é array?', Array.isArray(data.eventos));
                 
-                if (!data || !Array.isArray(data.eventos)) {
-                    throw new Error('Formato de resposta inválido');
+                // Verificar se a API retornou sucesso
+                if (!data || !data.success) {
+                    log('❌', 'API retornou erro:', data.error || 'Erro desconhecido');
+                    throw new Error(data.error || 'Resposta da API indica falha');
+                }
+                
+                // Verificar se temos o array de eventos
+                if (!Array.isArray(data.eventos)) {
+                    log('❌', 'Estrutura recebida não corresponde ao esperado');
+                    log('❌', 'Esperado: { success: true, eventos: [...] }');
+                    log('❌', 'Recebido:', JSON.stringify(data, null, 2));
+                    throw new Error('Formato de resposta inválido - eventos não é um array');
                 }
                 
                 todosEventos = data.eventos.filter(e => 
@@ -969,7 +988,9 @@
             testarAPI: async () => {
                 log('🧪', 'Testando conexão com API...');
                 try {
-                    const response = await fetch(API_URL);
+                    const urlComParametros = `${API_URL}?action=todos_eventos`;
+                    log('🔗', 'URL de teste:', urlComParametros);
+                    const response = await fetch(urlComParametros);
                     const data = await response.json();
                     log('✅', 'Teste bem-sucedido:', data);
                     return data;
