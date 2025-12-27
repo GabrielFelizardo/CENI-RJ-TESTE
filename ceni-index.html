@@ -26,6 +26,9 @@
     <link rel="stylesheet" href="ceni-header-enhanced.css">
     <link rel="stylesheet" href="ceni-footer-enhanced.css">
     
+    <!-- NOVO: Sistema de Eventos Dinâmicos -->
+    <link rel="stylesheet" href="ceni-evento-styles.css">
+    
     <style>
         :root {
             --primary: #1e3a8a;
@@ -594,6 +597,23 @@
             </div>
         </section>
 
+        <!-- PRÓXIMO EVENTO - NOVO -->
+        <section class="proximo-evento-section">
+            <div class="swiss-grid">
+                <div class="col-full section-evento-header">
+                    <span class="label" data-animate="fade-up">Agenda</span>
+                    <h2 data-animate="fade-up" data-delay="100">
+                        Próximo<br>Evento
+                    </h2>
+                </div>
+                
+                <!-- Container onde o JavaScript irá renderizar o evento -->
+                <div class="col-full" id="proximoEventoContainer">
+                    <!-- Conteúdo será inserido dinamicamente via JavaScript -->
+                </div>
+            </div>
+        </section>
+
         <!-- GTS PREVIEW -->
         <section style="margin-top: 6rem; margin-bottom: 8rem;">
             <div class="swiss-grid">
@@ -793,6 +813,9 @@
     <!-- Sistema de Animações -->
     <script src="ceni-animations.js"></script>
     <script src="ceni-footer-enhanced.js"></script>
+    
+    <!-- NOVO: Sistema de Dados Dinâmicos -->
+    <script src="ceni-dynamic-data.js"></script>
 
     <!-- Scripts do Site -->
     <script>
