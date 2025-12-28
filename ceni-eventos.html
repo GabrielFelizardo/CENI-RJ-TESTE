@@ -650,7 +650,7 @@
 
     <script>
         // ===== CONFIGURAÇÃO DA API =====
-        // URL do Google Apps Script Web App implantado
+        // URL do Google Apps Script Web App implantado (versão atualizada)
         const API_URL = 'https://script.google.com/macros/s/AKfycbz7xtGpvneEC2OXgVijkl1mEWEbKP4O3rjaHiQ-Lu0C_ZByOf7UFhK1GkMXDVkYziEj/exec';
         
         // ===== DADOS DE FALLBACK =====
@@ -909,6 +909,7 @@
                 log('🔍', 'data.success:', data.success);
                 log('🔍', 'data.eventos existe?', data.hasOwnProperty('eventos'));
                 log('🔍', 'data.eventos é array?', Array.isArray(data.eventos));
+                log('🔍', 'Quantidade de eventos recebidos:', data.eventos ? data.eventos.length : 0);
                 
                 // Verificar se a API retornou sucesso
                 if (!data || !data.success) {
@@ -924,10 +925,8 @@
                     throw new Error('Formato de resposta inválido - eventos não é um array');
                 }
                 
-                todosEventos = data.eventos.filter(e => 
-                    e.publicado && 
-                    (e.publicado.toLowerCase() === 'sim' || e.publicado.toLowerCase() === 'true')
-                );
+                // A API já filtra eventos publicados, então usamos todos os eventos retornados
+                todosEventos = data.eventos;
                 
                 log('✅', `${todosEventos.length} eventos carregados da API`);
                 log('📊', 'Eventos carregados:', todosEventos);
